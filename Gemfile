@@ -13,7 +13,7 @@ gem 'mysql2', '~> 0.2.7'
 gem "ruby-units"
 
 # Other units for RealMealz
-gem "mongrel"
+# gem "mongrel"
 gem 'active_scaffold', :git => 'git://github.com/activescaffold/active_scaffold.git', :branch => 'rails-3.0'
 #gem "active_scaffold-vho"
 gem "authlogic"
