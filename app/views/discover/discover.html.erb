@@ -1,0 +1,58 @@
+<style>
+  .selected { border: 3px solid red;}
+</style>
+
+<h1>Use this page to select recipes directly:</h1>
+RealMealz recommended recipes have already been selected.  Feel free to select or de-select recipes you would like to plan with. <br>
+
+<% if @recipes.blank? %>
+	<p>
+	  No recipes.
+	</p>
+<% else %>
+	
+	<table id="shop-table"><tr>
+	<% count = 0 %>	
+	<% if mobile_request? 
+	     pic_size =:thumbnail 
+       width = 100
+       height = 100
+     else
+       pic_size =  :medium
+       width = 290
+       height = 217
+	  end %>
+	<% @recipes.each do |recipe| %>
+		<td style="text-align: center; vertical-align: top">
+			<% class_name = @recipes_active.include?(recipe.id) ? "recipe selected" : "recipe" %>
+	  	<%= image_tag(recipe.picture.url(pic_size), :id => recipe.id, :class => class_name, :width => width, :height => height) %>
+			<br/>
+			
+			<%= recipe.name %>
+    </td>
+		<% count += 1; if count >= 3 %>
+			<br>
+		  </tr><tr>
+		  <% count = 0 %>
+    <% end %>
+	<% end %>		
+	</tr></table>
+  <%= will_paginate @recipes %>
+<% end %>
+
+<script type="text/javascript">
+  $(".recipe").click(function() {
+   if ($(this).hasClass("selected")) { $(this).removeClass("selected");} else { $(this).addClass("selected"); };
+		$.ajax({
+		  type: "post",
+			url: "/discover/update",
+			data: "id=" + this.getAttribute('id') + "&value=" + $(this).hasClass("selected"),
+		  error: function (request, status, error) {
+        alert(request.responseText);
+      }
+		});    
+    return false;
+  });
+  
+</script>
+

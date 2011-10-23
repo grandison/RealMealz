@@ -1,0 +1,1006 @@
+--- 
+allergies_190: 
+  name: roe
+  id: 1
+  display: "yes"
+  parent_id: 585
+allergies_162: 
+  name: textured vegetable protein
+  id: 567
+  display: "no"
+  parent_id: 541
+allergies_134: 
+  name: hypogaeic acid
+  id: 539
+  display: "no"
+  parent_id: 532
+allergies_106: 
+  name: beechnut
+  id: 511
+  display: "yes"
+  parent_id: 509
+allergies_020: 
+  name: ice milk
+  id: 425
+  display: "no"
+  parent_id: 406
+allergies_079: 
+  name: soy nut
+  id: 484
+  display: "no"
+  parent_id: 464
+allergies_191: 
+  name: shellfish
+  id: 597
+  display: "yes"
+  parent_id: 
+allergies_163: 
+  name: vegetable gum
+  id: 568
+  display: "no"
+  parent_id: 541
+allergies_135: 
+  name: mandelona
+  id: 540
+  display: "no"
+  parent_id: 532
+allergies_107: 
+  name: brazil nut
+  id: 512
+  display: "yes"
+  parent_id: 509
+allergies_021: 
+  name: lactalbumin
+  id: 426
+  display: "no"
+  parent_id: 406
+allergies_192: 
+  name: abalone
+  id: 598
+  display: "yes"
+  parent_id: 597
+allergies_164: 
+  name: malt
+  id: 569
+  display: "yes"
+  parent_id: 541
+allergies_136: 
+  name: wheat
+  id: 541
+  display: "yes"
+  parent_id: 
+allergies_108: 
+  name: bush nut
+  id: 513
+  display: "yes"
+  parent_id: 509
+allergies_050: 
+  name: ovoglobulin
+  id: 455
+  display: "no"
+  parent_id: 445
+allergies_022: 
+  name: lactate solid
+  id: 427
+  display: "no"
+  parent_id: 406
+allergies_193: 
+  name: clam
+  id: 599
+  display: "yes"
+  parent_id: 597
+allergies_165: 
+  name: matzo
+  id: 570
+  display: "yes"
+  parent_id: 541
+allergies_137: 
+  name: bran
+  id: 542
+  display: "yes"
+  parent_id: 541
+allergies_109: 
+  name: butternut
+  id: 514
+  display: "yes"
+  parent_id: 509
+allergies_051: 
+  name: ovomucin
+  id: 456
+  display: "no"
+  parent_id: 445
+allergies_023: 
+  name: lactyc yeast
+  id: 428
+  display: "no"
+  parent_id: 406
+allergies_194: 
+  name: crab
+  id: 600
+  display: "yes"
+  parent_id: 597
+allergies_166: 
+  name: noodle
+  id: 571
+  display: "yes"
+  parent_id: 541
+allergies_138: 
+  name: bread
+  id: 543
+  display: "yes"
+  parent_id: 541
+allergies_052: 
+  name: ovomucoid
+  id: 457
+  display: "no"
+  parent_id: 445
+allergies_024: 
+  name: lactitol monohydrate
+  id: 429
+  display: "no"
+  parent_id: 406
+allergies_080: 
+  name: soy nut butter
+  id: 485
+  display: "no"
+  parent_id: 464
+allergies_195: 
+  name: crawfish
+  id: 601
+  display: "yes"
+  parent_id: 597
+allergies_167: 
+  name: pastum
+  id: 572
+  display: "yes"
+  parent_id: 541
+allergies_139: 
+  name: bread crumb
+  id: 544
+  display: "yes"
+  parent_id: 541
+allergies_053: 
+  name: ovotransferrin
+  id: 458
+  display: "no"
+  parent_id: 445
+allergies_025: 
+  name: lactoglobulin
+  id: 430
+  display: "no"
+  parent_id: 406
+allergies_081: 
+  name: soy protein
+  id: 486
+  display: "no"
+  parent_id: 464
+allergies_196: 
+  name: crayfish
+  id: 602
+  display: "yes"
+  parent_id: 597
+allergies_168: 
+  name: seitan
+  id: 573
+  display: "yes"
+  parent_id: 541
+allergies_054: 
+  name: ovovitelium
+  id: 459
+  display: "no"
+  parent_id: 445
+allergies_026: 
+  name: lactose
+  id: 431
+  display: "no"
+  parent_id: 406
+allergies_082: 
+  name: soy protein concentrate
+  id: 487
+  display: "no"
+  parent_id: 464
+allergies_197: 
+  name: lobster
+  id: 603
+  display: "yes"
+  parent_id: 597
+allergies_169: 
+  name: oat
+  id: 574
+  display: "yes"
+  parent_id: 
+allergies_055: 
+  name: ovovitellin
+  id: 460
+  display: "no"
+  parent_id: 445
+allergies_110: 
+  name: cashew
+  id: 515
+  display: "yes"
+  parent_id: 509
+allergies_027: 
+  name: lactulose
+  id: 432
+  display: "no"
+  parent_id: 406
+allergies_083: 
+  name: soy protein isolate
+  id: 488
+  display: "no"
+  parent_id: 464
+allergies_198: 
+  name: oyster
+  id: 604
+  display: "yes"
+  parent_id: 597
+allergies_056: 
+  name: silici albuminate
+  id: 461
+  display: "no"
+  parent_id: 445
+allergies_111: 
+  name: chestnut
+  id: 516
+  display: "yes"
+  parent_id: 509
+allergies_028: 
+  name: buttermilk
+  id: 433
+  display: "no"
+  parent_id: 406
+allergies_084: 
+  name: soy sprout
+  id: 489
+  display: "no"
+  parent_id: 464
+allergies_199: 
+  name: scallop
+  id: 605
+  display: "yes"
+  parent_id: 597
+allergies_140: 
+  name: bread flour
+  id: 545
+  display: "yes"
+  parent_id: 541
+allergies_112: 
+  name: coconut
+  id: 517
+  display: "yes"
+  parent_id: 509
+allergies_029: 
+  name: nisin preparation
+  id: 434
+  display: "no"
+  parent_id: 406
+allergies_085: 
+  name: soybean granule
+  id: 490
+  display: "no"
+  parent_id: 464
+allergies_057: 
+  name: trailblazer
+  id: 462
+  display: "no"
+  parent_id: 445
+allergies_141: 
+  name: bulgur
+  id: 546
+  display: "yes"
+  parent_id: 541
+allergies_113: 
+  name: filbert
+  id: 518
+  display: "yes"
+  parent_id: 509
+allergies_086: 
+  name: soybean curd
+  id: 491
+  display: "no"
+  parent_id: 464
+allergies_058: 
+  name: vitellin
+  id: 463
+  display: "no"
+  parent_id: 445
+allergies_170: 
+  name: stone fruit
+  id: 575
+  display: "yes"
+  parent_id: 
+allergies_142: 
+  name: cereal extract
+  id: 547
+  display: "no"
+  parent_id: 541
+allergies_087: 
+  name: soybean flour
+  id: 492
+  display: "no"
+  parent_id: 464
+allergies_059: 
+  name: soy
+  id: 464
+  display: "yes"
+  parent_id: 
+allergies_114: 
+  name: ginko nut
+  id: 519
+  display: "yes"
+  parent_id: 509
+allergies_171: 
+  name: avocado
+  id: 576
+  display: "yes"
+  parent_id: 575
+allergies_143: 
+  name: couscous
+  id: 548
+  display: "yes"
+  parent_id: 541
+allergies_115: 
+  name: hazelnut
+  id: 520
+  display: "yes"
+  parent_id: 509
+allergies_088: 
+  name: soy lecithin
+  id: 493
+  display: "no"
+  parent_id: 464
+allergies_001: 
+  name: milk
+  id: 406
+  display: "yes"
+  parent_id: 
+allergies_172: 
+  name: apricot
+  id: 577
+  display: "yes"
+  parent_id: 575
+allergies_144: 
+  name: cracker
+  id: 549
+  display: "yes"
+  parent_id: 541
+allergies_116: 
+  name: hickory nut
+  id: 521
+  display: "yes"
+  parent_id: 509
+allergies_030: 
+  name: nougat
+  id: 435
+  display: "no"
+  parent_id: 406
+allergies_089: 
+  name: soybean paste
+  id: 494
+  display: "no"
+  parent_id: 464
+allergies_002: 
+  name: cream
+  id: 407
+  display: "no"
+  parent_id: 406
+allergies_200: 
+  name: shrimp
+  id: 606
+  display: "yes"
+  parent_id: 597
+allergies_173: 
+  name: cherry
+  id: 578
+  display: "yes"
+  parent_id: 575
+allergies_145: 
+  name: farina
+  id: 550
+  display: "yes"
+  parent_id: 541
+allergies_117: 
+  name: lichee nut
+  id: 522
+  display: "yes"
+  parent_id: 509
+allergies_031: 
+  name: pudding
+  id: 436
+  display: "no"
+  parent_id: 406
+allergies_003: 
+  name: whipped cream
+  id: 408
+  display: "no"
+  parent_id: 406
+allergies_201: 
+  name: cockle
+  id: 607
+  display: "no"
+  parent_id: 597
+allergies_174: 
+  name: lychee
+  id: 579
+  display: "yes"
+  parent_id: 575
+allergies_146: 
+  name: flour
+  id: 551
+  display: "yes"
+  parent_id: 541
+allergies_118: 
+  name: macadamia nut
+  id: 523
+  display: "yes"
+  parent_id: 509
+allergies_032: 
+  name: quark
+  id: 437
+  display: "no"
+  parent_id: 406
+allergies_004: 
+  name: cheese
+  id: 409
+  display: "no"
+  parent_id: 406
+allergies_060: 
+  name: edamame
+  id: 465
+  display: "no"
+  parent_id: 464
+allergies_175: 
+  name: mango
+  id: 580
+  display: "yes"
+  parent_id: 575
+allergies_147: 
+  name: germ
+  id: 552
+  display: "no"
+  parent_id: 541
+allergies_119: 
+  name: nangai nut
+  id: 524
+  display: "yes"
+  parent_id: 509
+allergies_033: 
+  name: recaldent
+  id: 438
+  display: "no"
+  parent_id: 406
+allergies_005: 
+  name: butter
+  id: 410
+  display: "no"
+  parent_id: 406
+allergies_061: 
+  name: hydrolyzed soy protein
+  id: 466
+  display: "no"
+  parent_id: 464
+allergies_176: 
+  name: peach
+  id: 581
+  display: "yes"
+  parent_id: 575
+allergies_148: 
+  name: gluten
+  id: 553
+  display: "yes"
+  parent_id: 541
+allergies_034: 
+  name: rennet
+  id: 439
+  display: "no"
+  parent_id: 406
+allergies_006: 
+  name: casein
+  id: 411
+  display: "no"
+  parent_id: 406
+allergies_090: 
+  name: supro
+  id: 495
+  display: "no"
+  parent_id: 464
+allergies_062: 
+  name: kinnoko flour
+  id: 467
+  display: "no"
+  parent_id: 464
+allergies_177: 
+  name: plum
+  id: 582
+  display: "yes"
+  parent_id: 575
+allergies_149: 
+  name: graham flour
+  id: 554
+  display: "no"
+  parent_id: 541
+allergies_035: 
+  name: rennet casein
+  id: 440
+  display: "no"
+  parent_id: 406
+allergies_007: 
+  name: caseinate
+  id: 412
+  display: "no"
+  parent_id: 406
+allergies_091: 
+  name: tamari
+  id: 496
+  display: "no"
+  parent_id: 464
+allergies_063: 
+  name: kyodofu
+  id: 468
+  display: "no"
+  parent_id: 464
+allergies_178: 
+  name: prune
+  id: 583
+  display: "yes"
+  parent_id: 575
+allergies_008: 
+  name: curd
+  id: 413
+  display: "no"
+  parent_id: 406
+allergies_092: 
+  name: tempeh
+  id: 497
+  display: "no"
+  parent_id: 464
+allergies_064: 
+  name: soybean
+  id: 469
+  display: "no"
+  parent_id: 464
+allergies_036: 
+  name: simplesse
+  id: 441
+  display: "no"
+  parent_id: 406
+allergies_179: 
+  name: nectarine
+  id: 584
+  display: "yes"
+  parent_id: 575
+allergies_120: 
+  name: pecan
+  id: 525
+  display: "yes"
+  parent_id: 509
+allergies_009: 
+  name: custard
+  id: 414
+  display: "no"
+  parent_id: 406
+allergies_093: 
+  name: teriyaki sauce
+  id: 498
+  display: "no"
+  parent_id: 464
+allergies_065: 
+  name: miso
+  id: 470
+  display: "no"
+  parent_id: 464
+allergies_037: 
+  name: sour cream
+  id: 442
+  display: "no"
+  parent_id: 406
+allergies_121: 
+  name: pine nut
+  id: 526
+  display: "yes"
+  parent_id: 509
+allergies_094: 
+  name: textured soy flour
+  id: 499
+  display: "no"
+  parent_id: 464
+allergies_066: 
+  name: natto
+  id: 471
+  display: "no"
+  parent_id: 464
+allergies_038: 
+  name: whey
+  id: 443
+  display: "no"
+  parent_id: 406
+allergies_150: 
+  name: artificial flavoring
+  id: 555
+  display: "yes"
+  parent_id: 541
+allergies_122: 
+  name: pistachio
+  id: 527
+  display: "yes"
+  parent_id: 509
+allergies_095: 
+  name: tsf
+  id: 500
+  display: "no"
+  parent_id: 464
+allergies_067: 
+  name: okara
+  id: 472
+  display: "no"
+  parent_id: 464
+allergies_039: 
+  name: yogurt
+  id: 444
+  display: "no"
+  parent_id: 406
+allergies_151: 
+  name: natural flavoring
+  id: 556
+  display: "yes"
+  parent_id: 541
+allergies_123: 
+  name: shea nut
+  id: 528
+  display: "yes"
+  parent_id: 509
+allergies_096: 
+  name: textured soy protein
+  id: 501
+  display: "no"
+  parent_id: 464
+allergies_068: 
+  name: soya sauce
+  id: 473
+  display: "no"
+  parent_id: 464
+allergies_180: 
+  name: fish
+  id: 585
+  display: "yes"
+  parent_id: 
+allergies_152: 
+  name: caramel color
+  id: 557
+  display: "no"
+  parent_id: 541
+allergies_124: 
+  name: walnut
+  id: 529
+  display: "yes"
+  parent_id: 509
+allergies_097: 
+  name: tsp
+  id: 502
+  display: "no"
+  parent_id: 464
+allergies_010: 
+  name: dairy product solid
+  id: 415
+  display: "no"
+  parent_id: 406
+allergies_069: 
+  name: soy albumin
+  id: 474
+  display: "no"
+  parent_id: 464
+allergies_181: 
+  name: salmon
+  id: 586
+  display: "yes"
+  parent_id: 585
+allergies_153: 
+  name: dextrin
+  id: 558
+  display: "no"
+  parent_id: 541
+allergies_125: 
+  name: praline
+  id: 530
+  display: "yes"
+  parent_id: 509
+allergies_098: 
+  name: textured vegetable protein (tvp)
+  id: 503
+  display: "yes"
+  parent_id: 464
+allergies_011: 
+  name: galactose
+  id: 416
+  display: "no"
+  parent_id: 406
+allergies_182: 
+  name: trout
+  id: 587
+  display: "yes"
+  parent_id: 585
+allergies_154: 
+  name: food starch
+  id: 559
+  display: "yes"
+  parent_id: 541
+allergies_126: 
+  name: sheanut
+  id: 531
+  display: "no"
+  parent_id: 509
+allergies_012: 
+  name: ghee
+  id: 417
+  display: "no"
+  parent_id: 406
+allergies_040: 
+  name: egg
+  id: 445
+  display: "yes"
+  parent_id: 
+allergies_099: 
+  name: tofu
+  id: 504
+  display: "yes"
+  parent_id: 464
+allergies_183: 
+  name: sea bas
+  id: 588
+  display: "yes"
+  parent_id: 585
+allergies_155: 
+  name: gelatinized starch
+  id: 560
+  display: "no"
+  parent_id: 541
+allergies_127: 
+  name: peanut
+  id: 532
+  display: "yes"
+  parent_id: 509
+allergies_013: 
+  name: half and half
+  id: 418
+  display: "no"
+  parent_id: 406
+allergies_041: 
+  name: albumin
+  id: 446
+  display: "no"
+  parent_id: 445
+allergies_184: 
+  name: tuna
+  id: 589
+  display: "yes"
+  parent_id: 585
+allergies_156: 
+  name: hydrolyzed vegetable protein (hvp)
+  id: 561
+  display: "no"
+  parent_id: 541
+allergies_128: 
+  name: arachic oil
+  id: 533
+  display: "yes"
+  parent_id: 532
+allergies_014: 
+  name: hydrolysate
+  id: 419
+  display: "no"
+  parent_id: 406
+allergies_070: 
+  name: soy bran
+  id: 475
+  display: "no"
+  parent_id: 464
+allergies_042: 
+  name: apovitellin
+  id: 447
+  display: "no"
+  parent_id: 445
+allergies_185: 
+  name: grouper
+  id: 590
+  display: "yes"
+  parent_id: 585
+allergies_157: 
+  name: maltodextrin
+  id: 562
+  display: "no"
+  parent_id: 541
+allergies_129: 
+  name: arachi
+  id: 534
+  display: "no"
+  parent_id: 532
+allergies_071: 
+  name: soy concentrate
+  id: 476
+  display: "no"
+  parent_id: 464
+allergies_043: 
+  name: eggnog
+  id: 448
+  display: "no"
+  parent_id: 445
+allergies_015: 
+  name: milk protein hydrolysat
+  id: 420
+  display: "no"
+  parent_id: 406
+allergies_186: 
+  name: halibut
+  id: 591
+  display: "yes"
+  parent_id: 585
+allergies_158: 
+  name: modified food starch
+  id: 563
+  display: "no"
+  parent_id: 541
+allergies_072: 
+  name: soy fiber
+  id: 477
+  display: "no"
+  parent_id: 464
+allergies_044: 
+  name: globulin
+  id: 449
+  display: "no"
+  parent_id: 445
+allergies_016: 
+  name: protein hydrolysate
+  id: 421
+  display: "no"
+  parent_id: 406
+allergies_187: 
+  name: cod
+  id: 592
+  display: "yes"
+  parent_id: 585
+allergies_159: 
+  name: monosodium glutamate(msg)
+  id: 564
+  display: "yes"
+  parent_id: 541
+allergies_073: 
+  name: soy flour
+  id: 478
+  display: "no"
+  parent_id: 464
+allergies_045: 
+  name: livetin
+  id: 450
+  display: "no"
+  parent_id: 445
+allergies_100: 
+  name: yakidofu
+  id: 505
+  display: "no"
+  parent_id: 464
+allergies_017: 
+  name: whey hydrolysate
+  id: 422
+  display: "no"
+  parent_id: 406
+allergies_188: 
+  name: worcestershire sauce
+  id: 593
+  display: "yes"
+  parent_id: 585
+allergies_074: 
+  name: soy formula
+  id: 479
+  display: "no"
+  parent_id: 464
+allergies_046: 
+  name: lysozyme
+  id: 451
+  display: "no"
+  parent_id: 445
+allergies_101: 
+  name: yuba
+  id: 506
+  display: "no"
+  parent_id: 464
+allergies_018: 
+  name: whey protein hydrolysate
+  id: 423
+  display: "no"
+  parent_id: 406
+allergies_189: 
+  name: caviar
+  id: 594
+  display: "yes"
+  parent_id: 585
+allergies_130: 
+  name: arachis hypogaea
+  id: 535
+  display: "no"
+  parent_id: 532
+allergies_075: 
+  name: soy grit
+  id: 480
+  display: "no"
+  parent_id: 464
+allergies_047: 
+  name: mayonnaise
+  id: 452
+  display: "no"
+  parent_id: 445
+allergies_102: 
+  name: bean curd
+  id: 507
+  display: "no"
+  parent_id: 464
+allergies_019: 
+  name: ice cream
+  id: 424
+  display: "no"
+  parent_id: 406
+allergies_131: 
+  name: beer nut
+  id: 536
+  display: "yes"
+  parent_id: 532
+allergies_076: 
+  name: soy milk
+  id: 481
+  display: "no"
+  parent_id: 464
+allergies_048: 
+  name: meringue
+  id: 453
+  display: "no"
+  parent_id: 445
+allergies_103: 
+  name: beancurd
+  id: 508
+  display: "no"
+  parent_id: 464
+allergies_160: 
+  name: soy sauce
+  id: 565
+  display: "yes"
+  parent_id: 541
+allergies_132: 
+  name: goober pea
+  id: 537
+  display: "yes"
+  parent_id: 532
+allergies_077: 
+  name: soymilk
+  id: 482
+  display: "no"
+  parent_id: 464
+allergies_049: 
+  name: ovalbumin
+  id: 454
+  display: "no"
+  parent_id: 445
+allergies_104: 
+  name: nut
+  id: 509
+  display: "yes"
+  parent_id: 
+allergies_161: 
+  name: surimi
+  id: 566
+  display: "no"
+  parent_id: 541
+allergies_133: 
+  name: goober
+  id: 538
+  display: "no"
+  parent_id: 532
+allergies_105: 
+  name: almond
+  id: 510
+  display: "yes"
+  parent_id: 509
+allergies_078: 
+  name: soy miso
+  id: 483
+  display: "no"
+  parent_id: 464

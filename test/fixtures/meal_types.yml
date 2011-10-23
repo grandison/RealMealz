@@ -1,0 +1,13 @@
+--- 
+meal_types_001: 
+  name: breakfast
+  id: 1
+meal_types_002: 
+  name: lunch
+  id: 2
+meal_types_003: 
+  name: dinner
+  id: 3
+meal_types_004: 
+  name: snack
+  id: 4

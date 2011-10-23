@@ -1,0 +1,172 @@
+<h2>My Personal Settings</h2>
+Tell us about you here so we can suggest relevant recipes that help you reach your Food Balance Goal and use ingredients you like.  Find relevant recipes under <a href="/discover">Discover</a>.  Your Current Food Balance is a summary of your active pantry items.  Add items to your pantry list to see a summary chart.  
+<br />
+<br />
+
+<table style="vertical-align: top; border: 0px;">
+<tr>
+	<td>
+		<div class="rounded-box-title" style="width: 180px; height: 20px;"> Current Food Balance </div>
+		<div class="rounded-box" style="width: 180px; height: 350px;">
+			<div id="food-balance-now" style="width: 100%; height: 220px" class="food-balance-now" protein="<%= @food_balance[:protein] %>" veg="<%= @food_balance[:veg] %>" starch="<%= @food_balance[:starch] %>"></div>
+		</div>
+	</td>
+	<td>
+		<div class="rounded-box-title" style="width: 240px; height: 20px;"> Target Food Balance </div>
+		<div class="rounded-box" style="width: 240px; height: 350px;">
+			<div id="food-balance-future" style="width: 100%; height: 230px;" class="food-balance-future" protein="<%= @target_food_balance[:protein]%>" veg="<%= @target_food_balance[:veg] %>" starch="<%= @target_food_balance[:starch]%>"></div>
+			<%= form_tag("/customize/save_food_balance", :method => "post", :name => "food-balance-future-form") do %>	
+				<label>Veg/Fruits: </label><input id="food-balance-future-veg" name="newveg" type="text" style="width: 17px;" value="<%= @target_food_balance[:veg]%>" /><br />
+				<label>Grains: </label><input id="food-balance-future-starch" name="newstarch" type="text" style="width: 17px;" value="<%= @target_food_balance[:starch]%>" /><br>
+				<label>Protein: </label><input id="food-balance-future-protein" name="newprotein" type="text" style="width: 17px;" value="<%= @target_food_balance[:protein]%>" />
+				<input value="Save" type="submit" class="green-button" />
+			<% end %>
+		</div>
+	</td>
+	<td>
+		<div class="rounded-box-title" style="width: 180px; height: 20px;"> I Like: </div>
+		<div class="rounded-box" style="width: 180px; height: 350px;">
+  		<ul id="customize-like-ingredient-list">
+    		<% for ingredient in @like %>
+    		  <%= render :partial => 'like_item', :locals => {:ingredient => ingredient } %>
+    		<% end %>
+  		</ul>
+		
+  		<div class="add-item-form">
+        <%= autocomplete_field_tag('new_item_name', '', '/customize/autocomplete_ingredient_name', :size => 20) %>
+      	<p><input id="add_like_item" value="Add Item" type="submit" class="green-button" /></p>
+  		</div>
+  	</div>
+	</td>
+	<td>
+		<div class="rounded-box-title" style="width: 180px; height: 20px;"> I Avoid: </div>
+		<div class="rounded-box" style="width: 180px; height: 350px;">
+		<%= form_tag("/customize/save_user", :method => "post", :name => "customize_save") do %>
+			<% for allergy in @user_allergy_list %>
+				<%= check_box_tag "allergy_checkbox[]", allergy[:value], allergy[:selected] %>
+		   	<%= label_tag allergy[:name] %>
+		   	<br>
+		  <% end %> 
+		  <p>
+		 	<br>
+		 	<input value="Save" type="submit" class="green-button" />
+		<% end %>   
+		&nbsp;
+		</div>
+	</td>
+</tr>
+</table>
+
+<%= javascript_include_tag 'highcharts.js' %>
+<%= javascript_include_tag 'rm-highchart-theme.js' %>
+
+<script type="text/javascript">
+
+  $(".delete-icon").click(function() {
+      var itemId = $(this).attr('item-id')
+      $.ajax({		  
+		  type: "post",
+			url: "/customize/remove_like_item",
+			data: "remove_item_id=" + itemId
+		});    
+    $("#li_" + itemId).fadeTo("slow", 0.00, function(){
+      $(this).slideUp("slow", function() {
+         $(this).remove();
+       });
+     });
+		return false;
+	});
+	
+	$('#add_like_item').click(function() {
+    $.post("/customize/add_like_item", "new_item_name=" + $("#new_item_name").attr('value'),
+    function(data) {
+      $('#customize-like-ingredient-list').append(data);
+    });
+    return false;
+  });
+	
+	var protein = $(".food-balance-now").attr("protein");
+	var veg = $(".food-balance-now").attr("veg");
+	var starch = $(".food-balance-now").attr("starch");
+	var protein_future = document.getElementById("food-balance-future-protein");
+	var veg_future = document.getElementById("food-balance-future-veg");
+	var starch_future = document.getElementById("food-balance-future-starch");
+		
+	function createGraph(myprotein, myveg, mystarch, renderTo, legend){
+		if (legend == true) {
+			var options = {
+       chart: {
+          renderTo: renderTo,
+          type: 'pie'
+       },
+       title: {
+          text: null,	
+          floating: true
+       },
+       tooltip: {
+				formatter: function() {
+					return '<b>'+ this.point.name +'</b>: '+ parseInt(this.percentage) +' %';
+				}
+			 },
+			 legend: {
+				itemStyle: {
+					color: '#7A530C'
+				},
+				itemHoverStyle: {
+					color: '#FFF'
+				},
+				itemHiddenStyle: {
+					color: '#444'
+				}
+			 },
+       series: []
+     };
+  	}
+	  else {
+	    var options = {
+	    	chart: {
+				    renderTo: renderTo,
+		    		type: 'pie'
+		     },
+		     title: {
+		        text: null,	
+		        floating: true
+		     },
+		     tooltip: {
+					formatter: function() {
+						return '<b>'+ this.point.name +'</b>: '+ parseInt(this.percentage) +' %';
+					}
+				 },
+				 legend: {
+		        enabled: false
+		     },
+		     series: []
+		  };
+  	};
+    var series = {
+    	data: []
+    };
+    series.data.push( {name: 'Veg/Fruits', y: parseFloat(myveg)});
+    series.data.push( {name: 'Grains', y: parseFloat(mystarch)});    						
+    series.data.push(	{
+							name: 'Protein',    
+							y: parseFloat(myprotein),
+							sliced: true,
+							selected: true
+						});
+		options.series.push (series);
+    return new Highcharts.Chart(options);
+	}
+	// end of function graphOptions
+	function update_graph() {
+//		alert(changedInput);
+		chart2 = createGraph(protein_future.value, veg_future.value, starch_future.value, 'food-balance-future', false);
+		chart2.redraw();
+	}
+
+	$(document).ready(function() {
+		var chart1 = createGraph(protein, veg, starch,'food-balance-now', true);
+		var chart2 = createGraph(protein_future.value, veg_future.value, starch_future.value, 'food-balance-future', false);
+ 	});
+</script>
+   

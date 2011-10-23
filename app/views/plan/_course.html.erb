@@ -1,0 +1,25 @@
+<%# The ul id is used to find the the div to delete (No special chars can be in id)
+ When adding a course, the belongs_to_day_div is passed back from the controller and 
+ read by the callback function to determine which day to add the new course to %>
+<% unless course.blank? || course.recipe_list.blank? %> 
+<ul id='<%= "course_id_#{course.id}" %>' belongs_to_day_div='day_div_<%= course.meal.scheduled_date_name %>'  class="mycarousel jcarousel-skin-tango">
+    <% course.recipe_list.each do |recipe| %>
+
+    <%# The params are sent to identify which course and recipe has been scrolled into view %>
+    <li params='<%= "recipe_id=#{recipe.id}&course_id=#{course.id}"%>' >
+      <table width='100%'>
+        <tr style="vertical-align: middle;">
+          <td><a href="#" class="recipe-link"><%= image_tag(recipe.picture.url(:thumbnail), {:width => "100", :height => "100" }) %></a></td>
+          <td><%= recipe.name %></td>
+          <td style="text-align: right;vertical-align: top;">
+            <%# The params are sent to identify which course to delete %>
+            <a params='course_id=<%= course.id %>' class="delete_course" style="position: relative; top: 0px; left: 12px;" href='#'>X</a>
+          </td>
+        </tr>
+      </table>
+    </li>
+    <% end %>
+  </ul>
+<% end %>
+
+

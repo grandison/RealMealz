@@ -1,0 +1,33 @@
+login: &login
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password: your_password
+  encoding: unicode
+  min_messages: error
+
+  #adapter: mysql2
+  #host: localhost
+  #username: root
+  #password: your_password
+  #encoding: utf8 
+
+development:
+  database: test_dev
+  <<: *login 
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  database: test
+  <<: *login
+
+production:
+  database: ajsoer_RealMealz
+  adapter: mysql2
+  host: db142e.pair.com
+  username: ajsoer_19
+  password: 2UYadQBa
+  encoding: utf8 
+

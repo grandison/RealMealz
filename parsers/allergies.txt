@@ -1,0 +1,227 @@
+Meat
+Chicken, yes
+Pork, yes
+Beef, yes
+###
+Dairy
+milk, yes
+Cream, yes
+whipped cream
+Cheese, yes
+Butter, yes
+Casein
+Caseinates
+Curds, yes
+Custard, yes
+Dairy product solids
+Galactose
+Ghee, yes
+Half and Half, yes
+Hydrolysates
+milk protein hydrolysat
+protein hydrolysate
+whey hydrolysate
+whey protein hydrolysate
+Ice cream, yes
+ice milk, yes
+Lactalbumin, lactalbumin phosphate
+Lactate solids
+Lactyc yeast
+Lactitol monohydrate
+Lactoglobulin
+Lactose, yes
+Lactulose 
+buttermilk
+Nisin preparation
+Nougat, yes
+Pudding, yes
+Quark, yes
+Recaldent
+Rennet
+rennet casein
+Simplesse 
+Sour cream, yes
+Whey, yes 
+Yogurt, yes
+###
+Egg
+Albumin
+Apovitellin
+Eggnog, yes
+Globulin
+Livetin
+Lysozyme
+Mayonnaise, yes
+Meringue, meringue powder
+Ovalbumin
+Ovoglobulin
+Ovomucin
+Ovomucoid
+Ovotransferrin
+Ovovitelia
+Ovovitellin
+Silici albuminate
+Simplesse
+Trailblazer
+Vitellin
+###
+soy
+Edamame, yes
+Hydrolyzed soy protein
+Kinnoko flour
+Kyodofu
+Soybeans, yes
+Miso, yes
+Natto, yes
+Okara
+Soya Sauce, yes
+Soy albumin
+Soy bran, yes
+Soy concentrate
+Soy fiber, yes
+Soy flour, yes
+Soy formula
+Soy grits
+Soy milk, yes
+soymilk
+Soy miso
+Soy nuts
+Soy nut butter
+Soy protein
+soy protein concentrate
+soy protein isolate
+Soy sprouts, yes
+Soybeans, yes
+Soybean granules
+Soybean curd
+Soybean flour
+Soy lecithin
+Soybean paste
+Supro
+Tamari, yes
+Tempeh, yes
+Teriyaki sauce, yes
+Textured soy flour
+TSF 
+Textured soy protein
+TSP 
+Textured vegetable protein (TVP), yes
+Tofu, yes
+Yakidofu
+Yuba 
+bean curd
+beancurd
+
+###
+Tree nuts
+Almond, yes
+Beechnut, yes
+Brazil nut, yes
+Bush nut, yes
+Butternut, yes
+Cashew, yes
+Chestnut, yes
+Coconut, yes
+Filbert, yes
+Ginko nut, yes
+Hazelnut, yes
+Hickory nut, yes
+Lichee nut, yes
+Macadamia nut, yes
+Nangai nut, yes
+Pecan, yes
+Pine nut, yes
+Pistachio, yes
+Shea nut, yes
+Walnut , yes
+Pistachio, yes
+Pralines, yes
+Shea nut, yes
+Sheanut 
+###
+Peanut
+Arachic oil, yes
+Arachis
+Arachis hypogaea
+Beer nuts, yes
+Goober peas, yes
+Goobers
+Hypogaeic acid
+Mandelonas
+
+###
+Wheat
+Bran, yes
+Bread , yes
+bread crumbs, yes
+Bread flour, yes
+Bulgur, yes
+Cereal extract
+Couscous, yes
+Crackers, yes
+Farina, yes
+Flour, yes
+Germ
+Gluten, yes
+Graham flour
+Artificial flavoring, yes
+natural flavoring, yes
+Caramel color
+Dextrin
+Food starch, yes
+Gelatinized starch
+Hydrolyzed vegetable protein (HVP)
+Maltodextrin
+Modified food starch
+Monosodium glutamate(MSG), yes
+Soy Sauce, yes
+Surimi
+Teriyaki Sauce
+Textured vegetable protein
+Vegetable gum
+Malt, yes
+Matzo, yes
+Noodles, yes
+Pasta, yes
+Seitan, yes
+###
+oat
+###
+Stone fruits
+avocado, yes
+apricot, yes
+cherry, yes
+lychee, yes
+mango, yes
+peach, yes
+plums, yes
+prunes, yes
+nectarines, yes
+###
+Fish
+Salmon, yes
+Trout, yes
+Sea Bass, yes
+Tuna, yes
+Grouper, yes
+Halibut, yes
+Cod, yes
+Worcestershire sauce, yes
+Caviar, yes
+Roe, yes
+    
+
+###
+Shellfish
+Abalone, yes
+Clams, yes
+Crab, yes
+Crawfish, yes
+crayfish, yes
+Lobster, yes
+Oysters, yes
+Scallops, yes
+Shrimp, yes
+Cockle, sea urchin
+Mussels, yes
+

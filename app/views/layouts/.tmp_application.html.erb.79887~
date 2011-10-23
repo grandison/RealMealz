@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RealMealz</title>
+    <%= stylesheet_link_tag "realmealz" %>
+    <%= stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.14.custom.css' %>
+    <%= stylesheet_link_tag 'jquery-skin.css' %>
+    <%= javascript_include_tag 'jquery.min.js', 'jquery-ui.custom.min.js' %>
+		<%# DISABLE FOR TESTING = javascript_include_tag "autocomplete-rails.js" %>
+	  <%= javascript_include_tag 'application.js' %>
+		<%= javascript_include_tag 'jquery-1.4.2.min.js' %>
+    <%= javascript_include_tag 'jquery.jcarousel.min.js' %>
+    <%= active_scaffold_includes %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <div id="top">
+    	<%= render 'layouts/welcome' %>
+      <%= render 'layouts/menu' %>
+    </div>
+    <!-- top -->
+    <div id="border">
+      <div id="container">
+        <div id="main">
+          <% flash.each do |name, msg| %>
+          <%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
+          <% end %>
+          <%= yield %>
+        </div>
+        <!-- main -->
+      </div>
+      <!-- container -->
+    </div>
+    <!-- border -->
+    <div id="bottom">
+      &nbsp;
+    </div>
+  </body>
+</html>

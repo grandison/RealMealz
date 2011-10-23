@@ -1,0 +1,56 @@
+  <style>
+  #feedback { font-size: 1.4em; }
+  #selectable .ui-selecting { background: #FECA40; }
+  #selectable .ui-selected { background: #F39814; color: white; }
+  #selectable { list-style-type: none; margin: 0; padding: 0; }
+  #selectable li { margin: 0; padding: 5px; float: left; width: 310px; height: 310px; font-size: 1em; text-align: center; }
+  </style>
+	
+  <script>
+	
+	$("recipe").click(function() {
+		alert('Handler for .click() called.');
+		
+		/*
+    $(this).parents('form:first').submit();
+		if($('#recipe_approved').is(':checked')) {
+      $(this).css("background-color","yellow");
+    } else {
+      $('#foo_max').css("background-color","inherit");
+    }*/
+	  
+		return false;
+  });
+	
+  </script>
+	
+  <%= javascript_tag "const AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>  
+
+<h1>Discover#index</h1>
+
+
+<% if @recipes.blank? %>
+	<p>
+	  No recipes.
+	</p>
+<% else %>
+	
+	<table><tr>
+	<% count = 0 %>	
+	<% @recipes.each do |recipe| %>
+	    <% if recipe.picture.exists?; count += 1 %>
+				<td>
+			  	<%= image_tag(recipe.picture.url(:medium), :class => "recipe", :id => "recipe/#{recipe.id}") %>
+					<br/>
+					<%= recipe.name %>
+	      </td>
+	  		<% if count >= 3 %>
+				  </tr><tr>
+				  <% count = 0 %>
+		    <% end %>
+		  <% end %>
+	<% end %>		
+	</tr></table>
+
+<% end %>
+

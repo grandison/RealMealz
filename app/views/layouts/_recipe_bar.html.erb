@@ -1,0 +1,26 @@
+<% if defined?(drag_class) %>
+  <li id="recipe_<%= recipe.id %>" recipe-id="<%= recipe.id %>" class="<%= drag_class %>" >
+<% else %>  
+  <li id="recipe_<%= recipe.id %>" recipe-id="<%= recipe.id %>">
+<% end %>
+  <% recipe_class = defined?(addl_class) ? "recipe-bar #{addl_class}" : "recipe-bar" %>
+  <div class="<%= recipe_class %>">
+    <div class="recipe-bar-left">
+      <%= image_tag(recipe.picture.url(:thumbnail), {:class => "recipe-bar-img recipe-display", 'recipe-id' => recipe.id }) %>
+    </div>  
+    <!-- Adds pie graph -->
+    <div id="balance_<%= recipe.id %>" class="recipe-bar-middle" protein="<%= recipe.food_balance[:protein] %>" veg="<%= recipe.food_balance[:veg] %>" starch="<%= recipe.food_balance[:starch] %>">
+    </div>	
+    <div class="recipe-bar-right">
+      <div class="recipe-bar-name">
+        <%= recipe.name %>
+      </div>
+      <% if defined?(show_times) && show_times %>
+        <div class="recipe-bar-times">
+          Prep Time: <i><%= recipe.preptime.to_time %></i><br />
+          Cook Time: <i><%= recipe.cooktime.to_time %></i>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</li>

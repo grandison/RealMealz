@@ -1,0 +1,42 @@
+<h1>Meal Plan</h1>
+
+<h2>Monday</h2>
+<ul id="mycarousel-monday" class="mycarousel jcarousel-skin-tango">
+   <% @recipes.each do |recipe| %>
+    <li style="vertical-align: top;">
+		  <table><tr style="vertical-align: middle;">
+      <td><%= image_tag(recipe.picture.url(:thumbnail), {:width => "100", :height => "100" }) %></td>
+			<td><%= recipe.name %></td>
+			</tr></table>
+    </li>
+		<% end %>
+</ul>
+
+<p>&nbsp;</p>
+<h2>Tuesday</h2>
+<ul id="mycarousel-tuesday" class="mycarousel jcarousel-skin-tango">
+   <% @recipes.each do |recipe| %>
+    <li style="vertical-align: top;">
+      <table><tr style="vertical-align: middle;">
+      <td><%= image_tag(recipe.picture.url(:thumbnail), {:width => "100", :height => "100" }) %></td>
+      <td><%= recipe.name %></td>
+      </tr></table>
+    </li>
+    <% end %>
+</ul>
+
+<script type="text/javascript">
+	
+function mycarousel_itemFirstInCallback(carousel, item, idx, state) {
+    alert('Item #' + idx + ' is now the first item. Item.innerHTML=' + item.innerHTML);
+};
+
+jQuery(document).ready(function() {
+    jQuery('.mycarousel').jcarousel({
+        visible: 1,
+				scroll: 1,
+				itemFirstInCallback:  mycarousel_itemFirstInCallback
+    });
+});
+
+</script>

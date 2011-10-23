@@ -1,0 +1,9 @@
+<div class="home-page-padding">
+  <h1>Welcome to RealMealz!</h1>
+
+  <p>Your account information has been saved and you can now start planning your menus.</p>
+
+  <%= form_tag("/plan", :method => "get", :name => "start_planning") do %>
+    <input value="Plan" type="submit" class="green-button" />
+  <% end %>
+</div>

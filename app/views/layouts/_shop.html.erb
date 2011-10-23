@@ -1,0 +1,7 @@
+<% if controller.action_name == "shop_list" %>
+	<div class="tab"> <a href="/shop/pantry_list"> List Builder </div></a> 
+	<div class="tab-selected"> Shopping List </div>	
+<% else %>	
+	<div class="tab-selected"> List Builder </div> 
+ 	<div class="tab"> <a href="/shop/shop_list"> Shopping List </div></a>
+<% end %>

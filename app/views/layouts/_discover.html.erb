@@ -1,0 +1,7 @@
+<% if controller.action_name == "new_cooking_skills" %>
+	<div class="tab"> <a href="/discover/new_recipes"> New Recipes </div></a> 
+	<div class="tab-selected"> New Cooking Skills </div>	
+<% else %>	
+	<div class="tab-selected"> New Recipes </div> 
+ 	<div class="tab"> <a href="/discover/new_cooking_skills"> New Cooking Skills </div></a>
+<% end %>

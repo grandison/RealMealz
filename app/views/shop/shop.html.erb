@@ -1,0 +1,236 @@
+<div class="hide-form" style="display:none">
+  <div id="item-edit-form" title="Edit Pantry Item">
+    <%= form_tag("/shop/update_item", :method => "post", :name => "update_item") do %>
+  		<input type="hidden" id="edit-id" name="item[id]" value="" />
+  		<p>
+  		<label for="item[name]"><b>Item Name:</b></label><br />
+  		<input type="string" name="item[name]" id="edit-name" class="text ui-widget-content ui-corner-all" value="" />
+  		</p>
+  		<p>
+  		<label for="item[note]"><b>Note:</b></label><br />
+  		<input type="text" name="item[note]" id="edit-note" class="text ui-widget-content ui-corner-all" value="" />
+  		</p>
+  		<p>
+  		<label for="item[note]"><b>Amount:</b></label><br />
+  		<input type="text" name="item[weight]" id="edit-weight" class="text ui-widget-content ui-corner-all" value="" />
+  		</p>
+  		<p>
+  		<label for="item[note]"><b>Units:</b></label><br />
+  		<input type="text" name="item[unit]" id="edit-unit" class="text ui-widget-content ui-corner-all" value="" />
+  		</p>
+    	<p>	
+     	  <input value="Save" type="submit" class="green-button" />
+  	    <input value="Delete" type="button", name="delete_button", id="delete_button" />
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<%
+  if @action_shop
+    pick_image_on = "/images/icons/cart_on.png"
+    pick_image_off = "/images/icons/cart_off.png"
+    title = "Shopping List"
+    intro = ""
+  else
+    pick_image_on = "/images/icons/pantry_need.png"
+    pick_image_off = "/images/icons/pantry_has.png"
+    
+    title = "Shopping List Builder"
+    intro = "In addition to adding items from your meal plan, you can also create a list of common items here so you can quickly add them to your shopping list as needed.   <br> <img src='/images/icons/pantry_has.png'> Add to Shopping List <br>  <img src='/images/icons/pantry_need.png'> On Shopping List  <br><br>"
+  end
+%>
+
+<h2><%= title %></h2>
+<%= intro.html_safe %>
+<% if @item_list.blank? %>
+  <p>No items in the list.</p>
+<% else %>
+
+<!-- the tooltip -->
+<span class="tooltip">&nbsp;</span>
+
+<ul id="sortable-list">
+	<!-- for loop to show items -->
+	<% @item_list.each do |item| %>	
+		<% if @action_shop && item.bought or !@action_shop && item.needed
+		     class_name = "cart cart-selected"  
+		     img = pick_image_on
+		   else
+		     class_name = "cart" 
+		     img = pick_image_off
+		   end %> 
+		<li class="shop-items" id="<%= item.id %>">
+		  <table class="item-table"><tr>
+		    
+		  <!-- Shopping cart -->  
+		  <td width="30px"><img class="<%= class_name %>" item_id="<%= item.id %>" src="<%= img %>" alt=""/></td>
+  		
+		  <!-- Item name and note -->  
+  		<% if mobile_request? %>
+    		<td><span <%= "title='#{item.note}'" unless item.note.blank? %> 
+    		    class="shop-name">
+    		    <%= item.ingredient.name.capitalize %>
+    		    <%= '...' unless item.note.blank? %>
+    		</span></td>
+  		<% else %>
+    		<td><span class="shop-name">
+    	    <%= item.ingredient.name.capitalize %>
+    	    <% unless item.weight.blank? && item.unit.blank? %>
+       	    <%= "(#{item.weight.to_s} #{item.unit.to_s})" %>
+       	   <% else %>
+       	    <%= ": " unless item.note.blank? %>
+     	    <% end %>
+    	    <%= item.note unless item.note.blank? %>
+    	  </span></td>
+  		<% end %>
+  		
+		  <!-- Edit icon -->  
+  		<td width="30px"><img class="edit-icon" item_id="<%= item.id %>" item-name="<%= item.ingredient.name %>" item-note="<%= item.note %>" item-weight="<%= item.weight %>" item-unit="<%= item.unit %>" src="/images/icons/edit_24x24.png" alt="edit"/></td>
+		  
+		  <!-- Drag icon -->  
+		  <td width="30px"><img class="drag-icon touchable" src="/images/icons/draggable-icon-36px.png" alt="drag" /></td>
+  		
+  		</tr></table>
+  	</li>
+	<% end %>
+</ul>
+
+<% if @action_shop%>
+  <div class="done-shopping-div">
+    <%= button_to("Done shopping", {:action => "done_shopping"}, :confirm => "Remove all bought items from the shopping cart?", :class => "green-button") %>
+  </div>
+<% else %>
+  <div class="add-item-form">
+    <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
+      <%= autocomplete_field_tag('new_item_name', '', '/shop/autocomplete_ingredient_name', :size => 20) %>
+    	<p>	
+    	  <input value="Add Item" type="submit" class="green-button" />
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
+  
+<script type="text/javascript">
+
+  $.ajaxSetup({
+    error: function(request, status, error) {
+      alert("An AJAX error occurred: " + status + "\nError: " + error + "\n" + 
+      $(request.responseText).eq(4).html() + "\n" + 
+      $(request.responseText).eq(5).html());
+    }
+  });
+
+
+  $(function() {
+  	$("#sortable-list").sortable({
+  	  opacity: 0.6, 
+  	  placeholder: 'ui-state-highlight',
+  	  cursor: 'move',
+  	  handle: 'img.drag-icon',
+  	  axis: 'y',	
+  	  distance: 0,
+      update:function() {  
+        order = $("#sortable-list").sortable("toArray");
+        $.ajax({
+          type:"post",
+          url:"/shop/update_order",
+          data: 'order=' + order + "&shop=<%= @action_shop %>"
+        });
+      }    
+    }).addTouch();
+  	$( "#sortable-list" ).disableSelection();
+  	$(".shop-name:[title]").tooltip({
+    		tip: '.tooltip',
+    		effect: 'fade',
+    		fadeOutSpeed: 100,
+    		predelay: 100,
+    		position: "center right",
+    		offset: [0, 0]
+    	}).css('cursor','help');
+    $("img.drag-icon-foo").hover(
+      function () {
+        $(this).addClass("drag-hover");
+      },
+      function () {
+        $(this).removeClass("drag-hover");
+    });	
+  });
+
+  $(".cart").click(function() {
+   if ($(this).hasClass("cart-selected")) { 
+     $(this).removeClass("cart-selected");
+     $(this).attr("src", "<%= pick_image_off %>");
+   } 
+   else { 
+     $(this).addClass("cart-selected"); 
+     $(this).attr("src", "<%= pick_image_on %>");
+   };
+		$.ajax({		  
+		  type: "post",
+			url: "/shop/update",
+			data: "id=" + $(this).attr('item_id') + "&value=" + $(this).hasClass("cart-selected") + "&shop=<%= @action_shop %>",
+		  error: function (request, status, error) {
+        alert(request.responseText);
+      }
+		});    
+    return false;
+  });
+  
+  $(".edit-icon")
+		.click(function() {
+			var itemId = $(this).attr("item_id");
+			var itemName = $(this).attr("item-name");
+			var itemNote = $(this).attr("item-note");
+			var itemWeight = $(this).attr("item-weight");
+			var itemUnit = $(this).attr("item-unit");
+			$("#edit-id").attr("value", itemId);
+			$("#edit-name").attr("value", itemName);
+			$("#edit-note").attr("value", itemNote);
+			$("#edit-weight").attr("value", itemWeight);
+			$("#edit-unit").attr("value", itemUnit);
+			$( "#item-edit-form" ).dialog( "open" );
+      return false;
+	});
+	
+	$(".delete-icon")
+		.click(function() {
+			var itemId = $(this).attr("item_id");
+			$.ajax({		  
+			  type: "post",
+				url: "/shop/delete",
+				data: "id=" + itemId
+			});
+	    $("li#" + itemId).fadeTo("slow", 0.00, function(){
+	      $(this).slideUp("slow", function() {
+	         $(this).remove();
+	       });
+	    });
+	});
+
+	$("#item-edit-form").dialog({
+		autoOpen: false,
+		modal: true,
+		close: function() {
+		}
+	});
+
+  $("#delete_button").click(function() {
+    var itemId = $("#edit-id").attr("value");
+    $("#item-edit-form").dialog("close");
+    $.ajax({		  
+		  type: "post",
+			url: "/shop/delete",
+			data: "id=" + itemId
+		});
+    $("li#" + itemId).fadeTo("slow", 0.00, function(){
+      $(this).slideUp("slow", function() {
+         $(this).remove();
+       });
+     });
+  });
+
+</script>
+
+<% end # no items in list %>

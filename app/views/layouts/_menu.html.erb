@@ -1,0 +1,21 @@
+<% if current_user %>
+  <% ["plan","shop","cook","discover","customize"].each do |button| %>
+  	<% if button == controller.controller_name %>
+  	  <%= image_mobile_tag("/images/#{button}-selected.png" )%>
+   	<% else %>
+   		<a href="/<%=button%>"><%= image_mobile_tag("/images/#{button}.png" )%></a>
+   	<% end %>
+  <% end %>
+<% else %>
+	<% if controller.controller_name == "user_sessions" %>
+		<a href="/home/sign_up"><%= image_mobile_tag("/images/signup.png") %></a>
+		<a href="/user_session/new"><%= image_mobile_tag("/images/login-selected.png") %></a>
+	<% elsif controller.controller_name == "home" %>
+		<a href="/home/sign_up"><%= image_mobile_tag("/images/signup-selected.png") %></a>
+		<a href="/user_session/new"><%= image_mobile_tag("/images/login.png") %></a>	
+	<% else %>
+		<a href="/home/sign_up"><%= image_mobile_tag("/images/signup.png") %></a>
+		<a href="/user_session/new"><%= image_mobile_tag("/images/login.png") %></a>
+	<% end %>
+<% end %>
+

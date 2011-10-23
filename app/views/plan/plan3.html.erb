@@ -1,0 +1,91 @@
+<table id="plan-recipes">
+	<tr>
+		<td style="width: 40%">
+			<h1>Your Meal Plan</h1> 
+			<p><%= button_to("Add Ingredients to Cart", {:action => "add_courses_to_shopping_list"}, :confirm => "Add these ingredients to the shopping cart?", :class => "green-button") %></p>
+      <div id="plan-daily-courses" >
+        <% @meals.each do |meal| %>
+
+          <%# This div is where new courses for this day will be added %>
+          <div id='day_div_<%= meal.scheduled_date_name %>'>
+          <h3><u><%= meal.scheduled_date_name %>, <%= meal.scheduled_date.month %>/<%= meal.scheduled_date.day %> </u></h3>
+          <% meal.courses.each do |course| %>
+              <%= render :partial => "course", :locals => {:course => course} %>
+          <% end %>
+          </div>
+          <%# params will be passed to add_course %>
+          <a params='date=<%= meal.scheduled_date %>' class="add_course" href='#'>+ Add another dish</a>
+          <p>&nbsp;</p>
+        <% end %>
+      </div>
+    </td>
+    <% if !mobile_request? %>
+		<td style="width: 60%">
+		  <div id="recipe-display" style="height: 610px;overflow-y: scroll;">
+			  <%= render :partial => "recipe_display" %>
+			</div>
+		</td>
+		<% end %>
+	</tr>
+</table>
+
+<script type="text/javascript">
+
+$.ajaxSetup({
+  error: function(request, status, error) {
+    alert("An AJAX error occurred: " + status + "\nError: " + error + "\n" + 
+    $(request.responseText).eq(4).html() + "\n" + 
+    $(request.responseText).eq(5).html());
+  }
+});
+
+function mycarousel_itemUpdate(carousel, item, idx, state) {
+  if (state !== 'init') {
+    $.ajax({
+      type: "post",
+      url: "/plan/update",
+      data: $(item).attr('params'),
+      success: function(data, textStatus, jqXHR){
+        $('#recipe-display').html(data);
+      }
+    }); 
+  }
+};
+
+function mycarousel_setup() {
+  jQuery('.mycarousel').jcarousel({
+    visible: 1,
+    scroll: 1,
+    start: 1,
+    itemFirstInCallback:  mycarousel_itemUpdate
+  });
+
+  jQuery('.delete_course').unbind('click'); // Prevent duplicate click bindings
+  jQuery('.delete_course').click(function() {
+    $.get("/plan/delete_course", $(this).attr('params'),
+    function(data){
+      $('#' + data).parent().parent().parent().remove(); // data is the course to remove, but move up and remove whole div
+    });
+    return false;
+  });
+};
+
+jQuery(document).ready(function() {
+  mycarousel_setup();
+});
+
+jQuery('.add_course').click(function() {
+  $.get("/plan/add_course", $(this).attr('params'),
+  function(data) {
+    $('#' + $(data).attr('belongs_to_day_div')).append(data);
+    mycarousel_setup();
+  });
+  return false;
+});
+
+jQuery('.recipe-link').click(function() {
+  mycarousel_itemUpdate(0, $(this).parent().parent().parent().parent().parent(), 0, 'show');
+  return false;
+});
+
+</script>

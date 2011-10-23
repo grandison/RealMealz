@@ -1,0 +1,26 @@
+<div class="home-page-padding">
+	<h1>Sign up now!</h1>
+	
+	<%= form_for(@user, :url => '/home/welcome') do |f| %>
+  	<%= f.error_messages %>
+	
+	 <p><%= f.label :first %><br />
+	  <%= f.text_field :first %></p>
+	
+	  <p><%= f.label :last %><br />
+	  <%= f.text_field :last %></p>
+	
+	  <p><%= f.label :email %><br />
+	  <%= f.email_field :email %></p>
+	
+	  <p><%= f.label :password %><br />
+	  <%= f.password_field :password %></p>
+	
+	  <p><%= f.label :password_confirmation %><br />
+	  <%= f.password_field :password_confirmation %></p>
+	
+	  <p>
+	    <input value="Sign up" type="submit" class="green-button" />
+    </p>
+	<% end %>
+</div>

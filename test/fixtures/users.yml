@@ -1,0 +1,44 @@
+--- 
+users_001: 
+  city: Santa Clara
+  crypted_password: $2a$10$crwSJ7IqqIFDYAekb16zWulgmPspVeJSL9mITLr4dLJ6h7W6KHXVS
+  zip: "95051"
+  created_at: 
+  kitchen_id: 1
+  updated_at: 2011-07-16 01:20:21.137882
+  last: Kwan
+  role: 
+  id: 1
+  street: 2064 Kimberlin Pl.
+  password_salt: 
+  first: Connie
+  email: connie@realmealz.com
+  state: CA
+users_002: 
+  city: 
+  crypted_password: ""
+  zip: 
+  created_at: 
+  kitchen_id: 1
+  last: Liu
+  role: 
+  id: 2
+  street: 
+  password_salt: 
+  first: Eric
+  email: ericliu13@gmail.com
+  state: 
+users_003: 
+  city: 
+  crypted_password: ""
+  zip: 
+  created_at: 
+  kitchen_id: 2
+  last: Dunn
+  role: 
+  id: 3
+  street: 
+  password_salt: 
+  first: Max
+  email: max@realmealz.com
+  state: 

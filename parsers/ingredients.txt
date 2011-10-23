@@ -1,0 +1,775 @@
+starch
+shortcake
+###
+vegetable
+bok choy
+broccoli 
+collard greens
+dark green leafy lettuce
+kale
+mesclun
+mustard greens
+romaine lettuce
+spinach
+turnip greens
+watercress
+acorn squash
+butternut squash
+carrots
+hubbard squash
+pumpkin
+red peppers
+sweet potatoes
+tomatoes
+tomato juice
+squash
+artichokes
+asparagus
+avocado
+bean sprouts
+beets
+Brussels sprouts
+cabbage
+cauliflower
+celery
+cucumbers
+eggplant
+green beans
+green peppers
+iceberg (head) lettuce
+mushrooms
+okra
+onions
+parsnips
+turnips
+wax beans
+zucchini
+###
+grains
+flour
+cornmeal
+bread
+amaranth
+rice
+white rice
+brown rice
+buckwheat
+bulgur 
+cracked wheat
+millet
+oatmeal
+popcorn
+whole wheat cereal flakes
+muesli
+rolled oats
+quinoa
+sorghum
+triticale
+barley
+rye
+crackers
+pasta
+tortillas
+wild rice
+corn tortillas
+couscous
+crackers
+flour tortillas
+grits
+noodles
+pita
+pretzel
+corn flakes
+cereal
+spaghetti, fettuccini, penne, bowtie, angel hair, spaghettini, fusilli, lasagne, manicotti, rigatoni, ziti, farfalle, rotini, strozzapreti, orecchiette, linguine, pasta shells
+###
+protein
+beef
+ham
+lamb
+pork
+veal
+bison
+rabbit
+venison
+beef
+pork
+lamb
+deli meat
+liver
+giblets
+chicken
+duck
+goose
+turkey
+ground chicken, ground turkey
+egg
+eggs
+chicken eggs
+duck eggs
+beans, peas
+black beans
+black-eyed peas
+chickpeas 
+garbanzo beans
+falafel
+kidney beans
+lentils
+lima beans 
+navy beans
+pinto beans
+soy beans
+split peas
+tofu 
+white beans
+bean burgers
+veggie burgers
+tempeh
+tvp 
+texturized vegetable protein 
+nuts
+almonds
+cashews
+hazelnuts
+mixed nuts
+peanuts
+peanut butter
+pecans
+pistachios
+pumpkin seeds
+sesame seeds
+sunflower seeds
+walnuts
+catfish
+cod
+flounder
+haddock
+halibut
+herring
+mackerel
+pollock
+porgy
+salmon
+sea bass
+snapper
+swordfish
+trout
+tuna
+clams
+crab
+crayfish
+lobster
+mussels
+octopus
+oysters
+scallops
+squid 
+shrimp
+anchovies
+clams
+tuna
+sardines
+###
+meat
+ground beef
+ground chicken
+ground pork
+ground lamb
+###
+fish
+catfish
+cod
+flounder
+haddock
+halibut
+herring
+mackerel
+pollock
+porgy
+salmon
+sea bass
+snapper
+swordfish
+trout
+tuna
+clams
+crab
+crayfish
+lobster
+mussels
+octopus
+oysters
+scallops
+squid 
+shrimp
+anchovies
+clams
+tuna
+sardines
+###
+lemon, garnish, spice
+lemon zest
+###
+spice, baking
+vanilla extract, coconut flakes
+###
+nut
+coconut flakes
+###
+rice, starch
+sticky rice, jasmine rice
+###
+stock
+stock
+###
+pre-made, wheat, sauce
+green enchilada sauce
+###
+sauce, ingredient
+korean bulgogi marinade
+###
+spice
+curry powder
+###
+wheat, instant, pre-made
+refridgerated crescent rolls
+###
+instant, pre-made
+frozen whipped topping
+###
+pre-made, vegetable
+mixed salad greens, salad, mixed greens
+###
+vegetable
+jicama, radish
+###
+meat, beef
+skirt steak
+###
+wheat, dough
+sourdough starter
+###
+sweet
+molasses
+###
+fat, oil, spread
+margarine
+###
+baking
+yeast
+###
+meat
+gelatin
+###
+baking, spice
+vanilla extract
+###
+alcohol, sauce, spice
+mirin, cooking wine
+###
+oil, pre-made
+cooking spray
+###
+liquid
+rice milk
+###
+fruit
+strawberries
+###
+meat
+chicken drumsticks, drumsticks
+###
+sauce, ingredient
+pesto
+###
+sauce, wheat
+oyster sauce
+###
+vegetable
+fennel bulb
+###
+wheat, starch
+chinese noodle, noodle
+###
+broth
+broth
+###
+wheat, starch, pasta
+pasta shells
+pasta
+###
+spice
+lemongrass, krachai, thai ginseng, red dried chillies, chillies, chilies, 
+###
+vegetable
+kale, yam
+###
+bean
+cannellini bean, cannellini
+###
+spice, meat
+fish sauce
+###
+alcohol
+whisky, dry sherry
+###
+meat
+chinese sausage
+###
+spice, vegetable
+green onion
+###
+dairy
+cheese
+###
+ice
+ice
+###
+liquid
+rice milk
+###
+fruit
+strawberries
+###
+meat
+chicken drumsticks, drumsticks
+###
+sauce, ingredient
+pesto
+###
+sauce, wheat
+oyster sauce
+###
+vegetable
+fennel bulb
+###
+wheat, starch
+chinese noodle, noodle
+###
+broth
+broth
+###
+wheat, starch, pasta
+pasta shells
+pasta
+###
+spice
+lemongrass, krachai, thai ginseng, red dried chillies, chillies, chilies, 
+###
+vegetable
+kale, yam
+###
+bean
+cannellini bean, cannellini
+###
+spice, meat
+fish sauce
+###
+alcohol
+whisky, dry sherry
+###
+meat
+chinese sausage
+###
+spice, vegetable
+green onion
+###
+dairy
+cheese
+###
+vegetable,
+split pea, chinese broccoli
+###
+meat
+veal shanks, veal
+###
+fruit, spice
+lemon zest
+###
+spice
+parsley
+###
+spicy
+japapeno pepper, jalapeno
+###
+wheat, starch
+tortillas, fajita wraps, fajita
+###
+gluten-free, starch
+corn-tortilla, corn starch, cornstarch
+###
+vegetable
+pea, shelled pea, leek, ginger root, stewed tomatoes,onion, cherry tomatoes, shallot
+###
+fruit
+pineapple
+###
+seafood, fish
+salmon
+###
+spice
+ketchup, mustard 
+###
+spice
+ginger
+###
+alcohol, spice
+cooking wine
+###
+nut
+walnut
+###
+meat
+chicken, bacon, chicken thigh, chicken drumstick, turkey breast, boneless chicken thigh, ground turkey
+###
+spice
+basil, marjoram, cardamom, cardamom seeds, coriander,coriander seeds,dill, dried dill
+###
+bean, vegetable,
+kidney bean
+###
+dairy
+cream cheese, creme cheese, greek yogurt, yoghurt, greek yoghurt
+###
+sweet
+sugar, brown sugar, icing sugar
+###
+wheat
+dumpling
+###
+meat
+flank steak
+###
+vinegar, sour
+sherry vinegar
+###
+meat, protein, pork
+Rib roast
+###
+pasta, wheat
+whole wheat spaghetti,
+###
+vegetable, mushroom,
+portabello, portabella, mushroom, button mushroom
+###
+cheese, dairy
+romano, parmesan
+###
+sauce, vegetable
+spaghetti sauce
+###
+vegetable
+olives
+###
+meat, protein
+pepperoni
+###
+squash, vegetable
+pepper squash
+###
+sauce,spicy
+tabasco, tabasco sauce
+###
+seed
+sesame seed
+###
+oil
+sesame oil
+###
+meat
+sliced meat, cold cut, roast beef
+###
+vegetable
+napa cabbage
+###
+wheat
+fajita wraps, fajitas
+###
+sauce, wheat
+hoisin sauce
+###
+spice
+cilantro, ginger, scallions, garlic
+###
+wheat
+dumpling wrappers
+###
+wheat, curry, sauce
+Japanese Curry Sauce Mix
+###
+meat, chicken, soup, broth, liquid
+chicken stock
+###
+vegetables
+broccoli
+###
+milk, dairy
+milk
+Cream
+whipped cream
+Cheese
+Butter
+###
+sauce, vegetables
+tomato sauce
+###
+salad, vegetables
+arugula
+###
+olives, vegetables
+kalamata olive, olive
+### 
+vegetables
+courgettes
+###
+spices, vegetables
+sundried tomatoes, sun-dried tomatoes, shallot
+###
+liquid
+water, chicken broth, beef broth, lamb broth, vegetable broth
+###
+gluten, wheat
+flour, soy sauce, soya sauce
+
+###
+baking
+baking soda, flour, baking powder
+###
+starch
+flour
+###
+rice, starch
+brown rice, long-grain rice, white rice, rice, Arborio rice
+### 
+pastas, italian, starch, gluten, wheat
+spaghetti, fettuccini, penne, bowtie, angel hair, spaghettini, fusilli, lasagne, manicotti, rigatoni, ziti, farfalle, rotini, strozzapreti, orecchiette, linguine
+###
+noodles, starch, gluten, wheat
+ramen, soba, udon, mien, yellow noodles
+###    
+grain, starch
+Amaranth, Millet, Quinoa, Oats, Teff, Barley, Farro, Wheat berries, Couscous, orzo, cornmeal, lentil
+###
+bread, starch, gluten, wheat
+English muffins, bagels, Pizza Dough, Tortillas, flour tortillas
+###
+starch
+Potato, Corn, Maize, corn tortillas
+###
+fruit
+frozen mixed berries
+banana
+###
+nut
+almond milk
+###
+spice
+nutmeg, paprika
+###
+vegetable
+pumpkin, pumpkin puree
+###
+dairy
+heavy cream
+###
+sauce
+salsa
+###
+wheat
+shortcake
+###
+Vegetables
+avocado
+yellow bell pepper, red bell pepper, orange bell pepper
+onion, tomato, green beans, mushrooms, green pepper, red pepper, yellow pepper, alfalfa, artichoke, asparagus, aubergine, beet,cabbage, sprouts, cauliflower, kohlrabi,  bak choy
+carrot, celery, cucumber, endive, fennel, leek, lettuce, squash, zucchini, parsnip, peas, pumpkin, spinach, corn, turnip, okra, tomatillo,Bamboo shoots
+bean sprouts, 
+###
+Fruits
+Cranberries, Cranberry, Apple, Banana, Bilberry, grapes, guava, kiwi, loquat, passion fruit, persimmon, pineapple, rhubarb, avocado, apricot, cherries, lychee, mango, peach, plums, prunes
+###
+Stone fruits, Fruits
+fruit, avocado, apriocot, cherries, lychee, mango, peach, plums, prunes, nectarines
+###
+Berries, fruits
+Blackcurrants , Redcurrants, Brambles, Blackberries, raspberry, gooseberries, strawberries
+###
+Citrus Fruits, fruits
+Orange, Lemon, Tangerine, Grapefruit, Lime
+###
+citrus
+lime juice, orange juice, lemon juice
+###
+juice
+lime juice, orange juice, lemon juice
+###
+Melons, fruits
+watermelon, canteloupe, papaya
+###
+Sauce
+Applesauce, Cranberry Sauce, Tomato Sauce, Worcestershire, soy, teriyaki, chili, Ketchup, mustard 
+###
+Beans, starch
+Black, pinto, kidney, chickpeas, lentils, refried, azuki bean, Aduki Bean, Blackeye bean, Cow pea, Kafir-bean, Yard bean, Butter Bean ,Lima Bean, Chick Pea, Bengal Gram, Besan flour, Garbanzo, French, Kidney, Haricot, Mung bean, Pigeon Pea, Red Gram
+###
+Nuts, protein, tree nuts
+peanuts, almond, Brazil Nuts, Cashew, Coconut, Hazelnut, pecan, Pine nuts, Pistachio, Pumpkin seed, Sesame, Sunflower, Walnut, Water Chestnut 
+brazil nuts
+macademia nuts, pine nuts
+almonds, pecans, pumpkin seeds, walnuts, sliced almonds
+hazelnuts, filberts, peanuts, pistachio
+mixed nuts, peanut butter, sesame seeds, sunflower seed
+cashews
+coconut, almond paste
+sesasme seed
+
+###
+Fish, Protein
+tuna, salmon, Red snapper, salmon, orange roughy, cod, flounder, sole, Herring, Mackerel, Sardine, Halibut, Turbot, Coley, Haddock, Hake, Pollack, Whiting,  Plaice, Dab , Flounder
+Tuna, Swordfish, Cartilaginous fish, Dogfish, Skate, grouper, halibut, Worcestershire
+### 
+Seafood, Protein, shellfish
+clams, Oysters, mussels, crustaceans, lobster, crab, shrimp, cockle, shrimp, crayfish, crawfish, abalone, scallop
+###
+Meat, Protein
+Chicken, cooked chicken, diced chicken, shredded chicken,Beef, Pork, Turkey, Mutton, Lamb, Goose, Duck, Kidney, Liver, Rabbit, Turkey,Venison , Veal
+beef, pork, ground pork, ground meat, shredded beef, diced beef, ground turkey
+###
+Protein
+Eggs, Tofu, bean curd, 
+###
+eggs
+eggs, mayonnaise, mayo
+egg white
+###
+soy
+tofu, bean curd, edamamme, soy beans, miso, natto, okara
+###
+Dairy, Protein, milk, dairy
+milk, cream, Yogurt, Sour Cream, half-and-half, half and half, ice cream, buttermilk
+sour cream, pudding
+### 
+Oils, Fats
+Olive oil, canola oil, corn oil, vegetable oil, sunflowerseed oil, chili oil, oil
+ Avocado oil
+    Corn oil
+    Mustard oil
+    Palm oil
+    Peanut oil
+    Rice bran oil
+    Safflower oil
+    Sesame oil 
+    Soybean oil
+    Sunflower oil
+     Almond oil
+        Cottonseed oil,         Grape seed oil
+        Lard
+        Olive oil 
+        Rapeseed oil 
+        Mustard oil
+        Walnut oil
+        virgin olive oil
+
+
+###
+Butters
+Peanut Butter, Almond Butter, ghee, Salted butter,whipped butter,butter,cultured butter
+sunflower seed butter
+###
+Cheese, protein
+Cheddar, mozzarella, Swiss, Monterey Jack, cottage, Parmesan, Cream Cheese, cheese, goat cheese
+###
+Soy
+Bean Paste, Miso, soya sauce, soy sauce, soy, edamame, soy bean, soybean, soy flour, soy milk, soymilk, soy miso, soy nuts, soy protein, tempeh, teriyaki sauce, TVP, textured vegetable protein, tsp, textured soy protein, bean curd
+###
+wheat, gluten
+teriyaki sauce, soya sauce, soy sauce
+###
+Broths
+Chicken broth, Chicken bouillon, Beef Broth, Beef Bouillon,
+###
+Vinegars, sour
+Cider, red vinegar, white vinegar, balsamic vinegar,cider vinegar, white wine vinegar, vinegar
+###
+Nut, tree nut
+Almond
+Beechnut
+Brazil nut
+Bush nut
+Butternut
+Cashew
+Chestnut
+Coconut
+Filbert
+Ginko nut
+Hazelnut
+Hickory nut
+Lichee nut
+Macadamia nut
+Nangai nut
+Pecan, Pine nut, Pistachio, Shea nut, Walnut, Pralines, Shea nut, Sheanut
+###
+peanut
+peanut
+###
+Spices
+Garlic, Salt, Pepper, cooking wine, nutmeg, anise, coriander, clove, cinnamon, curry leaf, chicory,chervil,cardamom,celery seed,fennel seed
+galangal,ginger,cumin,mustard,dijon mustard,mustard seed,paprika,saffron,sumac,Rosemary, allspice,Black mustard,Blue fenugreek, blue melilot 
+Brown mustard, lime juice
+###
+Herbs, vegetables
+herbs
+Arrowroot, Bay Leaves,Caraway Seed,Cardamom,Cayenne Pepper
+###
+alcohol, liquid
+White wine,cooking wine, wine, red wine, beer, vermouth
+
+###
+Herbs, vegetables
+Rosemary, Thyme, Mint, parsley, bay leaf, basil, cilantro, chives, oregano,dill,dill weed,kaffir lime, kaffir lime leaves,sage,tarragon
+marjoram
+chopped basil
+chopped marjoram
+chopped rosemary
+chopped thyme
+chopped mint
+chopped parsley
+dried basil
+dried marjoram
+dried thyme
+dried mint
+dried parsley
+dried oregano
+fresh oregano
+fresh thyme
+fresh parsley
+fresh rosemary
+fresh basil
+dried dill
+fresh dill
+fresh sage
+dried sage
+dried tarragon
+fresh tarragon
+ground black pepper
+black pepper
+###
+Spicy
+chipotle,szechuan pepper, cayenne papper, chili pepper, horseradish, wasabi, Tabasco Pepper , Tabasco, habanero chili, serrano chili, habanero, serrano
+tabasco
+###
+Sweet
+Brown Sugar, White Sugar, raisins, Chocolate, sugar, white sugar, syrup, agave syrup, honey
+###
+Nightshade, vegetables
+tomato, pepper, Potatoes, sweet peppers, hot peppers, eggplant, tomatillos, tamarios, pepinos, pimentos, paprika, cayenne
+###
+Wheat, gluten, starch
+couscous, crackers, farina, germ, gluten, food starch, bread, bran
+###
+wheat, gluten
+textured vegetable protein, tvp, malt, matzo, caramel color, artificial flavoring, seitan
+###
+oat
+oat
+###

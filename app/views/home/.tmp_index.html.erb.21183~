@@ -1,0 +1,84 @@
+<h1>Home Page</h1>
+<p>
+  This is a sample home page
+</p>
+<p>
+  Graphics and other things will go here.
+</p>
+<p>
+  Here are some test modules:
+</p>
+<ul>
+  <li>
+    <%= link_to "Parse Ingredients", :controller => "recipes", :action => "process_ingredients" %>
+  </li>
+  <li>
+    <%= link_to "Recipes", :controller => "recipes" %>
+    <ul>
+      <li>
+        <%= link_to "Ingredients", :controller => "ingredients" %>
+        <ul>
+          <li>
+            <%= link_to "Categories", :controller => "categories" %>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <%= link_to "Members", :controller => "users" %>
+    <ul>
+      <li>
+        <%= link_to "Allergies", :controller => "allergies" %>
+      </li>
+      <li>
+        <%= link_to "Personalities", :controller => "personalities" %>
+      </li>
+      <li>
+        <%= link_to "Sliding Scales", :controller => "sliding_scales" %>
+      </li>
+      <li>
+        <%= link_to "Categories", :controller => "categories" %>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <%= link_to "Kitchens", :controller => "kitchens" %>
+    <ul>
+      <li>
+        <%= link_to "Meals", :controller => "meals" %>
+        <ul>
+          <li>
+            <%= link_to "Meal Types", :controller => "meal_types" %>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <%= link_to "Appliances", :controller => "appliances" %>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <%= link_to "Stores", :controller => "stores" %>
+    <ul>
+      <li>
+        <%= link_to "Branches", :controller => "branches" %>
+        <ul>
+          <li>
+            <%= link_to "Products", :controller => "products" %>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>
+  &nbsp;
+</p>
+<% unless user_signed_in? %>
+<div style="float:right; padding-right: 20px">
+  <%= link_to image_tag("/images/button-try-it.png"), :action => "login_guest" %>
+</div>
+<div style="clear: both">
+</div>
+<% end %>

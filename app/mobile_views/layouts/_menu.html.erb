@@ -1,0 +1,20 @@
+<% if current_user %>
+  <% ["plan","shop","cook","discover","customize"].each do |button| %>
+  	<% if button == controller.controller_name %>
+    	<div class="tab-selected tab-menu-selected"> <%= button.capitalize %> </div>
+    <% else %>
+    	<div class="tab tab-menu"><a href="/<%= button %>">  <%= button.capitalize %> </div></a>
+    <% end %>
+  <% end %>
+<% else %>
+	<% if controller.controller_name == "user_sessions" %>
+	<div class="tab tab-menu"><a href="/home/sign_up">  Sign Up! It's FREE! </div></a>
+  <div class="tab-selected tab-menu-selected">  Login </div>
+	<% elsif controller.controller_name == "home" && controller.action_name == "sign_up" %>
+  	<div class="tab-selected tab-menu-selected">  Sign Up! It's FREE! </div>
+    <div class="tab tab-menu"><a href="/user_session/new">  Login </div></a>
+	<% else %>
+  	<div class="tab tab-menu"><a href="/home/sign_up">  Sign Up! It's FREE! </div></a>
+	  <div class="tab tab-menu"><a href="/user_session/new">  Login </div></a>
+	<% end %>
+<% end %>

@@ -1,0 +1,144 @@
+<h1>Customize#index</h1>
+<p>Find me in app/views/customize/index.html.erb</p>
+
+<h2>Allergies</h2>
+<%= form_tag("/customize/save", :method => "post") do %>
+	<% for allergy in @allergies %>
+		<% if allergy.parent_id == nil %>		
+			<% if @uallergies.include? allergy.name %> <!-- check boxes for user allergies -->
+				<%= check_box_tag "connie[]", "#{allergy.name}", true %>
+    	<% else %>
+    		<%= check_box_tag "connie[]", "#{allergy.name}"%>
+    	<% end %>
+    	<%= label_tag allergy.name.pluralize %>
+    	
+    	<br>
+    	<% if false %>
+    	<% for suballergy in @suballergies.find(:all ) %>
+    		<% if !suballergy.nil? %>
+	    		<%= check_box_tag "#{suballergy}" %>
+	    		<%= label_tag suballergy.name %>
+	    		<br>
+	    	<% end %>
+	    <% end %>
+	    <% end %>
+    <% end %> 
+	<% end %>
+	<input type="submit" value="Submit" />
+	<% if false %>		<%= submit_tag %> <% end %>
+	<button type="button">Ignore this Button</button>
+<% end %>
+
+
+<h2>Output</h2>
+<!-->
+	<%= simple_format @output.to_json %> -->
+
+
+<%= form_tag("/customize", :method => "post") do %>
+	<textarea cols="40" id="output" name="output" rows="1"><%= @output.to_json %></textarea><br />
+<% end %>
+
+
+
+
+<h2> Ingredients I like: </h2> 
+<%= form_for @like do |f| %>
+  <% f.autocomplete_field :ingredient_name, 'customize/autocomplete_ingredient_name', :"data-delimiter" => ', '%>
+<% end %> 	
+
+	
+		
+<h2>Ingredients I dislike: </h2>
+<%= form_for @dislike do |f| %>
+  <% f.autocomplete_field :ingredient_name, 'customize/autocomplete_ingredient_name', :"data-delimiter" => ', '%>
+<% end %>
+
+
+<% if false %>
+<%= form_tag :action => :add_to_cart, :id => product %>
+<%= image_submit_tag product.image_url, :class => 'image-submit' %>
+<%= end_form_tag %>
+ <form action="/store/add_to_cart/3" method="post">
+ <input class="image-submit" src="/images/button-try-it.png" type="image" />
+ </form>
+<% end %>
+
+<style type="text/css">
+div.autocomplete {
+  position:absolute;
+  width:250px;
+  background-color:white;
+  border:1px solid #888;
+  margin:0;
+  padding:0;
+}
+div.autocomplete ul {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+div.autocomplete ul li.selected { background-color: #ffb;}
+div.autocomplete ul li {
+  list-style-type:none;
+  display:block;
+  margin:0;
+  padding:2px;
+  height:32px;
+  cursor:pointer;
+}
+</style>
+
+
+<style type="text/css">
+  div.slider { width:256px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
+  div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
+
+  div#zoom_element { width:50px; height:50px; background:#2d86bd; position:relative; }
+</style>
+
+<div class="demo">
+  <p>Use the slider to resize the box</p>
+  <div id="zoom_slider" class="slider">
+    <div class="handle"></div>
+  </div>
+
+  <p>And this to change its color</p>
+  <div id="rgb_slider" class="slider">
+    <div class="handle" style="background-color: #f00;"></div>
+    <div class="handle" style="background-color: #0f0;"></div>
+    <div class="handle" style="background-color: #00f;"></div>
+  </div>
+
+  <div id="zoom_element"></div>
+</div>
+
+<script type="text/javascript">
+  (function() {
+    var zoom_slider = $('zoom_slider'),
+        rgb_slider = $('rgb_slider'),
+        box = $('zoom_element');
+
+    new Control.Slider(zoom_slider.down('.handle'), zoom_slider, {
+      range: $R(40, 160),
+      sliderValue: 50,
+      onSlide: function(value) {
+        box.setStyle({ width: value + 'px', height: value + 'px' });
+      },
+      onChange: function(value) {
+        box.setStyle({ width: value + 'px', height: value + 'px' });
+      }
+    });
+
+    new Control.Slider(rgb_slider.select('.handle'), rgb_slider, {
+      range: $R(0, 255),
+      sliderValue: [45, 134, 189],
+      onSlide: function(values) {
+        box.setStyle({ backgroundColor: "rgb("+ values.map(Math.round).join(',') +")" });
+      },
+      onChange: function(values) {
+        box.setStyle({ backgroundColor: "rgb("+ values.map(Math.round).join(',') +")" });
+      }
+    });
+  })();
+</script>

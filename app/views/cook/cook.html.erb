@@ -1,0 +1,41 @@
+<div id="cook-meals-column">
+	<h2>Upcoming Meals: <br>
+		Choose one to cook:</h2>
+		<div class="recipe-summary-box">
+	  Avg. Cook Time: <%= @average_cook_time.round(0) %> mins<br />
+	  Servings Left: <%= @servings_left %>
+	  </div>
+	</p>
+	
+	<ul id="cook-meal-list">
+    <% @meal_recipes.each do |recipe| %>
+      <%= render :partial => "layouts/recipe_bar", :locals => {:recipe => recipe, :show_times => true} %>
+    <% end %>
+	</ul>
+  <div id="plan-trash">
+    <%= image_tag('/images/icons/trash_can.png', {:id => "trash-can" }) %>
+  </div>
+</div>
+
+<div id="cook-options-column">
+  <h2>Replacement Options:</h2>
+	<p>Don't feel like eating one of the planned meals?  Try a replacement option instead.  Replacements options are suggested from your recipe box and beyond based on what’s in your pantry.</p>
+
+	<ul id="cook-option-list">
+    <% @option_recipes.each do |recipe| %>
+      <%= render :partial => "layouts/recipe_bar", :locals => {:recipe => recipe, :drag_class => 'cook-recipe-drag', :addl_class => "green-background", :show_times => true} %>
+    <% end %>
+	</ul>
+</div>
+
+<%= render :partial => 'recipes/recipe_setup' %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    setup_recipe_bar_graphs();
+    setup_sortable('#cook-meal-list', '/plan/add_recipe_to_meals', 'meal_order');
+    setup_draggable('.cook-recipe-drag', '#cook-meal-list');
+    setup_trash("#trash-can", "/plan/remove_recipe_from_meals");
+  });
+</script>
+

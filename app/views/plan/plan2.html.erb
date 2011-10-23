@@ -1,0 +1,120 @@
+<table id="plan-recipes">
+	<tr>
+		<td style="width: 40%">
+			<h1>My Recipe Box</h1> 
+      <div id="recipe-box-list" >
+        <ul class="mycarousel jcarousel-skin-tango">
+          <% @recipes.each do |recipe| %>
+            <li params='<%= "recipe_id=#{recipe.id}"%>' >
+              <table width='100%'>
+                <tr style="vertical-align: middle;">
+                  <td><a href="#" class="recipe-link"><%= image_tag(recipe.picture.url(:thumbnail), {:width => "100", :height => "100" }) %></a></td>
+                  <td><%= recipe.name %></td>
+                </tr>
+              </table>
+            </li>
+          <% end %>
+        </ul>
+        <p>&nbsp;</p>
+      </div>   
+
+    </td>
+    <% if !mobile_request? %>
+		<td rowspan="3" style="width: 60%">
+		  <div id="recipe-display">
+			  <%= render :partial => "recipe_display" %>
+			</div>
+		</td>
+		<% end %>
+	</tr>
+	<tr>
+  	<td>
+  	  <h1>Upcoming Meals</h1>
+  	  <div id="recipe-drop-box">Drag a Recipe Over Here!</div>
+  	</td>
+	</tr>
+	<tr>
+	  <td>  
+  		<p><%= button_to("Add Ingredients to Cart", {:action => "add_courses_to_shopping_list"}, :confirm => "Add these ingredients to the shopping cart?", :class => "green-button") %></p>
+  	</td>
+  </tr>
+</table>
+
+
+
+<script type="text/javascript">
+
+$.ajaxSetup({
+  error: function(request, status, error) {
+    alert("An AJAX error occurred: " + status + "\nError: " + error + "\n" + 
+    $(request.responseText).eq(4).html() + "\n" + 
+    $(request.responseText).eq(5).html());
+  }
+});
+
+function resetup() {
+  $('.mycarousel').jcarousel({
+    visible: 1,
+    scroll: 1,
+    start: 1,
+    itemFirstInCallback:  mycarousel_itemUpdate
+  });
+
+  $('.delete_course').unbind('click'); // Prevent duplicate click bindings
+  
+  $('.delete_course').click(function() {
+    $.get("/plan/delete_course", $(this).attr('params'),
+    function(data){
+      $('#' + data).parent().parent().parent().remove(); // data is the course to remove, but move up and remove whole div
+    });
+    return false;
+  });
+  
+  $('#recipe-display-needed-list').sortable({
+    connectWith: '#recipe-display-have-list',
+    cursor: 'move'
+  });
+  
+  $('#recipe-display-have-list').sortable({
+    connectWith: '#recipe-display-needed-list',
+    cursor: 'move'
+  });
+};
+
+function update_recipe(item) {
+  $.ajax({
+    type: "post",
+    url: "/plan/update_recipe",
+    data: $(item).attr('params'),
+    success: function(data, textStatus, jqXHR){
+      $('#recipe-display').html(data);
+      resetup();
+    }
+  });
+};
+
+function mycarousel_itemUpdate(carousel, item, idx, state) {
+  if (state !== 'init') {
+    update_recipe(item);
+  }
+};
+
+jQuery(document).ready(function() {
+  resetup();
+});
+
+jQuery('.add_course').click(function() {
+  $.get("/plan/add_course", $(this).attr('params'),
+  function(data) {
+    $('#' + $(data).attr('belongs_to_day_div')).append(data);
+    resetup();
+  });
+  return false;
+});
+
+jQuery('.recipe-link').click(function() {
+  update_recipe($(this));
+  return false;
+});
+
+</script>

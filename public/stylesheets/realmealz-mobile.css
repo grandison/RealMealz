@@ -1,0 +1,130 @@
+body { 
+  font-size: 80%;
+}
+  
+#top, #border, #bottom {
+  background-image: none;
+}
+
+#container, #header, #top, #border, #bottom, #footer {
+  width: auto;
+}
+
+#top1, #top2 {
+  width: auto;
+}
+
+#main-full {
+  width: auto; 
+  padding-left: 0px; 
+}
+
+#main {
+  width: auto; 
+  padding-left: 5px; 
+}
+
+.home-page-padding {
+  padding-left: 5px;
+}
+
+#top {
+  height: auto;
+}
+#top1-logo {
+  width: auto;
+  height: auto;
+  background-image: none;
+  float: left;
+}
+
+#top2-not-signed-in a {
+  width: auto;
+}
+
+#welcome {
+  float: left;
+  padding-left: 30px;
+  padding-top: 18px;
+}
+
+#admin {
+  float: left;
+  width: auto;
+  padding-left: 30px;
+  padding-top: 18px;
+}
+
+#menu {
+  clear: both;
+}
+
+#message-bar {
+  background-color: rgb(150, 103, 15); /* brown */
+  width: 100%;
+  height: 30px;
+  padding-left: 0;
+  margin-bottom: 3px;
+}
+
+#flash-div {
+  float: left;
+}
+
+.flash {
+  font-size: 12px;
+  float: left;
+}
+
+#tab-menu-div {
+  float: left;
+}
+
+.tab, 
+.tab-selected {
+	font-size: 14px;
+	height: 20px;
+	line-height: 24px;
+	padding: 0 5px;
+	display: inline-block;
+	text-align: justify;
+	padding-bottom: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px
+}
+
+.tab-menu {
+  background-color: rgb(255, 132, 0); /* orange */
+  
+}
+
+.tab-menu-selected {
+  background-color: rgb(150, 103, 15); /* brown */
+  color: white;
+}
+
+#plan-daily-courses {
+  height: auto;
+  overflow-y: auto;
+}
+
+.green-button {
+  font-size: 14px;
+  line-height: 18px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-width: 1px;
+}
+
+#bottom {
+  height: 0;
+}
+
+#special-footer { 
+	padding-left: 5px;
+}
+

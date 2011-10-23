@@ -1,0 +1,47 @@
+<style>
+  .selected { border: 3px solid red;}
+</style>
+	
+<%= javascript_tag "const AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>  
+
+<h1>Select the recipes you like:</h1>
+
+<% if @recipes.blank? %>
+	<p>
+	  No recipes.
+	</p>
+<% else %>
+	
+	<table><tr>
+	<% count = 0 %>	
+	<% @recipes.each do |recipe| %>
+		<td style="text-align: center;">
+			<% class_name = @recipes_active.include?(recipe.id) ? "recipe selected" : "recipe" %>
+	  	<%= image_tag(recipe.picture.url(:medium), :id => recipe.id, :class => class_name ) %>
+			<br/>
+			<%= recipe.name %>
+    </td>
+		<% count += 1; if count >= 3 %>
+		  </tr><tr>
+		  <% count = 0 %>
+    <% end %>
+	<% end %>		
+	</tr></table>
+  <%= will_paginate @recipes %>
+<% end %>
+
+<script type="text/javascript">
+  $(".recipe").click(function() {
+   if ($(this).hasClass("selected")) { $(this).removeClass("selected");} else { $(this).addClass("selected"); };
+		$.ajax({
+		  type: "post",
+			url: "/discover/update",
+			data: "id=" + this.getAttribute('id') + "&value=" + $(this).hasClass("selected"),
+		  error: function (request, status, error) {
+        alert(request.responseText);
+      }
+		});    
+    return false;
+  });
+</script>
+  

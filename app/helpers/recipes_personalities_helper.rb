@@ -1,0 +1,2 @@
+module RecipesPersonalitiesHelper
+end
