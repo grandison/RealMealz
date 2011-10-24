@@ -49,5 +49,6 @@ RealMealz::Application.configure do
   
   # Custom configuration
   config.action_mailer.default_url_options = { :host => 'realmealz.com' }
+  ACTIVE_SCAFFOLD_INSTALL_ASSETS = false
   
 end

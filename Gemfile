@@ -14,7 +14,7 @@ gem "ruby-units"
 
 # Other units for RealMealz
 # gem "mongrel"
-# gem 'active_scaffold', :git => 'git://github.com/activescaffold/active_scaffold.git', :branch => 'rails-3.0'
+gem 'active_scaffold', :git => 'git://github.com/activescaffold/active_scaffold.git', :branch => 'rails-3.0'
 # gem "active_scaffold-vho"
 gem "authlogic"
 gem "paperclip", "~> 2.3"
