@@ -1,0 +1,48 @@
+<div id="my-meals">
+  <div id="my-meals-header" class="gray-background"><h2>My Meals</h2>
+  	<!-- MAKE THIS DefAULT SERVINGS SHOW ONLY FOR SHOP PAGE 
+  	<div id="shop-default-servings">
+      Default servings: <%= text_field(:kitchen, :default_servings, :id => "shop-servings-input", :size => 2) %>
+   </div> -->
+  </div>
+  
+  <div id="my-meals-list">
+    
+    <% my_meals.each do |meal| ; recipe = meal.recipe %>
+    
+      <div class="my-meals-recipe" recipe-pic="<%= recipe.picture.url(:large) %>">
+        <%= image_tag(recipe.picture.url(:medium), :class => 'my-meals-recipe-img recipe-display', 
+        'recipe-id' => recipe.id) %>
+        
+        <% if show_plus %>
+          <div class='my-meals-add-ingredients' recipe-id="<%= recipe.id %>">
+            <%= image_tag('icons/pantry_has.png') %>
+          </div>
+        <% end %>
+        
+        <div class="my-meals-recipe-caption">
+          <div class="my-meals-delete" recipe-id="<%= recipe.id %>"><%= image_tag('/images/small_red_x.png') %></div>
+          <%= recipe.name %>
+        </div>
+        
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  setup_background_image('#my-meals .my-meals-recipe');
+  setup_scroll('#my-meals-list');
+  
+  /** Remove meal **/
+  $('.my-meals-delete').click(function() {
+    $.post('/discover/meal_update', 'recipe_id=' + $(this).attr('recipe-id') + '&my_meals=' + false);
+    $(this).parent().parent().fadeTo('fast', 0.00, function() {
+      $(this).slideUp('fast', function() {
+        $(this).remove();
+        $('#my-meals-list').tinyscrollbar_update('relative');
+      });
+     });
+  });
+  
+</script>

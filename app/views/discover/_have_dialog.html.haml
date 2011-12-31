@@ -1,0 +1,11 @@
+#discover-have-form{:style => "display:none"}
+  #discover-have-scroll
+    %ul#discover-have-list.discover-list
+      - @have_ingredients.each do |ingredient|
+        %li.discover-have-list-item{'ingredient-id' => ingredient.id}
+          = ingredient.name.capitalize
+  .discover-ingredient-input-padding
+    = autocomplete_field_tag('new_item_name', '', '/shop/autocomplete_ingredient_name', 
+    'id' => 'discover-have-input', :placeholder => "have ingredient")
+    
+      

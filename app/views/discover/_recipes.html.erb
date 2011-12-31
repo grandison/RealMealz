@@ -1,0 +1,5 @@
+<% recipes.each do |recipe|; next if recipe.blank? %>
+  <li class="discover-li">
+    <%= render(:partial => 'recipe', :locals => {:recipe => recipe, :show_big => show_big} ) %>
+  </li>
+<% end %>

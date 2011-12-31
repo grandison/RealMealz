@@ -1,0 +1,36 @@
+<div id="video-dialog" title="Youtube Video" style="display:none">
+  <%# <iframe width="560" height="315" src="http://www.youtube.com/embed/LaEz_3od0Aw" frameborder="0" allowfullscreen></iframe> %>
+  
+   <object width="560" height="315">
+    <param name="movie" value="http://www.youtube.com/v/LaEz_3od0Aw"></param>
+    <param name="allowFullScreen" value="true"></param>
+    <param name="allowscriptaccess" value="always"></param>
+    <embed src="http://www.youtube.com/v/LaEz_3od0Aw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
+    </embed>
+  </object> 
+</div>
+
+<script type="text/javascript">
+
+if ($("#discover-carousel").length > 0) {
+  var $delegate = $("#discover-carousel")
+} else {
+  var $delegate = $("#cook-recipe-dialog")
+}
+$delegate.delegate('.video-link', 'click', function() {
+  var title = $(this).text();
+  var link = $(this).attr('href');
+  var $dialog = $("#video-dialog");
+  $dialog.dialog("destroy");
+  $dialog.attr('title', title);
+  $dialog.find('param[name="movie"]').attr('value', link);
+  $dialog.find("embed").attr("src", link);
+  $( "#video-dialog" ).dialog({
+     width: 600,
+     height: 380,
+     modal: true
+   });;
+  return false;
+});
+
+ </script>

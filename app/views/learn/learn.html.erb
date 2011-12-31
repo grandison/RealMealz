@@ -1,0 +1,69 @@
+
+
+<table id="learn-table">
+	<tr>
+		<!--title banners -->
+		<td class="learn-first-column"><img src="images/banner_techniques_left.png"></td>
+		<td><img src="images/banner_ingredients_right.png"></td>
+	</tr>
+	<tr>
+		<!-- Techniques -->
+		<td class="learn-first-column">
+			<% @techniques.each do |technique|%>
+				<% video_link = technique.video_link.to_s + "&amp;" + "showinfo=1"  %>
+				<iframe class="learn-video" src="<%= video_link %>" frameborder="0" allowfullscreen></iframe>
+				<br>
+			<% end %>
+		</td>
+		<!-- Ingredients -->
+		<td>
+			<% @ingredients.each do |ingredient|%>
+				<iframe class="learn-video" src="<%= ingredient.video_link %>" frameborder="0" allowfullscreen></iframe>
+				<br>
+			<% end %>
+		</td>
+	</tr>
+	
+</table>
+<!--
+
+<br>
+<br>
+<iframe width="50%" height="70%" src="http://www.youtube.com/embed/qmY_RCBAxok?hl=en&fs=1" frameborder="0" allowfullscreen></iframe>
+<iframe width="49%" height="70%" src="http://www.youtube.com/embed/DHF5DlLQ9CA?hl=en&fs=1&showinfo=1" 
+frameborder="0" allowfullscreen></iframe>
+<iframe width="50%" height="70%" src="http://www.youtube.com/embed/zX5iFP2zX-0?hl=en&fs=1" frameborder="0" allowfullscreen></iframe>
+<iframe width="49%" height="70%" src="http://www.youtube.com/embed/PXHy3yiIIhs?hl=en&fs=1" frameborder="0" allowfullscreen></iframe>
+
+Cooking is art.  Learn the components and you can make any creation in the kitchen, using recipes only as a guide.  Discover all the new dishes you can make as you earn new cooking skill badges here.
+
+width="95%" height="30%" 
+<br>
+<br>
+
+
+<table style="vertical-align: top; border: 0px;">
+<tr>
+	<td>
+		<div class="rounded-box-title" style="width: 260px; height: 20px;"> Level 1 </div>
+		<div class="rounded-box" style="width: 240px; height: 350px;">
+	
+
+			
+		</div>
+	</td>
+	<td>
+		<div class="rounded-box-title" style="width: 260px; height: 20px;"> Level 2 </div>
+		<div class="rounded-box" style="width: 240px; height: 350px;">
+			
+		</div>
+	</td>
+	<td>
+		<div class="rounded-box-title" style="width: 260px; height: 20px;"> Level 3 </div>
+		<div class="rounded-box" style="width: 240px; height: 350px;">
+			Coming Soon...
+	
+		</div>
+	</td>
+</table>
+-->

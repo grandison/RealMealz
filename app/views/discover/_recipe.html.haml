@@ -1,0 +1,61 @@
+- if show_big
+  - size_suffix ='big'
+  - ingredient_quantities_visible = true
+- else
+  - size_suffix = 'small'
+  - ingredient_quantities_visible = false
+
+.discover-recipe.main-height.content-width{"recipe-id" => recipe.id}
+  .discover-recipe-background-box.main-height.content-width
+    = image_tag(recipe.picture.url(:large), 'recipe-id' => recipe.id, :class => "discover-recipe-background")
+  %div{:class => "discover-detail-main discover-detail-#{size_suffix}"}
+    %img.discover-detail-frame{:alt => "", :src => "/images/discover-detail-frame.png"}/
+    -if @starred_ids.include?(recipe.id)
+      %div{:class => "discover-starred-update discover-starred-on discover-detail-#{size_suffix}",
+       "recipe-id" => recipe.id}
+    -else
+      %div{:class => "discover-starred-update discover-starred-off discover-detail-#{size_suffix}",
+       "recipe-id" => recipe.id}
+    %div{:class => "discover-detail-title discover-detail-#{size_suffix}"}
+      .recipe-title
+        = recipe.name
+        =render :partial => 'recipes/recipe_source', :locals => {:recipe => recipe}
+    %div{:class => "discover-detail-button discover-detail-#{size_suffix}"}
+    %div{:class => "discover-detail-scroll discover-detail-#{size_suffix}"}
+      .discover-balance.food-balance{:protein => recipe.food_balance[:protein], 
+      :starch => recipe.food_balance[:starch], :vegetable => recipe.food_balance[:vegetable]}
+      %h2
+        -if @my_meals_ids.include?(recipe.id)
+          .discover-meal-update.discover-minus{"recipe-id" => recipe.id}
+          .discover-add-text.discover-minus
+            %b My Meals
+        -else
+          .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
+          .discover-add-text.discover-plus
+            %b My Meals
+      %p= recipe.intro
+      .discover-ingredient-columns
+        = render(:partial => "ingredient_list",
+          :locals => {:recipe => recipe, :show_quantities => false, 
+          :visible => !ingredient_quantities_visible})
+        = render(:partial => "ingredient_list", 
+          :locals => {:recipe => recipe, :show_quantities => true, 
+          :visible => ingredient_quantities_visible})
+      -if current_user.role == 'super_admin'
+        %p 
+          .discover-recipe-edit
+            =button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, 
+            :method => :get, :class => "green-button")
+      .discover-recipe-prepsteps
+        %h2
+          %u Prep Instructions
+        - recipe.prepsteps_list.each do |p|
+          = sanitize(p)
+          %br/
+      .discover-recipe-cooksteps
+        %h2
+          %u Cook Instructions
+        - recipe.cooksteps_list.each do |c|
+          = sanitize(c)
+          %br/
+    

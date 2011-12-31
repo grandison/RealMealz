@@ -1,0 +1,85 @@
+<% @show_footer = true %>
+
+<table id="settings-table">
+	
+	<tr>
+		<!-- Target Food Balance -->
+		<td class="settings-first-column gray-background">
+		  <h1>Target Food Balance</h1>
+			
+			<div id="food-balance-future" class="food-balance-future" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div>
+			<%= form_tag("/settings/save_food_balance", :method => "post", :name => "food-balance-future-form") do %>	
+				<p><label>Veg/Fruits: </label><input id="food-balance-future-vegetable" name="newveg" type="text" style="width: 17px;" value="<%= @target_food_balance[:vegetable]%>" />
+				<label>Grains: </label><input id="food-balance-future-starch" name="newstarch" type="text" style="width: 17px;" value="<%= @target_food_balance[:starch]%>" />
+				<label>Protein: </label><input id="food-balance-future-protein" name="newprotein" type="text" style="width: 17px;" value="<%= @target_food_balance[:protein]%>" /></p>
+				<p><input value="Save" type="submit" class="gray-button" /></p>
+			<% end %>
+		</td>
+		
+		<!-- No Show List -->
+		<td id="settings-no-show-list" class="gray-background">
+		  <h1>Exclude Items</h1>
+			<p>This is a list of ingredients you want to routinely exclude from your shopping list, unless you manually add it.  Examples include non-perishables such as salt, pepper.</p>
+  		<div id="settings-no-show-box">
+    		<ul id="settings-exclude-list" class="gray-background">
+      		<% @exclude_items.each do |item| %>
+      		  <%= render :partial => 'exclude_item', :locals => {:ingredient => item.ingredient } %>
+      		<% end %>
+    		</ul>
+		
+    		<div class="add-item-form">
+    		  <p>
+            <%= autocomplete_field_tag('new_item_name', '', '/settings/autocomplete_ingredient_name', 
+            :id => 'settings-exclude-input', :size => 20, :placeholder => 'Exclude ingredient') %>
+          	<input id="add_exclude_item" value="Add Item" type="submit" class="gray-button" />
+        	</p>
+    		</div>
+    	</div>
+		</td> <!-- No Show List End-->
+		
+		<td id="settings-edit-recipes" class="gray-background">
+		  <h1>Edit Recipes</h1>
+		  <p>Edit recipes or enter new recipes</p>
+		  <p><%= button_to("Edit recipes", '/recipes', :method => :get, :class => "gray-button") %></p>
+		  <hr>
+		  <h1>Edit Ingredients</h1>
+		  <p>Edit or combine ingredients</p>
+		  <p><%= button_to("Edit ingredients", '/ingredients', :method => :get, :class => "gray-button") %></p>
+	  </td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+   
+  // Add exclude ingredient
+  $('#add_exclude_item').click(function() {
+    $.post("/settings/add_exclude_item", {"item[name]": $("#settings-exclude-input").val()},
+    function(data) {
+      $('#settings-exclude-list').append(data);
+  		$('#settings-exclude-input').val('');
+    });
+  });
+
+  // Delete exclude ingredient
+  $("#settings-exclude-list").delegate(".delete-icon", "click", function(e) {
+    var ingredientId = $(this).attr('ingredient-id');
+    $.post("/settings/remove_exclude_item", {"item[ingredient_id]": ingredientId});
+		li_item_remove('[ingredient-id="' + ingredientId + '"]', "fast");	
+  });
+
+  var protein = $(".food-balance-future").attr("protein");
+	var vegetable = $(".food-balance-future").attr("vegetable");
+	var starch = $(".food-balance-future").attr("starch");
+	var protein_future = document.getElementById("food-balance-future-protein");
+	var vegetable_future = document.getElementById("food-balance-future-vegetable");
+	var starch_future = document.getElementById("food-balance-future-starch");
+	var chart1 = createGraph(protein, vegetable, starch,'food-balance-future', true);
+	var chart2 = createGraph(protein_future.value, vegetable_future.value, starch_future.value, 'food-balance-future', false);
+
+	function update_graph() {
+		chart2 = createGraph(protein_future.value, vegetable_future.value, starch_future.value, 'food-balance-future', false);
+		chart2.redraw();
+	};
+
+</script>
+   

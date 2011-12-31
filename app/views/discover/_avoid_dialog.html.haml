@@ -1,0 +1,11 @@
+#discover-avoid-form{:style => "display:none"}
+  #discover-avoid-scroll
+    %ul#discover-avoid-list.discover-list
+      - @avoid_items.each do |item|
+        %li.discover-avoid-list-item{'id' => "ui#{item.id}", 'ingredient-id' => item.ingredient.id}
+          = item.ingredient.name.capitalize
+  .discover-ingredient-input-padding
+    = autocomplete_field_tag('new_item_name', '', '/shop/autocomplete_ingredient_name', 
+    'id' => 'discover-avoid-input', :placeholder => "avoid ingredient")
+    
+      

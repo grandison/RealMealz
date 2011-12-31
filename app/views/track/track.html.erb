@@ -1,0 +1,70 @@
+<% @body_background = "/images/track_background.jpg" %>
+
+<table id="track-table">
+	
+	<tr>
+		<!-- Food balance now -->
+		<td class="track-first-column gray-background">
+		<h1>Food Balance</h1>	
+		Summary of Current Month:
+		<div id="food-balance-now" style="width: 100%; height: 220px" class="food-balance-now" protein="<%= @food_balance[:protein] %>" vegetable="<%= @food_balance[:vegetable] %>" starch="<%= @food_balance[:starch] %>"></div> 
+		</td>
+		<td class="track-second-column gray-background"> 
+			<br><br><br><br>Target:
+			<div id="food-balance-future-mini" class="food-balance-future-mini" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div><a href="/settings">edit</a>
+		</td>
+		
+		
+		<!-- Points Table -->
+		<td class="track-third-column gray-background">
+			<h1>Points Summary</h1>	
+			The more you cook, the more points you earn.  Soon, you can convert these points into prizes from our sponsors. 
+			<table id="points-table" class="gray-background">
+				<tr class="points-table-title-font">
+					<td id="points-table-activities">Activities</td>
+					<td id="points-table-occurences">Occurrences</td>
+					<td>Points</td>
+				</tr>
+				<% point_grand_total = 0 %>
+				<% @points.each do |description, records|%>
+					<% point_total = 0 %>
+					<tr>
+						<td><%= description %></td>
+						<td><%= records.count %></td>
+						<% records.each do |record| %>
+							<% point_total += record.points %>
+						<% end %>
+						<td><%= point_total %></td>
+					</tr>
+						<% point_grand_total += point_total %>
+					<% end %>
+				<tr>
+					<td></td>
+					<td class="points-table-title-font">Grand Total:</td>
+					<td class="points-table-title-font"><%= point_grand_total %></td>
+				</tr>
+			</table>
+		</td>
+		<!-- Points Table end -->
+	</tr>
+</table>
+
+<script type="text/javascript">
+    var protein = $(".food-balance-now").attr("protein");
+  	var vegetable = $(".food-balance-now").attr("vegetable");
+  	var starch = $(".food-balance-now").attr("starch");
+  	var protein_future = $(".food-balance-future-mini").attr("protein");
+  	var vegetable_future = $(".food-balance-future-mini").attr("vegetable");
+  	var starch_future = $(".food-balance-future-mini").attr("starch");
+		var chart1 = createGraph(protein, vegetable, starch,'food-balance-now', true);
+		var chart2 = createGraph(protein_future, vegetable_future, starch_future, 'food-balance-future-mini', false);
+	
+	// end of function graphOptions
+	function update_graph() {
+//		alert(changedInput);
+		chart2 = createGraph(protein_future.value, vegetable_future.value, starch_future.value, 'food-balance-future-mini', false);
+		chart2.redraw();
+	};
+
+</script>
+   

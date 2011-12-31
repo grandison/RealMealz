@@ -1,0 +1,60 @@
+<h1>Listing ingredients</h1>
+
+<p><%= link_to 'New Ingredient', new_ingredient_path %></p>
+
+<%= form_tag '/ingredients/combine_ingredients' do %>
+
+  <table id="ingredient-list-table">
+    <tr>
+      <th colspan=2>
+        <div id="ingredient-combine-button">
+          <%= submit_tag("Combine", :class => "gray-button") %>
+        </div>
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>From</th>
+      <th>&nbsp;To&nbsp;</th>
+      <th>Name</th>
+      <th>Other names</th>
+      <th>Whole unit</th>
+      <th>Kitchen Id</th>
+    </tr>
+
+  <% @ingredients.each do |ingredient| %>
+    <tr>
+      <td><input type="checkbox" name="checked[from]" value="<%=ingredient.id%>" class="ingredient-from"></td>
+      <td><input type="checkbox" name="checked[to]" value="<%=ingredient.id%>" class="ingredient-to"></td>
+      <td><%= link_to(ingredient.name, edit_ingredient_path(ingredient)) %></td>
+      <td><%= ingredient.other_names %></td>
+      <td><%= ingredient.whole_unit %></td>
+      <td><%= ingredient.kitchen_id %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+
+<br />
+
+<%= link_to 'New Ingredient', new_ingredient_path %>
+
+<script type="text/javascript">
+function combine(){
+  var from_id = $('.ingredient_from[val="checked"]')
+  var to_id = $('.ingredient_to[val="checked"]')
+  if(!from_id.length || !to_id.length) {
+    alert("Please check a 'From' and a 'To' box")
+  } else {
+    $.post("/ingredients/combine_ingredients",  
+      function(data) {
+        updateShopList(data);
+      }
+    );
+  }
+};
+
+</script>
