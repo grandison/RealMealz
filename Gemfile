@@ -7,7 +7,8 @@ gem 'rake'
 # If you use a different adapter, change it here but don't check it in. Default: gem 'mysql2', '~> 0.2.7'
 #gem 'sqlite3'
 #gem 'mysql'
-gem 'mysql2', '~> 0.2.7'
+# gem 'mysql2', '~> 0.2.7'
+gem 'pg'
 
 # ruby_units needs to be loaded first because it adds a String.from method that conflicts with the Rails String.from
 # method that active_scaffold uses. Otherwise, it will produce errors like "'as_categories' Unit not recognized"
