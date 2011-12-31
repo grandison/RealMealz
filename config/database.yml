@@ -6,6 +6,8 @@ login: &login
   #encoding: unicode
   #min_messages: error
 
+  #adapter: sqlite3
+  
   adapter: mysql2
   host: localhost
   username: root
@@ -24,10 +26,7 @@ test:
   <<: *login
 
 production:
-  database: ajsoer_RealMealz
-  adapter: mysql2
-  host: db142e.pair.com
-  username: ajsoer_19
-  password: 2UYadQBa
-  encoding: utf8 
+  database: realmealz_dev
+  <<: *login 
+
 

@@ -1,7 +1,9 @@
-<div class="home-page-padding">
+<% @show_footer = true %>
+
+<div id="home-signup" class="gray-background">
 	<h1>Sign up now!</h1>
 	
-	<%= form_for(@user, :url => '/home/welcome') do |f| %>
+	<%= form_for(@user, :url => '/home/create_user') do |f| %>
   	<%= f.error_messages %>
 	
 	 <p><%= f.label :first %><br />

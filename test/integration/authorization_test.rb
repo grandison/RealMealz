@@ -1,140 +1,163 @@
 require 'test_helper'
 
 class AuthorizationTest < ActionDispatch::IntegrationTest
-  fixtures :all
   
-  NO_SIGN_IN_PATHS = [
-      'GET/', 
-      'GET/home',
-      'POST/users', 
-      'GET/users/sign_in', 'POST/users/sign_in', 
-      'GET/users/sign_up', 
-      'GET/users/confirmation', 'POST/users/confirmation', 
-      'GET/users/confirmation/new',
-      'GET/users/unlock', 'POST/users/unlock', 
-      'GET/users/unlock/new', 
-      'GET/users/password', 'POST/users/password', 'PUT/users/password', 
-      'GET/users/password/new', 
-      'GET/users/password/edit']
-  
-  SPECIAL_PATHS = {
-    'GET/home/login_guest' => {:sign_in_required => false, :redirect_to => '/', :signed_in_redirect_to => '/' },
-    'GET/home/get_started' => {:sign_in_required => false, :redirect_to => '/users/sign_up', :signed_in_redirect_to => '/users/sign_up' },
-    'GET/users/sign_out' => {:sign_in_required => true, :redirect_to => '/', :signed_in_redirect_to => '/' },
-    'GET/users/cancel' => {:sign_in_required => true, :redirect_to => '/users/sign_up', :signed_in_redirect_to => '/'},
-    'DELETE/users' => {:sign_in_required => true, :redirect_to => '/users/sign_in', :signed_in_redirect_to => '/' },
-    'DELETE/users/1' => {:sign_in_required => true, :redirect_to => '/users/sign_in', :signed_in_redirect_to => '/users'},
-  }    
-  
-  NO_SIGN_IN_REDIRECT_PATHS = ['GET/home/login_guest', 'GET/home/get_started']
-  
-  REDIRECT_DIFFERENT_PATHS = ['GET/users/sign_out', 'GET/users/cancel']
-  REDIRECTED_TO = [ '/',  '/users/sign_up']
-  
-  REDIRECT = {'GET/users/sign_out' => '/', 'GET/users/cancel' => '/users/sign_up'}
+  # Defaults:
+  # :sign_in_reguired => true
+  # :role => kitchen_admin
+  SPECIAL_PATHS = [
+    {:path => 'GET/', :sign_in_required => false}, 
+    {:path => 'GET/home', :sign_in_required => false}, 
+    {:path => 'POST/home/create_user', :sign_in_required => false, :redirect_to => '/home/welcome'},
+    {:path => 'GET/home/sign_up', :sign_in_required => false},
+    {:path => 'POST/home/sign_up', :sign_in_required => false},
+    {:path => 'GET/home/about_us', :sign_in_required => false},
+    {:path => 'GET/home/privacy_policy', :sign_in_required => false},
+    {:path => 'GET/home/terms_of_service', :sign_in_required => false},
+    {:path => 'GET/home/faq', :sign_in_required => false},
+
+    {:path => 'GET/users/new', 
+      :sign_in_required => false, 
+      :flash => 'You must be logged out to access this page',
+      :logged_in_redirect_to => '/users'}, 
+    {:path => 'POST/users/new', 
+      :sign_in_required => false, 
+      :logged_in_redirect_to => '/users',
+      :logged_in_flash =>'You must be logged out to access this page'}, 
+    {:path => 'POST/users/edit', :redirect_to => '/users/my_account', :flash => 'Account updated!'}, 
+
+    {:path => 'GET/user_session/new', :sign_in_required => false, :signs_out => true },
+    {:path => 'POST/user_session', :sign_in_required => false, :logged_out_flash => 'Login successful!'},
+    {:path => 'DELETE/user_session', :role => :kitchen_admin, :signs_out => true, 
+      :logged_in_flash => 'Logout successful!',
+      :logged_in_redirect_to => '/user_session/new'},
+    
+    {:path => 'POST/recipes/new', :redirect_to => '/recipes/new_recipe'},  
+    {:path => 'POST/recipes', :redirect_to => true, :flash => 'Recipe was successfully created.'},  
+    {:path => 'PUT/recipes/1', :redirect_to => '/recipes', :flash => 'Recipe was successfully updated.'}, 
+    {:path => 'DELETE/recipes/1', :redirect_to => '/recipes'},  
+
+    {:path => 'POST/ingredients/new', :redirect_to => '/ingredients/new_recipe'},  
+    {:path => 'POST/ingredients', :redirect_to => true, :flash => 'Ingredient was successfully created.'},  
+    {:path => 'PUT/ingredients/1', :redirect_to => '/ingredients', :flash => 'Ingredient was successfully updated.'},  
+    {:path => 'POST/ingredients/combine_ingredients', :redirect_to => '/ingredients', :flash => 'Please select both a From and a To ingredient to combine'},  
+
+    {:path => 'POST/cook/done_cooking', :redirect_to => '/cook'}, 
+    {:path => 'POST/settings/save_food_balance', :redirect_to => '/settings'}, 
+    {:path => 'POST/settings/save_user', :redirect_to => '/settings'}, 
+    {:path => 'POST/track/save_food_balance', :redirect_to => '/settings'}, 
+  ]
   
   @@cached_routes = []
-  
-  # NOTE
-  # These tests could be refactored into one test using the SPECIAL_PATHS
-  # When creating the routes array hash, merge in the special attributes and then take action accordingly
   
   # -----------
   # The authorization tests need to have a record with id = 1, so set them up here if not one
   # in the fixtures
   def setup
-    [Allergy, Appliance, Branch, Category, Course, Ingredient, Kitchen, Meal, MealType, 
-      Personality, Product, Recipe, Store].each do |klass|
-      if !klass.find_by_id(1)
-        obj = klass.new
-        obj.id = 1
-        obj.save(:validate => false)
+    [Allergy, Appliance, Branch, Category, Ingredient, IngredientsKitchen, IngredientsRecipe, Kitchen, Meal, MealType, 
+      Personality, Point, Product, Recipe, SlidingScale, Store, User].each do |klass|
+      klass.delete_all
+      obj = klass.new
+      obj.id = 1
+      obj.save(:validate => false)
+    end
+    
+    @email = 'name@gmail.com'
+    @password = 'password'
+
+    @kitchen = Kitchen.find(1)
+    @kitchen.update_attributes!(:name => 'Kwan Family')
+    @balance = Balance.create!
+        
+    @user = User.find(1)
+    @user.update_attributes!(:first => "Connie", :last => "Kwan", 
+      :email => @email , :password => @password, :password_confirmation => @password)
+    @user.kitchen_id = @kitchen.id
+    @user.balance_id = @balance.id
+    @user.role = :kitchen_admin
+    @user.save!
+    
+    @recipe = Recipe.find(1)
+    @recipe.update_attributes!(:name => 'Tacos', :servings => 4, :picture_file_name => 'taco_picture.jpg', :kitchen_id => @kitchen.id)  
+
+    @ingredient = Ingredient.find(1)
+    @ingredient.update_attributes!(:name => 'Tortilla', :other_names => '|tortilla|', :kitchen_id => @kitchen.id )
+    
+    @ingredients_kitchen = IngredientsKitchen.find(1)
+    @ingredients_kitchen.update_attributes!(:weight => 2, :unit => 'cups', :ingredient_id => @ingredient.id, :kitchen_id => @kitchen.id)
+    
+    @ingredients_recipe = IngredientsRecipe.find(1)
+    @ingredients_recipe.update_attributes!(:weight => 1, :unit => 'cups', :ingredient_id => @ingredient.id, :recipe_id => @recipe.id)
+
+    @meal = Meal.find(1)
+    @meal.update_attributes!(:kitchen_id => @kitchen.id, :recipe_id => @recipe.id)
+    
+    Scategory.create!(:name => 'technique')
+    Scategory.create!(:name => 'ingredient')
+  end
+  
+  #----------
+  test "block access" do
+    get_routes.each do |route|
+      next if route[:sign_in_required] == false
+      
+      do_action(route)  
+      assert_response :redirect, "For #{route[:name]}"
+      assert_equal 'http://www.example.com/user_session/new', response.redirect_url, "For #{route[:name]}" 
+      if route[:role] == :super_admin
+        assert_equal 'You must be logged in as a SuperAdmin to access this page', flash[:notice], "For #{route[:name]}" 
+      else
+        assert_equal 'You must be logged in to access this page', flash[:notice], "For #{route[:name]}" 
       end
     end
   end
   
   #----------
-  test "block access redirect to sign_in" do
-    # Delete all the paths that don't require a sign-in or redirect to a different page
-    routes = get_routes 
-    routes.delete_if {|r| NO_SIGN_IN_PATHS.include?(r[:name])}
-    routes.delete_if {|r| SPECIAL_PATHS.include?(r[:name])}
-    routes.each do |route|
-      do_action(route)  
-      assert_response :redirect, "For #{route[:name]}"
-      assert_equal 'http://www.example.com/users/sign_in', response.redirect_url, "For #{route[:name]}" 
-      assert_equal 'You need to sign in or sign up before continuing.', flash[:alert]
-    end
-  end
-  
-  #----------
-  test "block access with special redirect" do
-    routes = get_routes.delete_if {|r| !REDIRECT_DIFFERENT_PATHS.include?(r[:name])}
-    routes.each_with_index do |route, index|
+  test "login not required" do
+    get_routes.each do |route|
+      next unless route[:sign_in_required] == false
       do_action(route)
-      assert_redirected_to(REDIRECTED_TO[index], "For #{route[:name]}")
-    end
-  end
-  
-  #----------
-  test "sign_in not required" do
-    routes = get_routes.delete_if {|r| !NO_SIGN_IN_PATHS.include?(r[:name])}
-    routes.each do |route|
-      do_action(route)
-      assert_response :success, "For #{route[:name]}"
+      check_response(route[:logged_out_redirect_to] || route[:redirect_to], route[:name])
     end
   end
   
   #----------
   test "allow access when signed in" do
     do_sign_in
-    
-    # Get all routes except the ones that need to be handled speciallys
-    routes = get_routes.delete_if {|r| SPECIAL_PATHS.include?(r[:name])} 
-    routes.each do |route|
-      do_action(route)
-      assert(flash[:alert] == nil || flash[:alert] == "You are already signed in.", "flash[:alert]=#{flash[:alert]} for #{route[:name]}") 
-      assert(response.success? || response.redirect?, "Response was #{response.status}")
-    end
-  end
-  
-  #----------
-  # NOTE these two 'special paths' methods could be merged into one
-  test "special paths signed out" do
-    routes = get_routes.delete_if {|r| !SPECIAL_PATHS.include?(r[:name])} 
-    routes.each do |route|
-      error_msg = "Testing signed out #{route[:name]}"
-      sign_out if user_signed_in? #Some calls will sign_ins so make sure we are signed out
+
+    get_routes.each do |route|
+      ActiveRecord::Base.connection.begin_db_transaction #wrap in transaction so deletes don't mess up later tests
+      
       do_action(route)
 
-      if route[:redirect_to].blank?
-        assert_response :success, error_msg
+      check_response(route[:logged_in_redirect_to] || route[:redirect_to], route[:name])
+      flash_msg = route[:logged_in_flash] || route[:flash]
+      if flash_msg
+        assert(flash[:notice] == flash_msg, "flash[:notice]=#{flash[:notice]} for #{route[:name]}") 
       else
-        assert_response :redirect, error_msg
-        assert_equal "http://www.example.com#{route[:redirect_to]}", response.redirect_url, error_msg
+        assert(flash[:notice] == nil, "flash[:notice]='#{flash[:notice]}' for #{route[:name]}") 
       end
-    end
-  end
-  
-  #----------
-  test "special paths signed in" do
-    routes = get_routes.delete_if {|r| !SPECIAL_PATHS.include?(r[:name])} 
-    routes.each do |route|
-      error_msg = "Testing signed in #{route[:name]}"
-      do_sign_in unless user_signed_in? #Some calls will sign out so make sure we are signed out
-      do_action(route)
 
-      if route[:signed_in_redirect_to].blank?
-        assert_response :success, error_msg
-      else
-        assert_response :redirect, error_msg
-        assert_equal "http://www.example.com#{route[:signed_in_redirect_to]}", response.redirect_url, error_msg
-      end
+      ActiveRecord::Base.connection.rollback_db_transaction
     end
   end
   
-  #=================
+  ###########
   private
+  ##########
+  
+  #----------
+  def check_response(redirect_to, route_name)
+    if redirect_to
+      assert_response :redirect, "Expected redirect for #{route_name}"
+      if redirect_to.is_a?(String)
+        assert_equal "http://www.example.com#{redirect_to}", response.redirect_url, "Expected redirect for #{route_name}" 
+      end  
+      follow_redirect! # follow the redirect to clear any flash messages
+    else
+      assert(response.success?, "Expected response 200 but was #{response.status} for #{route_name}")
+    end
+  end
   
   #----------
   def get_controller_list
@@ -165,10 +188,13 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     routes.each do |r| 
       r[:path] = r[:path_template].gsub('(.:format)','').gsub(':id','1')
       r[:name] = r[:verb] + r[:path]
-      r.merge!(SPECIAL_PATHS[r[:name]]) unless SPECIAL_PATHS[r[:name]].nil?
+      special_params = find_special_params(r[:name])
+      unless special_params.nil?
+        r.merge!(special_params) 
+      end
     end
     
-    # Sort so DELETE are last, otherwise subsequent GETs won't work
+    # Sort so DELETE are last
     routes = routes.sort { |r1, r2| "#{r1[:verb].gsub('DELETE','Z_DELETE')}#{r1[:path]}" <=> "#{r2[:verb].gsub('DELETE','Z_DELETE')}#{r2[:path]}"}
     
     # Uniq doesn't work on routes, so de-dupe manually. 
@@ -190,21 +216,61 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   end
   
   #----------
-  POST_PARAMS = {:id => 1, :user => {:email => 'name@gmail.com'}, :record => {:name => 'Name'}}
+  def find_special_params(path)
+    SPECIAL_PATHS.each do |sp_original|
+      sp = sp_original.dup
+      sp_path = sp.delete(:path)
+      if path == sp_path # first match whole path
+        return sp
+      else # see if a wildcard and only match up to that
+        trim_pos = sp_path.index('*')
+        unless trim_pos.nil?
+          trim_path = path[0, trim_pos]
+          trim_sp_path = sp_path[0, trim_pos]
+          if trim_path == trim_sp_path
+            return sp
+          end
+        end
+      end
+    end
+    return nil
+  end
+  
+  #----------
+    
   def do_action(route)
-    # puts "#{route[:name]}" # For debugging
+    post_params = {
+      :id => 1, 
+      :user => {:first => 'Joe', :last => "Smith", :email => 'joe_smith@foomail.com', :password => 'password', :password_confirmation => 'password'}, 
+      :user_session => {:email => 'name@gmail.com'}, 
+      :record => {:name => 'Name'},
+      :ingredient_id => @ingredient.id,
+      :recipe_id => @recipe.id,
+      :recipe => {:name => 'Upside down pizza', :ingredient_list => 'tortillas'},
+      :ingredient => {:name => 'Carrots', :other_names => "|carrot|carrots"},
+      :item => {:name => 'Max Bars'},
+      :newveg => 40, :newstarch => 30, :newprotein => 30,
+      :item => {:pantry_id => 1, :ingredient_id => @ingredient.id},
+      :sort_tag => 'test', :order => '1,2,3',
+      :url => 'fake_recipe.html',
+      :new_servings => '6',
+      :kitchen => {:default_servings => '4'},
+      :ingredient_name => 'rice',
+    }
+      
+    #puts route[:name] # For debugging
     putc('.')
     case route[:verb]
       when 'POST'
         begin
-          post(route[:path], POST_PARAMS)
+          post(route[:path], post_params)
         # rescue => exception
         # puts exception.backtrace
         end
       when 'DELETE'
         delete(route[:path])
       when 'PUT'
-        put(route[:path], POST_PARAMS)
+        put(route[:path], post_params)
     else
       get(route[:path])
     end
@@ -212,18 +278,9 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   
   #----------
   def do_sign_in
-    email = 'connie.kwan@realmealz.com'
-    password = 'goodfood'
-    
-    # Some calls delete the user so recreate if necessary
-    user = User.find_by_email(email)
-    if user.nil?
-      user = User.create!(:first => "Connie", :last => "Kwan", :email => email , :password => password, :password_confirmation => password)
-      user.confirm!
-    end
-    post '/users/sign_in', :user => {:email => email , :password => password}
-    assert_nil flash[:alert]
+    post '/user_session', :user_session => {:email => @email , :password => @password}
     assert_response :redirect
+    get response.redirect_url  # Eat the "login successful" flash notice 
   end
     
 end

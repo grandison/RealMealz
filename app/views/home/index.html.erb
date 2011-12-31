@@ -1,27 +1,6 @@
-<div class="page-padding">
-	
-	<table id="table-home">
-		<tr>
-			<td><img class="home-pics" src="/images/family_cooking.png"></td>
-			<td><h2>Welcome, <%= current_user.first %>!  <br>Here's How to Cook at Home using RealMealz!</h2>
-				<h3>
-					<br>1. <a href="/customize">Customize</a> your settings.<br>
- 					<br>2. <a href="/discover">Discover</a> new recipes for your recipe box. <br>
-					<br>3. <a href="/plan">Plan</a>-<a href="/shop">Shop</a>-<a href="/cook">Cook</a> your way to deliciousness.<br></h3>
-					<br><br>
-					<b>Tips:</b>
-					<ul class="subtle-links">
-					<li>Don't want to plan?  Or suddenly need to throw a meal together on short notice? Go directly to <a href="/cook">Cook</a> to discover recommendations based on what you already have. </li>
-					<br><li>As you shop using the shopping list, we will keep track of what you have so we can recommend relevant recipes.  Try logging items that you pick up at the store to see what we recommend under <a href="/cook">Cook</a>. </li>
-					<br><li>If you step through your pantry to check your items before you head to the store, try using the <a href="/shop/pantry_list">Shopping List Builder</a> to keep track of your common items and quickly pick them off when you need to buy more.</li>
-					<br><li>A fun thing to do when you Plan is to check out what's under <a href="/discover">Discover</a> to find more interesting recipes.  </li>
-					</ul>
-			</td>
-		</tr>
-	</table>
-</div>
-	
-		
+<% @show_footer = true %>
 
-
-
+<img width="940" height="756" src="/images/title.png" usemap="#signup">
+<map name="signup">
+  <area shape="rect" coords="600,600,1175,918" href="/home/sign_up" alt="SIGN UP! >>>>" />		
+</map>

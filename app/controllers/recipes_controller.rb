@@ -1,55 +1,134 @@
 class RecipesController < ApplicationController
+  skip_before_filter :require_super_admin
+  before_filter :require_user
   
-  active_scaffold :recipes do |config|
-    config.list.columns = [:name, :picture, :approved, :preptime, :cooktime, :intro, :servings, :prepsteps, :cooksteps, :tags, :skills]
-    config.columns = [:name, :picture, :approved, :servings, :intro, :original, :tags, :source, :preptime, :cooktime, 
-      :ingredients_recipes, :recipes_personalities]
-    config.columns[:ingredients_recipes].label = "Ingredients"
-    config.columns[:recipes_personalities].label = "Personalities"
-    config.columns[:original].options = {:cols => 130, :rows => 15}    
-  end
-
   #------------------------- 
   def recipe_setup
     @recipe = Recipe.find(params[:recipe_id])
-    @recipe.setup_recipe
+    @recipe.setup_recipe(current_user.kitchen.default_servings)
     render :partial => 'recipe_display'
   end
   
   #------------------------- 
-  def move_ingredient
-    ik = IngredientsKitchen.find_or_create_by_ingredient_id_and_kitchen_id(:ingredient_id => params[:ingredient_id], :kitchen_id => current_user.kitchen.id)
-    ik.update_attributes!(:needed => (params[:where] == 'needed'))
-    render :nothing => true
+  def create_from_url
+    recipe = Recipe.create_from_html(params[:url])
+    recipe.kitchen_id = current_user.kitchen_id
+    recipe.save!
+    params[:id] = recipe.id
+    edit
+    render :edit
   end
-  
 
   #------------------------- 
-  def process_ingredients
-    ## still need to figure out how to pass the picture back using paperclip.
-    @pic_name = params[:picture] || ''
-    
-    @recipe_name = params[:recipe_name] || ''
-    @intro = params[:intro] || ''
-    @ingredients = params[:ingredients] || ''
-    @prepsteps = params[:prepsteps] || ''
-    @cooksteps = params[:cooksteps] || ''
-    @servings = params[:servings] || ''
-    @preptime = params[:preptime] || ''
-    @cooktime = params[:cooktime] || ''
-    @source = params[:source] || ''
-    @tags = params[:tags] || ''
-    @skills = params[:skills] || ''
-    
-	  original = @recipe_name + "\n**intro**\n" + @intro + "\n**ingredients**\n" + @ingredients + "\n**prep**\n" + @prepsteps + "\n**cook**\n" + @cooksteps + "\n**serves**\n" + @servings.to_s + "\n**preptime**\n" + @preptime.to_s + "\n**cooktime**\n" + @cooktime.to_s + "\n**source**\n" + @source.to_s + "\n**skills**\n" + @skills + "\n**tags**\n" + @tags.to_s
-	  
-	  ingredient_array = Array.new
-	  ingredient_array = Recipe.parse_ingredients(@ingredients.split(/\n/))
-	  recipe_id = Recipe.add_recipe(original , @recipe_name, @intro, ingredient_array, @prepsteps, @cooksteps, @servings, @preptime, @cooktime, @source, @tags, @skills, @pic_name,"no")
-	#  Recipe.find(recipe_id).update(params[:recipe])
-	  
-    if request.post?
-    	redirect_to "/recipes/#{recipe_id}/edit.html"
+  def update_servings
+    current_user.kitchen.update_attributes!(:default_servings => params[:new_servings])
+    recipe = Recipe.find(params[:recipe_id])
+    recipe.adjust_servings(params[:new_servings].to_i)
+    render :partial => "recipe_ingredient_list", :locals => {:ingredients_recipes => recipe.ingredients_recipes}
+  end
+
+  #------------------------- 
+  def reprocess
+    recipe = Recipe.find(params[:recipe_id])
+    recipe.ingredient_list = params[:ingredient_list]
+    Ingredient.reset_cache # In case they changed the ingredient list
+    recipe.process_ingredient_list
+    recipe.ingredient_list = nil # force recipe to regenerate list
+    render :text => recipe.ingredient_list
+  end
+
+  #------------------------- 
+  def index
+    if current_user.role == 'super_admin'
+      @recipes = Recipe.all
+    else
+      @recipes = current_user.kitchen.recipes
+    end
+    # Sort by reverse updated_at. Need to deal with nulls
+    null_time = DateTime.new(2008, 1, 1)
+    @recipes.sort!{|r1, r2| (r2.updated_at || null_time) <=> (r1.updated_at || null_time)}
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @recipes }
     end
   end
+
+  #------------------------- 
+  def new
+    @recipe = Recipe.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @recipe }
+    end
+  end
+  
+  #------------------------- 
+  # Placeholder so routes resource :recipes doesn't mess up authorization tests
+  def show
+    render :nothing => true
+  end
+
+  #------------------------- 
+  def edit
+    @recipe = recipe_find_with_user_check(params[:id])
+  end
+
+  #------------------------- 
+  def create
+    @recipe = Recipe.create(params[:recipe])
+    @recipe.kitchen_id = current_user.kitchen_id
+    @recipe.save! #Save in case uploaded picture
+    @recipe.process_recipe
+
+    respond_to do |format|
+      if @recipe.save
+        format.html { redirect_to('/recipes', :notice => 'Recipe was successfully created.') }
+        format.xml  { render :xml => @recipe, :status => :created, :location => @recipe }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  #------------------------- 
+  def update
+    @recipe = recipe_find_with_user_check(params[:id])
+
+    respond_to do |format|
+      if @recipe.update_attributes(params[:recipe]) && @recipe.process_recipe
+        format.html { redirect_to('/recipes', :notice => 'Recipe was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  #------------------------- 
+  def destroy
+    @recipe = recipe_find_with_user_check(params[:id])
+    @recipe.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(recipes_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
+  ###############
+  private
+  ###############
+
+  #------------------------- 
+  def recipe_find_with_user_check(id)
+    if current_user.role == 'super_admin'
+      @recipe = Recipe.find(id)
+    else
+      @recipe = current_user.kitchen.recipes.find(id)
+    end
+  end   
 end

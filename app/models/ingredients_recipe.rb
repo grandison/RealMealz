@@ -1,24 +1,31 @@
 class IngredientsRecipe < ActiveRecord::Base
   belongs_to :recipe, :include => :ingredients
   belongs_to :ingredient
-  
-  ####################################################################################
-  def count
-    return length
-  end
+  default_scope :order => 'line_num ASC'
+  require 'weight_and_unit'
 
-  ####################################################################################
-  ## returns the weight and unit combined into a Unit class object
-  ## checks to make sure nils are handled
-  ## Usage: Recipe.ingredients_recipes[2].get_weight_units
-  def get_weight_units
-    if !weight.nil? and !unit.nil?
-      return Unit.new(weight.to_s + unit.to_s)
-    elsif !weight.nil? and unit.nil?
-      return Unit.new(weight)
-    else #if weight.nil? and !unit.nil?
-      return nil
+  #-------------------
+  def name
+    if group
+      return "*#{description}*"
+    else
+      return weight_and_unit_name
     end
   end
-    
+
+  #-------------------
+  def name_and_description
+    if group
+      return name
+    elsif description.blank?
+      return name
+    else
+      if name.blank?
+        return description
+      else
+        return name + ", " + description
+      end
+    end
+  end
+
 end

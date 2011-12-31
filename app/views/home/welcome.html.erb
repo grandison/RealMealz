@@ -1,9 +1,75 @@
-<div class="home-page-padding">
-  <h1>Welcome to RealMealz!</h1>
+<% @show_footer = true %>
 
-  <p>Your account information has been saved and you can now start planning your menus.</p>
-
-  <%= form_tag("/plan", :method => "get", :name => "start_planning") do %>
-    <input value="Plan" type="submit" class="green-button" />
-  <% end %>
+<table id="table-home">
+	<tr>
+		<td class="gray-background">
+		  <img class="home-pics" src="/images/family_cooking.png">
+		</td>
+		<td class="gray-background" style="vertical-align: top;">
+		  <h2>Welcome, <%= current_user.first %>!<br />Here's How to Cook at Home using RealMealz!</h2>
+			<h3>
+				<br>1. <a href="/settings">Customize</a> your settings.<br>
+					<br>2. <a href="/discover">Discover</a> new recipes for your recipe box. <br>
+				<br>3. <a href="/plan">Plan</a>-<a href="/shop">Shop</a>-<a href="/cook">Cook</a> your way to deliciousness.<br></h3>
+				<br><br>
+				<b>Tips:</b>
+				<ul class="subtle-links">
+				<li>Don't want to plan?  Or throwing a meal together on short notice? Go directly to <a href="/cook">Cook</a> to discover real-time recipes based on what you already have. </li>
+				<br><li>Use the shopping list and we will keep track of what you have so we can recommend relevant recipes.  Try logging items on the shopping list to see what we recommend under <a href="/cook">Cook</a>. </li>
+				<br><li>If you like to check pantry inventory before you shop, try using the <a href="/shop/pantry_list">Shopping List Builder</a> to keep track of your common items and quickly pick them off when you need to buy more.</li>
+				<br><li>Getting tired of the same recipes? Check out what's under <a href="/discover">Discover</a> to find something new!  </li>
+				</ul>
+		</td>
+	</tr>
+</table>
+<div class="gray-background">
+  <h2>Things you need to start:</h2>
+  <p>If your kitchen is not stocked, don't worry!  You don't need to spend a fortune to get started.  With the basic equipment set and spices you can cook most meals!</p>
 </div>
+
+<table id="table-things-you-need">
+	<tr><td class="gray-background">
+			<h3>Basic Equipment (only 8):</h3><img class="home-pics2" src="/images/basic_equipment.jpg">	
+			<br>These 8 pieces of equipment will cook most meals: 
+			<ol>
+				<li>A Good Knife</li>
+				<li>(optional) A Knife Honer</li>
+				<li>A Can Opener</li>
+				<li>A Cutting Board (Two recommended if you cook meat.  Keep one for preparing meat and the other for preparing cooked items and vegetables.)</li>
+				<li>A Basic Pot with Lid (Pot size depends on your family.  The pictured pot is good for 4 people </li>
+				<li>A Basic Saute Pan with Lid (Pan size depends on your family.  The pictured orange saute pan is good for 4 people.</li>
+				<li>A Collander</li>
+				<li>A Large Mixing Bowl</li>
+			</ol>
+		</td>
+		<td style="vertical-align: top;" class="gray-background"><h3>Basic Spices (only 11):</h3>
+			<img class="home-pics2" src="/images/basic_pantry_with_soyasauce.jpg"> 
+			<br>These basic spices will give you a great start:
+			<ol>
+				<li>Salt</li>
+				<li>Pepper</li>
+				<li>Ketchup </li>
+				<li>Mustard</li>
+				<li>Olive Oil</li>
+				<li>Vinegar</li>
+				<li>Soy Sauce (or Tamari for gluten free)</li>
+				<li>Italian Spices Mix </li>
+				<li>Cinnamon</li>
+				<li>Peanut Butter</li>
+				<li>Bread</li>
+			</ol>
+			<br><br>
+		</td>
+	</tr>
+</table>
+<br />
+<p>
+  <form method="link" action="/settings" align="right">
+	  <input value="Let's Start by Customizing! >>>>" type="submit" class="green-button" />
+  </form>
+</p>
+
+	
+
+
+

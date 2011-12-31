@@ -1,21 +1,29 @@
 <% if current_user %>
-  <% ["plan","shop","cook","discover","customize"].each do |button| %>
+  <% ["discover","shop","cook","learn","track"].each do |button| %>
   	<% if button == controller.controller_name %>
-  	  <%= image_mobile_tag("/images/#{button}-selected.png" )%>
+  	  <div class="menu-tab-selected"> <%= button.capitalize %> </div>	
    	<% else %>
-   		<a href="/<%=button%>"><%= image_mobile_tag("/images/#{button}.png" )%></a>
+   		<div class="menu-tab"> <a href="/<%=button%>"><%= button.capitalize %></a></div>
+   	<% end %>
+   	<% if button == "cook"%>
+   	  <div class="menu-tab-space"></div>
    	<% end %>
   <% end %>
+  <% if controller.controller_name == "settings" %>
+    <div class="menu-tab-customize"> <a href="/settings"><img src="/images/small_gear_selected.png" /></a></div>
+  <% else %>
+    <div class="menu-tab-customize"> <a href="/settings"><img src="/images/small_gear.png" /></a></div>
+  <% end %>
 <% else %>
-	<% if controller.controller_name == "user_sessions" %>
-		<a href="/home/sign_up"><%= image_mobile_tag("/images/signup.png") %></a>
-		<a href="/user_session/new"><%= image_mobile_tag("/images/login-selected.png") %></a>
+  <% if controller.controller_name == "user_sessions" %>
+		<a href="/home/sign_up"><div class="menu-tab">Sign Up</div></a>
+		<a href="/user_session/new"><div class="menu-tab-selected">Login</div></a>
 	<% elsif controller.controller_name == "home" %>
-		<a href="/home/sign_up"><%= image_mobile_tag("/images/signup-selected.png") %></a>
-		<a href="/user_session/new"><%= image_mobile_tag("/images/login.png") %></a>	
+		<a href="/home/sign_up"><div class="menu-tab-selected">Sign Up</div></a>
+		<a href="/user_session/new"><div class="menu-tab">Login</div></a>
 	<% else %>
-		<a href="/home/sign_up"><%= image_mobile_tag("/images/signup.png") %></a>
-		<a href="/user_session/new"><%= image_mobile_tag("/images/login.png") %></a>
+		<a href="/home/sign_up"><div class="menu-tab">Sign Up</div></a>
+		<a href="/user_session/new"><div class="menu-tab">Login</div></a>
 	<% end %>
 <% end %>
 

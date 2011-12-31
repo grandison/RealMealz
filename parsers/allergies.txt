@@ -1,7 +1,7 @@
 Meat
-Chicken, yes
-Pork, yes
-Beef, yes
+Chicken, no
+Pork, no
+Beef, no
 ###
 Dairy
 milk, yes

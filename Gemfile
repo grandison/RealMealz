@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 # RealMealz is currently using Rails version 3.0.9
 gem 'rails', '3.0.9'
+gem 'rake'
 
 # If you use a different adapter, change it here but don't check it in. Default: gem 'mysql2', '~> 0.2.7'
 #gem 'sqlite3'
@@ -13,17 +14,24 @@ gem 'mysql2', '~> 0.2.7'
 gem "ruby-units"
 
 # Other units for RealMealz
-# gem "mongrel"
-gem 'active_scaffold', :git => 'git://github.com/activescaffold/active_scaffold.git', :branch => 'rails-3.0'
-# gem "active_scaffold-vho"
+gem "mongrel", '>= 1.2.0.pre2'
 gem "authlogic"
-gem "paperclip", "~> 2.3"
+gem 'dynamic_form'
+gem "paperclip", "~> 2.4"
+gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete", "~> 0.9.0"
 gem 'will_paginate', '3.0.pre2'
-gem 'dynamic_form'
+gem 'rest-open-uri'
+gem 'haml'
+gem 'cells'
+gem 'nokogiri'
 
-#--- For debugging, include this
+#--- For debugging  -----
 # gem "ruby-debug"
+# gem "yaml_db"
+
+#--- experimental ---
+# gem 'rhoconnect-rb'
 
 #----- Below here are units from the original Gemfile ------
 # Use unicorn as the web server
@@ -45,6 +53,7 @@ gem 'dynamic_form'
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
+group :development, :test do
+  # gem 'factory_girl_rails'
+  # gem 'machinist', '>= 2.0.0.beta2'
+end

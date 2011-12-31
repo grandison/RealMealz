@@ -1,31 +1,11 @@
-<ul>
-  <% if current_user %>
-  <h2>My Account</h2>
-  	<table><tr><td>
-	  	<div class="rounded-box-title" style="width: 300px; height: 20px;"> Account Settings</div>
-			<div class="rounded-box" style="width: 300px; height: 350px;">
-	    <%#= link_to("Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?") %>
-	  	
-	  	<li>
-	    	<%= link_to("My Account", account_path) %>
-		  </li>
-		  </div>
-		</td>
-		<td> 
-	  	<div class="rounded-box-title" style="width: 300px; height: 20px;"> My Points Summary</div>
-			<div class="rounded-box" style="width: 300px; height: 350px;">
-  			Coming Soon... 
-  		</div>
-  	</td>
-  	</tr>
-  	</table>
-  <% else %>
-  <li>
-    <%= link_to('Login', new_user_session_path) %>
-  </li>
-  <li>
-    <%= link_to('Register', new_account_path) %>
-  </li>
-  <% end %>
-</ul>
+<% if current_user %>
+<h2>My Account</h2>
+Nothing here right now.
+<!-- NEED TO ADD ABILITY to EDIT PASSWORD -->
+<!--  	<%= link_to('My Account', '/users/my_account') %> -->
+		
+<% else %>
+  <%= link_to('Login', '/user_session/new') %>
+  <%= link_to('Register', '/user/new') %>
+<% end %>
 

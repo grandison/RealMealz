@@ -4,14 +4,13 @@ class CookController < ApplicationController
   before_filter :require_user
 
   def cook
-    current_user.generate_user_recipes
-    @meal_recipes = current_user.kitchen.get_sorted_meal_recipes
-    @option_recipes = Recipe.find_similar(@meal_recipes)
-    
-    @servings_left = @meal_recipes.size
-    sum = 1.0
-    @meal_recipes.each {|recipe| sum += recipe.cooktime}
-    @average_cook_time = sum / @servings_left
+    # Everything will be rendered in cells
+    @meals_empty = current_user.kitchen.meals.where(:my_meals => true).empty?
+  end
+  
+  def done_cooking
+    current_user.kitchen.remove_recipe_and_ingredients(params[:recipe_id])
+    redirect_to :cook
   end
   
 end

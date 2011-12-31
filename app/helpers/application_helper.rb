@@ -10,6 +10,10 @@ module ApplicationHelper
      image_tag(source, options)
   end
   
+  def check_and_add_group_html(line)
+    sanitize(line).gsub(/^\*(.*)\*$/,"<br/><span class='recipe-ingredient-group'>\\1</span>").html_safe
+  end
+  
   #################
   private
   

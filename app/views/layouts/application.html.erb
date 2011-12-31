@@ -3,13 +3,11 @@
   <head>
     <title>RealMealz</title>
     <%= stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.16.custom.css' %>
-    <%= stylesheet_link_tag 'jcarousel-skin.css' %>
     <%= stylesheet_link_tag 'buttons.css' %>    
-    <%= stylesheet_link_tag "realmealz" %>
+    <%= stylesheet_link_tag 'realmealz.css' %>
 
-    <!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script -->
     <%= javascript_include_tag 'jquery-1.6.2.min.js' %>
-    <%= javascript_include_tag 'rails.js' %>
+    <%= javascript_include_tag 'jquery-ujs.js' %>
     <%= javascript_include_tag 'jquery-ui-1.8.16.custom.min.js'%>
     <%= javascript_include_tag 'jquery.jcarousel.min.js' %>
     <%= javascript_include_tag 'touchable.js' %>
@@ -17,118 +15,105 @@
     <%= javascript_include_tag 'autocomplete-rails.js' %>
     <%= javascript_include_tag 'highcharts.js' %>
     <%= javascript_include_tag 'rm-highchart-theme.js' %>
+    <%= javascript_include_tag 'jquery.mousewheel.js' %>
+    <%= javascript_include_tag 'jquery.tinyscrollbar.min.js' %>
     <%= javascript_include_tag 'application.js' %>
 
-    <%# = active_scaffold_includes %>
     <%= csrf_meta_tag %>
     
+    <% if @background_recipe %>
+     <style type="text/css">
+          body {background-image: url("<%= @background_recipe.picture.url(:large) %>"); }
+      </style>
+    <% end %>
+        
     <meta name = "viewport" content = "width = 1040">
   </head>
   <body>
-    <div id="top">
-      <table id="top1">
-      	<tr>
-      	<td>
-      	<% if current_user %>
-      		<div id="top1-logo" class="logo" onclick = "window.location.href = '/home'" ></div>
-      	<% else %>
-      		<div id="top1-logo" class="logo" onclick = "window.location.href = '/'" ></div>
-      	<% end %>
-      	</td>
-      	<td>&nbsp;</td>
-      	<td><%= render 'layouts/welcome' %></td>
-      	</tr>
-      </table>
-      <table id="top2">
-        <tr> 
-        	<td>
-        	  <% if current_user %>
-        			<div id="top2-logo" class="logo" onclick = "window.location.href = '/home'" ></div>
-         	  <% else %>
-        		  <div id="top2-logo" class="logo" onclick = "window.location.href = '/'" ></div>
-      	    <% end %>
-      	  </td>
-          <td><%= render 'layouts/facebook' %></td>
-          <td><%= render 'layouts/menu' %></td>
-        </tr>
-      </table>
-      <table id="message-bar">
-        <tr>
-          <td id="flash-div">
-           <% flash.each do |name, msg| %>
-    	       <%= content_tag(:div, msg, {:id => "flash-#{name}", :class => 'flash'}) if msg.is_a?(String) %>
-    	     <% end %>
-          </td>
-          <td class="tab-menu-div">
-          	<% if controller.controller_name == "customize" %>
-        			<%= render 'layouts/kitchen' %>
-        		<% elsif controller.controller_name == "shop" %>
-        			<%= render 'layouts/shop'%>
-        		<% elsif controller.controller_name == "discover" %>
-        			<%= render 'layouts/discover'%>	
-        		<% else %>
-        			&nbsp;
-        		<% end %>
-          </td>	
-          <td id="admin">
-              <% if current_user && current_user.role == 'super_admin' %>
-                  <a href="/admin">Admin</a>
-              <% else %>
-                &nbsp;
-              <% end %>
-          </td>
-        </tr>
-      </table>
-    </div> <!-- top -->
-    <div id="border">
-    	
-      <div id="container">
-        <% if controller.controller_name == "home" %>
-          <div id="main-full">
-        <% else %>
-          <div id="main">
-        <% end %>
+    <div id="content" class="content-width">
+      <div id="header" class="content-width">
+        <div id="realmealz-logo">
+          <a href="<%= current_user.blank? ? '/' : '/home/welcome' %>">
+            <img src="/images/realmealz-logo-100px.png" height="100px">
+          </a>
+        </div>
+        <table id="top2" class="content-width">
+          <tr> 
+            <td><%= render 'layouts/menu' %></td>
+          </tr>
+        </table>
+        <div id="message-bar" class="content-width">
+          
+          <div id="flash-div">
+            <% flash_shown = false; flash.each do |name, msg| %>
+              <% if msg.is_a?(String); flash_shown = true%>
+                <%= content_tag(:span, msg, {:id => "flash-#{name}", :class => 'flash'}) %>
+              <% end %>  
+            <% end %>
+          </div>
+          
+          <% unless @background_recipe.nil? || flash_shown %>
+            <div id="message-bar-recipe-name">
+              <%= @background_recipe.name %>
+            </div>
+          <% end %>
 
+          <%= render 'layouts/welcome' %>
+        </div> <!-- message-bar -->
+      </div> <!-- header -->
+      <% padding_class = (['discover', 'shop', 'cook', 'learn'].include?(controller.controller_name) ? '' : 'class=page-padding') %>
+      <div id="main" class="content-width main-height">
+        <div  <%= padding_class %>>
           <%= yield %>
         </div>
-        <!-- main -->
-      </div>
-      <!-- container -->
-    </div>
-    <!-- border -->
-    <div id="bottom">
-      &nbsp;
-    </div>
-		<div style="height: 12px"></div>
-	  <div id="special-footer">
-	  	<a href="/home/about_us" target="_blank">About Us</a>&nbsp;|&nbsp;<a href="mailto:questions@realmealz.com">Email Us</a> &nbsp;|&nbsp; 
-	  	<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.facebook.com/permalink.php?story_fbid=2097317244351&amp;id=1587977301#!/pages/RealMealz/201672796524488" send="false" layout="button_count" width="50" show_faces="false" font="verdana">Share with friends: </fb:like>&nbsp;|&nbsp;
-	  	<a href="http://twitter.com/share" class="twitter-share-button" data-url="www.realmealz.com" data-text="I love using RealMealz to plan delicious dinners!  Plan your dinners today for free using:  www.realmealz.com" data-count="none" data-related="realmealz">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>&nbsp;|&nbsp; 
-	  	<!-- Google + 1 -->
-	  	<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
-        {parsetags: 'explicit'}
-      </script>
-      <g:plusone size="medium" count="false" href="www.realmealz.com"></g:plusone>
-      <!-- Place this render call where appropriate -->
-      <script type="text/javascript">gapi.plusone.go();</script>&nbsp;| &nbsp;<a href="/home/terms_of_service" target="_blank">Terms of Service</a>&nbsp;|&nbsp;<a href="/home/privacy_policy" target="_blank">Privacy Policy</a>
-	  	
-	  </div>
-    <div style="height: 12px"></div>
+      </div> <!-- main -->
+      
+      <% if @show_footer == true %>
+            <%= render 'layouts/footer_links' %>
+    <% end %>
+    </div> <!-- content -->
     		
-    <script language="javascript">
+		<script type="text/javascript">
+		
+		  /* Make sure #main is as at least high as the window 
+		   * However, only resize if the starting height of #main is not already fullHeight
+		   * This will make sure we don't resize windows that are already being resized
+		  */
+		  function set_main_height() {
+		    if (resizeMain) {
+  		    var fullHeight = full_scroll_height('#main') + 10;
+  		    if (initMainHeight < fullHeight) {
+            $('#main').height(fullHeight);
+          }
+        }
+		  };
+		  $(window).resize(function() {  
+		    set_main_height();
+      });
+      var initMainHeight = $('#main').height();
+	    var initFullHeight = full_scroll_height('#main') + 10;
+	    //Add a 2px fudge factor
+	    var resizeMain = (initMainHeight < initFullHeight - 2) || (initMainHeight > initFullHeight + 2)
+      set_main_height();
 
-      <%# Google Analytics %>
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-22521005-3']);
-        _gaq.push(['_trackPageview']);
+      /* Google Analytics  */
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-22521005-3']);
+      _gaq.push(['_trackPageview']);
 
-        (function() {
-         	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      (function() {
+       	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
-    </script>
+	
+		/* CrazyEgg Tracking script */
+		setTimeout(function(){var a=document.createElement("script");
+		var b=document.getElementsByTagName('script')[0];
+		a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0011/8793.js?"+Math.floor(new Date().getTime()/3600000);
+		a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+		</script>
 
   </body>
 </html>

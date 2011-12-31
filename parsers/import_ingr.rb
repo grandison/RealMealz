@@ -1,5 +1,3 @@
-require "rubygems"
-#require File.expand_path('../../config/environment', __FILE__)
 require "ruby_ext"
 
 ## to run in console: load "parsers/import_ingr.rb"
@@ -7,7 +5,7 @@ require "ruby_ext"
 ## Parse ingredients.txt and adds it to DB.  Automatically checks for duplicates of both
 ## categories and ingredient, and for relational duplicates
 ##
-## Usage (at rails console): load "import_ingr.rb"
+## Usage (at rails console): load "parsers/import_ingr.rb"
 ## Make sure filename.txt below is replaced with the intended .txt file
 ## Text file needs to be in following format:
 =begin
@@ -18,18 +16,14 @@ marjoram
 ###
 
 =end
-
-
 myfile_array = Array.new
-myfile_array = open_file("parsers/ingredients2.txt")
+myfile_array = open_file("parsers/ingredients.txt")
 @i_array = Array.new
 @c_array = Array.new
-
 
 cnt = 0
 while cnt != myfile_array.length
 	@c_array = myfile_array[cnt].split(/,/).make_singular
-
 	cnt=cnt+1
 	until myfile_array[cnt].include?("###") or cnt == myfile_array.length-1
 		@i_array = myfile_array[cnt].split(/,/).make_singular				
@@ -45,7 +39,7 @@ while cnt != myfile_array.length
 					print @c.name
 					print "\n"
 				end
-							
+
 			end
 
 			(0..@i_array.length-1).each do |cnt2|
@@ -83,6 +77,7 @@ while cnt != myfile_array.length
 	@c_array=nil
 	cnt=cnt+1
 end
+
 
 
 

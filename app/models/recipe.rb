@@ -1,264 +1,254 @@
 class Recipe < ActiveRecord::Base
-  has_many :courses
-  has_many :meals, :through => :courses
+  has_many :meals
   has_many :ingredients_recipes
   has_many :ingredients, :through => :ingredients_recipes
   has_many :recipes_personalities
   has_many :personalities, :through => :recipes_personalities
   has_many :users_recipes
   has_many :users, :through => :users_recipes
-  default_scope :include => :ingredients
-  
-  attr_accessor :ingredients_on_hand, :ingredients_needed, :ingredient_list, :instruction_list
-  
-  has_attached_file :picture, :styles => { :medium => "300x300>", :thumbnail => "100x100>" },
-   :url => "/assets/recipes/:basename:size_id.:extension",  
-   :path => ":rails_root/public/assets/recipes/:basename:size_id.:extension",  
-   :default_url => "/assets/recipes/missing:size_id.png"
-  
+  belongs_to :kitchen
+  default_scope :include => [:ingredients_recipes, :ingredients] # Doesn't seem to be working
+
+  # The lists are to pass information back into the form for easier display, 
+  # sort_score is used internally for sorting the recipes by their score
+  attr_accessor :prepsteps_list, :cooksteps_list, :ingredient_list, :sort_score
+
+  DEFAULT_URL = "/assets/recipes/missing:size_id.png"
+  DEFAULT_ORIGINAL_LARGE_URL = "/assets/recipes/missing_large.png"
+  # The > in 1024x1024 is an ImageMagick command that won't resize unless an image dimension is larger
+  # This makes sure that we don't increase the file size of the original file
+  has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+  :url => "/assets/recipes/:basename:size_id.:extension",  
+  :path => ":rails_root/public/assets/recipes/:basename:size_id.:extension",  
+  :default_url => DEFAULT_URL
+
   Paperclip.interpolates :size_id do |attachment, style|
     style == :original ? "" : "_#{style}"
   end
-  
+
   #------------------------- 
-  def food_balance
-    Balance.get_food_balance(self.ingredients_recipes)
-  end 
-  
+  def ingredient_list
+    return @ingredient_list unless @ingredient_list.nil?
+    
+    @ingredient_list = ""
+    ingredients_recipes.each do |ir| 
+      @ingredient_list << "\n" if ir.group?
+      @ingredient_list << ir.name_and_description + "\n"
+    end
+    return @ingredient_list
+  end
+
   #------------------------- 
-  def setup_recipe
-    @ingredients_on_hand = []
-    @ingredients_needed = []
-    self.ingredients.each do |ingredient|
-      if current_user.kitchen.need_pantry_ingredient?(ingredient)
-        @ingredients_needed << ingredient
-      else
-        @ingredients_on_hand << ingredient
-      end
+  # This prepares the recipe for display by setting up the display fields
+  # and adjusting the servings
+  def setup_recipe(servings = nil)
+    @prepsteps_list = []
+    unless prepsteps.nil?
+      @prepsteps_list = Skill.add_skill_links(prepsteps).split("\n").map {|line| line.chomp}
     end
     
-    @ingredient_list = []
-    @instruction_list = []
-
-    lines = self.original.split("\n").map {|line| line.chomp}
-    return if lines.empty?
+    @cooksteps_list = []
+    unless cooksteps.nil?
+      @cooksteps_list = Skill.add_skill_links(cooksteps).split("\n").map {|line| line.chomp}
+    end
     
-    processing_ingredients = true
-    lines.each do |line|
-      next if line.blank?
-      
-      if line.include?("**")
-        if processing_ingredients
-          processing_ingredients = false
-          next
-        else
-          break
-        end
+    adjust_servings(servings) unless servings.nil?
+  end
+
+  #------------------------- 
+  # Uploads the recipe picture and process the ingredient_list
+  def process_recipe
+    unless picture_remote_url.blank? || Rails.env.test?
+      extname = File.extname(picture_remote_url)
+      basename = File.basename(picture_remote_url, extname)
+      file = Tempfile.new([basename, extname])
+      file.binmode
+      open(URI.parse(picture_remote_url)) do |data|  
+        file.write data.read
       end
+      file.rewind
+      self.picture = file
+    end
+    process_ingredient_list
+    save!
+  end
+
+  #------------------------- 
+  # process the ingredients_list into ingredients_recipes
+  def process_ingredient_list
+    return if ingredient_list.blank?
+
+    # if this recipe was just created, save original_ingredient_list
+    if original_ingredient_list.blank?
+      self.original_ingredient_list = ingredient_list
+    end
+    
+    if ingredient_list.is_a?(String)
+      ingr_array = ingredient_list.split(/\n/)
+    else
+      ingr_array = ingredient_list
+    end
+
+    # Usually Rails just sets the key to null. To really delete the record, the following two lines are needed
+    ingredients_recipes.each {|ir| ir.delete}
+    ingredients_recipes.reload
+    
+    ingr_array.each_with_index do |line, index|
+      next if line.empty? || line.strip.empty?
       
-      if processing_ingredients
-        @ingredient_list << line
+      # check for groups first in parenthesis, then ingredients
+      attrs = {}
+      if line =~ /^\*(.*)\*$/
+        attrs[:description] = $1
+        attrs[:group] = true
       else
-        @instruction_list << line
+        # If a comma, assume everything past is a comment so only parse the first part but then 
+        # add it back in before processing the description
+        line = line.strip.downcase
+        comma_index = line.index(",")
+        desc_part = ''
+        unless comma_index.blank?
+          desc_part = line.slice!(comma_index .. -1)
+        end
+        attrs[:ingredient] = Ingredient.find_name_and_create(line)
+        attrs[:weight] = Ingredient.find_num(line)
+        attrs[:unit] = Ingredient.find_unit(line)
+        line.slice!(desc_part) # Make sure desc_part is not included twice
+        attrs[:description] = Ingredient.find_description(line + desc_part) 
       end
+      attrs[:line_num] = index
+      attrs[:recipe_id] = self.id
+      
+      ingredient_recipe = IngredientsRecipe.create!(attrs)
+      ingredients_recipes << ingredient_recipe
+      Ingredient.standardize_unit(ingredient_recipe)
     end
   end
-  
 
+  #------------------------- 
+  def food_balance
+    self.updated_at = Time.now if self.updated_at.nil?
+
+    unless self.balance_updated_at == self.updated_at
+      protein = Unit.new("0 cup")
+      vegetable = Unit.new("0 cup")
+      starch = Unit.new("0 cup")
+      category = nil
+
+      self.ingredients_recipes.each do |ir|
+        unless ir.ingredient.nil?
+          category = ir.ingredient.get_balance_category # figure out whether it is protein, veg or fruit
+        end
+        unless category.nil?
+          volume = Unit.new("0 cup")
+          ## Set the volume variable
+          if !ir.weight.nil? and !ir.unit.nil? # Have weight and unit, add it.
+            volume = Unit.new("#{ir.weight.to_s} #{ir.unit}").convert_to_volume
+          elsif !ir.weight.nil? and ir.unit.nil? #Have weight but no unit, assume to add weight as cup unit
+            volume = Unit.new("#{ir.weight.to_s} cup")
+          else  # No weight or unit given.. assume to add one cup
+            volume = Unit.new("1 cup")
+          end
+          ## Add that volume to the right category.
+          if category == :protein
+            protein += volume
+          elsif category == :vegetable or category == :fruit
+            vegetable += volume
+          elsif category == :starch
+            starch += volume
+          end
+        end
+      end
+      self.balance_protein = protein.get_scalar
+      self.balance_vegetable = vegetable.get_scalar
+      self.balance_starch = starch.get_scalar
+      self.balance_updated_at = updated_at
+      save!
+    end
+    return  {:protein => balance_protein, :vegetable => balance_vegetable, :starch => balance_starch} 
+  end
+  
+  #------------------------- 
+  def adjust_servings(new_servings)
+    default_servings = self.servings
+    return if default_servings.nil? || default_servings == 0 
+    
+    if new_servings != 0 # If new_servings are 0, don't adjust
+      ingredients_recipes.each do |ir|
+        unless ir.weight.nil?
+          ir.weight = ir.weight * new_servings / default_servings
+        end
+      end
+    end
+    self.servings = new_servings
+    save!
+  end
+  
   ###################
   # Class methods
   ###################  
+
+  #------------------------- 
+  def self.random_background_image
+    return nil if Rails.env.test?
+    
+    background_image_url = nil
+    while background_image_url.nil? || background_image_url == DEFAULT_ORIGINAL_LARGE_URL
+      rand_id = rand(self.find(:last).id)
+      recipe = first(:conditions => [ "id >= ? and public = ?", rand_id, true])
+      background_image_url = recipe.picture.url(:large)
+    end
+    return recipe
+  end
   
   #------------------------- 
-  ## Parses the fed ingredient array and returns an array 
-  ## Usage: new_array = parse_ingredients(unparsed_text_in_array)
-  ## Return Array is in format of [["name of ingr", Ingr_id, Unit, Group],["", "", 1 g, spices], ["cucumber", 1175, 4, nil], ["white wine vinegar", 1386, 0.333333 cup], ["lemon juice", 1226, 1 tbs], ["virgin olive oil", 1361, 2 tsp], ["sugar", 1475, 1.5 tsp], ["salt", 1389, 1 tsp], ["pepper", 1390, 0.125 tsp], ["", "", 0.5 cup], ["shallot", 1101, 1], ["fresh parsley", 1448, 0.5 cup], ["fresh oregano", 1446, 1 tsp], ["almond", 1262, 3 tbs]]
-  def self.parse_ingredients(ingredient_array)
-  
-  	## fetch list of ingredients from db
-  	ingr_array = Ingredient.sort_by_length
-  	
-    @return_array = Array.new   ## store sets of [name, ing_key, qty]
-    @qty=nil  #Unit variable that holds both the scalar and the unit of the ingredient
-    @ingredient_id=nil #ingredient position in the db if a match is found
-   	@unit=nil 
-   	@ingr_index=nil
-   	@found_ingr=nil
-   	@group=nil  #The group that the ingredient belongs to (ie ((Marinade)))
+  def self.create_from_html(url)
+    return nil if url.blank?
     
-    ## Iterate through each line in ingredient_array
-    (0..ingredient_array.length-1).each do |cnt1|
-    	## if the line is empty, go to next line
-    	
-   		if ingredient_array[cnt1].strip.empty?
-   			cnt1=cnt1+1
-   	  elsif (ingredient_array[cnt1].include? "((")
-   	    array = ingredient_array[cnt1].scan(/\(\((\w+)\)\)/)
-   	    @group = array[0].to_s
-   	    cnt1=cnt1+1
-   		else
-  			## Finds @ingredient_id
-      	## Singularizes all words in ingredient_array and tries to match to ingredients db
-  			line = ingredient_array[cnt1].make_singular.remove_brackets
-  			## check line for ingredients from the ingredient db
-  			@ingr_index = ingr_array.index {|ingr| line.include?(ingr)} rescue nil 
-  			if !@ingr_index.nil?
-  				@found_ingr = ingr_array[@ingr_index]
-  				@ingredient_id = Ingredient.find_by_name(@found_ingr).id
-  			else
-  				##Ingredient Not Found 
-  				Rails.logger.info "WARNING: Ingredient not found in: #{line} :You need to add it to the Ingredient table."
-  			end
-  	
-  			## finds @qty
-  			#line = line.remove_brackets
-  			@unit = line.find_unit
-  			 
-        ## Exception Handling for different ways of representing units (cups, teaspoons, etc.)
-  			if !@unit.nil?
-  				if @unit == "c."  
-  					@unit="cup"
-  				elsif @unit == "t."
-  					@unit="teaspoon"
-  				elsif @unit == "T."
-  					@unit="tablespoon"
-  				elsif @unit == "oz."
-  					@unit="oz"
-  				elsif @unit == "OZ."
-  					@unit="oz"
-  				elsif @unit == "pinch"  ## handles pinch and translates it to 1/4 teaspoon
-  					@number = "1/4 "
-  					@unit = "teaspoon"
-  				end		
-  				## there is a unit, find closest num to the unit
-  				@number=line.find_closest_num(@unit)
-  				@qty = Unit.new("#{@number.to_s} #{@unit}")
-  			else
-  				if !@found_ingr.nil? ##ingredient found
-  					@number = line.find_closest_num(@found_ingr) ## try using ingredient as "unit" to find number
-  					if !@number.nil? ##number found
-  						@qty = Unit.new("#{@number} whole")
-  					else ##number not found with ingredient as key, just search for any number
-  						@number = line.find_num
-  						if !@number.nil?
-  							@qty = Unit.new("#{@number}")					 		
-  						end
-  					end
-  				end			
-  			end
-  				
-  			## build output array
-  			if !@found_ingr.nil? and !@qty.nil? 
-  				@return_array << [@found_ingr, @ingredient_id, @qty, @group]
-  			elsif @found_ingr.nil? and !@qty.nil?
-  				@return_array << ["","", @qty, @group]
-  			elsif !@found_ingr.nil? and @qty.nil?
-  				@return_array << [@found_ingr, @ingredient_id, nil, @group]
-  			elsif @found_ingr.nil? and @qty.nil?
-  				@return_array << ["","",nil, @group]
-  			end
-  
-  			## reset variables
-  			@unit=nil
-  			@qty=nil
-  			@number=nil
-  			@ingr_index=nil
-  			@ingredient_id=nil
-  			@found_ingr=nil
-  					
-  			Rails.logger.info "DEBUG: return array from parse_ingredients #{@return_array.inspect}"
-  		end
-  	end
-    return @return_array
-  end
+    attribs = {}
+    attribs[:source_link] = url
+    
+    if url.include?('foodnetwork.com')
+      doc = Nokogiri::HTML(open(url))
+
+      attribs[:source] = 'Food Network'
+      attribs[:name] = doc.css('#fn-w h1.fn').first.content
+      attribs[:preptime] = doc.css('#recipe-meta .prepTime').first.content.to_i rescue 0
+      attribs[:cooktime] = doc.css('#recipe-meta .cookTime').first.content.to_i rescue 0
+      attribs[:servings] = doc.css('#recipe-meta .yield').first.next_element.content.to_i rescue 4
+      attribs[:intro] = doc.css('.body-text .note').first.content rescue ''
+      attribs[:picture_remote_url] = doc.css('a#recipe-image').first['href'] rescue nil
+      attribs[:ingredient_list] = ''
       
-  
-  #------------------------- 
-  ## Adds the recipe into the DB
-  ## Usage: 
-  ## add_recipe("random recipe  all ingredients,  all instructions  \n\n\n\  hey he \n", "random recipe",[["salt",981,"4 tsp"],["ground black pepper",1049,"2 tsp"],["habanero chili",1071,"3"],["serrano chili",1072,"3"],["",793,"1 cup"],["vegetable oil",934,""],["pineapple",804,"3.5 lbs"],["cider",976,"0.25 cup"]], "chop it, cook it", 3, 5,10, "RealMealz", "tags", "no")    
-  ##
-  def self.add_recipe(original, name, intro, ingr_array, prepsteps, cooksteps, servings, preptime, cooktime, source, tags, skills, picture, approved)
-    @r = Recipe.new 
-    @r.original = original
-    @r.name = name
-    @r.intro = intro
-    @r.prepsteps = prepsteps
-    @r.cooksteps = cooksteps
-    @r.servings = servings
-    @r.preptime = preptime    
-    @r.cooktime = cooktime
-    @r.source = source
-    @r.tags = tags
-    @r.skills = skills
-    @r.approved = approved
-    @r.picture_file_name = picture
-    
-    (0..ingr_array.length-1).each do |cnt|
-    
-      ## import ingr id:  ingr_array[cnt][1] 
-      @i_id = ingr_array[cnt][1]
-      @ir = IngredientsRecipe.new 
+      group_num = 1
+      body_doc = doc.css(".body-text")
+      body_doc.css('ul').each do |ul|
+        if group_num > 1
+          group_node = ul.previous.previous
+          if %w(h2 h3).include?(group_node.node_name.downcase)
+            group_name = group_node.content
+            attribs[:ingredient_list] << "*#{group_name}*\n"
+          end
+        end
+        ul.css('li.ingredient').each do |li|
+          attribs[:ingredient_list] << li.content + "\n"
+        end
+        group_num += 1
+      end
       
-      ## link ingredient_id and recipe_id together
-      if !@i_id.nil?
-        @ir.ingredient_id = @i_id
-      end
-      @ir.recipe_id = @r.id
-      if !ingr_array[cnt][2].nil?  #!= ""
-        @my_unit = ingr_array[cnt][2] #weight and unit
-        
-        Rails.logger.info "CLASS: #{@my_unit.class}"
-        if !@my_unit.get_scalar.nil?
-          Rails.logger.info "GET_SCALAR: #{@my_unit.get_scalar}"
-          @ir.weight = @my_unit.get_scalar
+      attribs[:cooksteps] = ''
+      doc.css('.instructions').each do |inst_divs|
+        inst_divs.css('p').each do |p|
+          attribs[:cooksteps] << p.content.strip + "\n"
         end
-        if !@my_unit.unit.nil?
-          Rails.logger.info "GET_UNIT: #{@my_unit.get_unit}"
-          @ir.unit = @my_unit.get_unit
-        end
-      else
-        Rails.logger.info "WARNING: Ingredient #{@id} has no associated WEIGHT or UNITS!"
       end
-      if !ingr_array[cnt][3].nil?
-        @ir.group = ingr_array[cnt][3]
-      end
-      @ir.save
-      @r.ingredients_recipes << @ir
-    end 
-    @r.save!
-    return @r.id
-  end
-  
-  #------------------------- 
-  def self.get_all_recipe_ids
-    Recipe.find(:all) { |x| x.id}
-  end
-  
-  #------------------------- 
-  def self.find_similar(match_recipes)
-    #Get ingredients from current recipe, since we can assume they have the ingredients to make these recipes
-    match_ingredients = []    
-    match_recipes.each do |r|
-      match_ingredients << r.ingredients
+    else
+      attribs[:name] = '(Non-supported website)'
     end
     
-    #Add in ingredients from pantry
-    match_ingredients << current_user.kitchen.ingredients_kitchens.map {|ik| ik.ingredient}
-    
-    match_ingredients = match_ingredients.flatten.uniq
-    
-    similar_recipes = []
-    all.each do |recipe|
-      if recipe.ingredients.all? {|i| match_ingredients.include?(i)}
-        unless match_recipes.include?(recipe)
-          similar_recipes << recipe
-          break if similar_recipes.size >= 5
-        end
-      end
-    end
-puts similar_recipes.map{|i| i.name}.sort.to_json    
-    return similar_recipes
+    recipe = create(attribs)
+    recipe.process_recipe
+    return recipe
   end
   
 end        

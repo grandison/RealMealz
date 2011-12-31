@@ -1,6 +1,7 @@
 require "rubygems"
 require "ruby_ext"
 #require File.expand_path('../../config/environment', __FILE__)
+# run this in the rails console:  load 'parsers/update_ingr_allergens.rb'
 
 ###################
 ## Dupliated methods here so that this script works

@@ -4,7 +4,7 @@ They use Compass for development, so this is grabbed from the demo page:
 http://brandonmathis.com/projects/fancy-buttons/demo/
 */
 
-.fancy-button-reset-base-class,.fancy-button-base,a.big,.green-button,.red-button {
+.fancy-button-reset-base-class,.fancy-button-base,a.big,.green-button,.red-button, .gray-button {
   font-family: "Lucida Grande",Lucida,Arial,sans-serif;
   background: url('../images/button_bg.png?1262308446') repeat-x bottom left;
   margin: 0;
@@ -16,14 +16,14 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
   border-style: solid;
   font-weight: bold
 }
-.fancy-button-reset-base-class::-moz-focus-inner,.fancy-button-base::-moz-focus-inner,a.big::-moz-focus-inner,.green-button::-moz-focus-inner,.red-button::-moz-focus-inner  {
+.fancy-button-reset-base-class::-moz-focus-inner,.fancy-button-base::-moz-focus-inner,a.big::-moz-focus-inner,.green-button::-moz-focus-inner,.red-button::-moz-focus-inner, .gray-button::-moz-focus-inner  {
   border: none;
   padding: 0
 }
-.fancy-button-reset-base-class:focus,.fancy-button-base:focus,a.big:focus,.green-button:focus,.red-button:focus {
+.fancy-button-reset-base-class:focus,.fancy-button-base:focus,a.big:focus,.green-button:focus,.red-button:focus,.gray-button:focus {
   outline: none
 }
-.fancy-button-base,a.big,.green-button,.red-button {
+.fancy-button-base,a.big,.green-button,.red-button,.gray-button {
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   -o-border-radius: 6px;
@@ -53,10 +53,10 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
   margin: 0 2px;
   vertical-align: middle
 }
-.fancy-button-base,a.big,button,.fancy-button-base:visited,a.big:visited,.green-button:visited,.red-button:visited {
+.fancy-button-base,a.big,button,.fancy-button-base:visited,a.big:visited,.green-button:visited,.red-button:visited,.gray-button:visited  {
   color: #fff
 }
-.fancy-button-base:hover,a.big:hover,button:hover,.fancy-button-base:focus,a.big:focus,.green-button:focus.red-button:focus {
+.fancy-button-base:hover,a.big:hover,button:hover,.fancy-button-base:focus,a.big:focus,.green-button:focus,.red-button:focus,.gray-button:focus {
   background-color: #3c3c3c;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #919191), color-stop(10%, #636363), color-stop(50%, #353535), color-stop(50%, #2d2d2d), color-stop(100%, #474747));
   background-image: -moz-linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
@@ -64,10 +64,10 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
   border-color: #161616;
   text-shadow: #000 0px 1px 1px
 }
-.fancy-button-base:hover,a.big:hover,.fancy-button-base:hover:visited,a.big:hover:visited,button:hover:visited,.fancy-button-base:focus,a.big:focus,button:focus,.fancy-button-base:focus:visited,a.big:focus:visited,button:focus:visited,.green-button:focus:visited,.red-button:focus:visited {
+.fancy-button-base:hover,a.big:hover,.fancy-button-base:hover:visited,a.big:hover:visited,button:hover:visited,.fancy-button-base:focus,a.big:focus,button:focus,.fancy-button-base:focus:visited,a.big:focus:visited,button:focus:visited,.green-button:focus:visited,.red-button:focus:visited,.gray-button:focus:visited {
   color: #fff
 }
-.fancy-button-base:active,a.big:active,.green-button:active,.red-button:active {
+.fancy-button-base:active,a.big:active,.green-button:active,.red-button:active,.gray-button:active {
   background-color: #353535;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #353535), color-stop(30%, #3a3a3a), color-stop(50%, #303030), color-stop(50%, #282828), color-stop(100%, #494949));
   background-image: -moz-linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
@@ -79,7 +79,7 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
   -o-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
   box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset
 }
-.fancy-button-base:active,a.big:active,.fancy-button-base:active:visited,a.big:active:visited,button:active:visited,.green-button:active:visited,.red-button:active:visited {
+.fancy-button-base:active,a.big:active,.fancy-button-base:active:visited,a.big:active:visited,button:active:visited,.green-button:active:visited,.red-button:active:visited,.gray-button:active:visited {
   color: #fff
 }
 
@@ -131,6 +131,7 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
   color: #fff
 }
 
+/* Red button */
 .red-button {
   background-color: #b70300;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #e08180), color-stop(10%, #ce3836), color-stop(50%, #872321), color-stop(50%, #7b201e), color-stop(100%, #a42a28));
@@ -177,4 +178,53 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
 }
 .red-button:active,.red:active:visited {
   color: #fff
+}
+
+/* gray button */
+.gray-button {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #ffffff), color-stop(100%, #cecece));
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #cecece 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #cecece 100%);
+  border-color: #b7b7b7;
+  text-shadow: #fff 0px 1px 1px;
+  -moz-box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box
+}
+.gray-button,.gray-button:visited {
+  color: #222
+}
+.gray-button:hover,.gray-button:focus {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #fcfcfc), color-stop(100%, #c6c6c6));
+  background-image: -moz-linear-gradient(top, #fcfcfc 0%, #c6c6c6 100%);
+  background-image: linear-gradient(top, #fcfcfc 0%, #c6c6c6 100%);
+  border-color: #afafaf;
+  text-shadow: #fff 0px 1px 1px
+}
+.gray-button:hover,.gray-button:hover:visited,.gray-button:focus,.gray-button:focus:visited {
+  color: #222
+}
+.gray-button:active {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #cbcbcb), color-stop(40%, #d3d3d3), color-stop(85%, #d3d3d3), color-stop(100%, #e5e5e5));
+  background-image: -moz-linear-gradient(top, #cbcbcb 0%, #d3d3d3 40%, #d3d3d3 85%, #e5e5e5 100%);
+  background-image: linear-gradient(top, #cbcbcb 0%, #d3d3d3 40%, #d3d3d3 85%, #e5e5e5 100%);
+  border-color: #a7a7a7;
+  text-shadow: #fff 0px -1px -1px;
+  -moz-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
+  box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset
+}
+.gray-button:active,.gray-button:active:visited {
+  color: #222
 }

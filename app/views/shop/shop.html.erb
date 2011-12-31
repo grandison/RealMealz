@@ -1,3 +1,4 @@
+
 <div class="hide-form" style="display:none">
   <div id="item-edit-form" title="Edit Pantry Item">
     <%= form_tag("/shop/update_item", :method => "post", :name => "update_item") do %>
@@ -15,222 +16,205 @@
   		<input type="text" name="item[weight]" id="edit-weight" class="text ui-widget-content ui-corner-all" value="" />
   		</p>
   		<p>
-  		<label for="item[note]"><b>Units:</b></label><br />
-  		<input type="text" name="item[unit]" id="edit-unit" class="text ui-widget-content ui-corner-all" value="" />
+  		<label for="item[unit]"><b>Units:</b></label><br />
+  		<select id="edit-unit" class="text ui-widget-content ui-corner-all" name="item[unit]">
+  		  <option>cup</option>
+        <option>tbs</option>
+        <option>tsp</option>
+  		  <option>lb</option>
+  		  <option>oz</option>
+  		  <option>g</option>
+  		  <option>whole</option>
+      </select>
   		</p>
     	<p>	
-     	  <input value="Save" type="submit" class="green-button" />
-  	    <input value="Delete" type="button", name="delete_button", id="delete_button" />
+     	  <input value="Save" type="submit" class="gray-button" />
+  	    <input value="Delete" type="button", name="delete-button", id="delete-button" />
       </p>
     <% end %>
   </div>
 </div>
 
-<%
-  if @action_shop
-    pick_image_on = "/images/icons/cart_on.png"
-    pick_image_off = "/images/icons/cart_off.png"
-    title = "Shopping List"
-    intro = ""
-  else
-    pick_image_on = "/images/icons/pantry_need.png"
-    pick_image_off = "/images/icons/pantry_has.png"
-    
-    title = "Shopping List Builder"
-    intro = "In addition to adding items from your meal plan, you can also create a list of common items here so you can quickly add them to your shopping list as needed.   <br> <img src='/images/icons/pantry_has.png'> Add to Shopping List <br>  <img src='/images/icons/pantry_need.png'> On Shopping List  <br><br>"
-  end
-%>
-
-<h2><%= title %></h2>
-<%= intro.html_safe %>
-<% if @item_list.blank? %>
-  <p>No items in the list.</p>
-<% else %>
-
 <!-- the tooltip -->
 <span class="tooltip">&nbsp;</span>
 
-<ul id="sortable-list">
-	<!-- for loop to show items -->
-	<% @item_list.each do |item| %>	
-		<% if @action_shop && item.bought or !@action_shop && item.needed
-		     class_name = "cart cart-selected"  
-		     img = pick_image_on
-		   else
-		     class_name = "cart" 
-		     img = pick_image_off
-		   end %> 
-		<li class="shop-items" id="<%= item.id %>">
-		  <table class="item-table"><tr>
-		    
-		  <!-- Shopping cart -->  
-		  <td width="30px"><img class="<%= class_name %>" item_id="<%= item.id %>" src="<%= img %>" alt=""/></td>
-  		
-		  <!-- Item name and note -->  
-  		<% if mobile_request? %>
-    		<td><span <%= "title='#{item.note}'" unless item.note.blank? %> 
-    		    class="shop-name">
-    		    <%= item.ingredient.name.capitalize %>
-    		    <%= '...' unless item.note.blank? %>
-    		</span></td>
-  		<% else %>
-    		<td><span class="shop-name">
-    	    <%= item.ingredient.name.capitalize %>
-    	    <% unless item.weight.blank? && item.unit.blank? %>
-       	    <%= "(#{item.weight.to_s} #{item.unit.to_s})" %>
-       	   <% else %>
-       	    <%= ": " unless item.note.blank? %>
-     	    <% end %>
-    	    <%= item.note unless item.note.blank? %>
-    	  </span></td>
-  		<% end %>
-  		
-		  <!-- Edit icon -->  
-  		<td width="30px"><img class="edit-icon" item_id="<%= item.id %>" item-name="<%= item.ingredient.name %>" item-note="<%= item.note %>" item-weight="<%= item.weight %>" item-unit="<%= item.unit %>" src="/images/icons/edit_24x24.png" alt="edit"/></td>
-		  
-		  <!-- Drag icon -->  
-		  <td width="30px"><img class="drag-icon touchable" src="/images/icons/draggable-icon-36px.png" alt="drag" /></td>
-  		
-  		</tr></table>
-  	</li>
-	<% end %>
-</ul>
+<% unless mobile_request? %>
+  <%= render_cell :meals, :meals_list, current_user, show_plus = true %>
+<% end %>  
 
-<% if @action_shop%>
-  <div class="done-shopping-div">
-    <%= button_to("Done shopping", {:action => "done_shopping"}, :confirm => "Remove all bought items from the shopping cart?", :class => "green-button") %>
+<div id="shop-column">
+  <div id="shop-list">
+    <%= render_cell :shop, :shop_list, current_user, mobile_request? %>
   </div>
-<% else %>
-  <div class="add-item-form">
-    <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
-      <%= autocomplete_field_tag('new_item_name', '', '/shop/autocomplete_ingredient_name', :size => 20) %>
-    	<p>	
-    	  <input value="Add Item" type="submit" class="green-button" />
-      </p>
-    <% end %>
+</div>
+
+<div id="shop-controls">
+  <div id="shop-controls-box">
+    <h2>Let's Go Shopping!</h2>
+    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <img src="/images/icons/pantry_has.png"> in your "My Meals" list.  We will automatically exclude items on your <a href="/settings">exclude items list</a> so you won't see items like salt and pepper every time you create your list.  Then, use our mobile web-app to see and manage your shopping list while you shop!  </p>
+    
+    <div id="shop-default-servings">
+      <b>Default servings: </b><%= text_field(:kitchen, :default_servings, :id => "shop-servings-input", :size => 5) %>
+    </div>
+
+    <div id="shop-add-item">
+      <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
+        <input name="item[needed]" value="true" type="hidden" />
+        <%= autocomplete_field_tag('item[name]', '', '/shop/autocomplete_ingredient_name', :size => 20) %>
+    	  <input value="Add Item" type="submit" class="gray-button" />
+      <% end %>
+    </div>
+    
+    <div id="shop-done">
+      <%= button_to_function("Done shopping", "shoppingDone();", :class => "gray-button") %>
+    </div>
+    
+    <div id="shop-clear-items">
+      <%= button_to_function("Clear all items", "shopListClear();", :class => "gray-button") %>
+    </div>
+    <p>&nbsp;</p> <!-- needed on Chrome so shop-controls-box extends past buttons -->
+  </div>
+</div>
+
+<% unless true || mobile_request? %>
+  <div id="pick-column">
+    <div id="shop-add-item">
+      <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
+        <%= autocomplete_field_tag('item[name]', '', '/shop/autocomplete_ingredient_name', :size => 20) %>
+    	  <input value="Add Pantry Item" type="submit" class="green-button" />
+      <% end %>
+    </div>
+    
+    <div id="pick-list">
+      <%= render_cell :shop, :pick_list, current_user, 
+      pick_image_on = "/images/icons/grocery_list_on.png", 
+      pick_image_off = "/images/icons/grocery_list_off.png", 
+      mobile_request? %>
+    </div>
   </div>
 <% end %>
 
-  
+<%# --------Javascript-------- %>
 <script type="text/javascript">
 
-  $.ajaxSetup({
-    error: function(request, status, error) {
-      alert("An AJAX error occurred: " + status + "\nError: " + error + "\n" + 
-      $(request.responseText).eq(4).html() + "\n" + 
-      $(request.responseText).eq(5).html());
-    }
-  });
+/* setup scroll on shopping list */
+setup_scroll('#shop-list');
 
+/* setup sortable */
+function setupSortableShopList() {
+  setup_sortable('#sortable-list', '<%= @action_shop ? "shop_order" : "pantry_order" %>');
+  $('#sortable-list').sortable('option', 'axis', 'y');
+  $('#sortable-list').sortable('option', 'handle', 'img.drag-icon');
+  $('#sortable-list').sortable('option', 'revert', false);
+  $('#sortable-list').sortable('option', 'distance', 0);
+}
+setupSortableShopList();
 
-  $(function() {
-  	$("#sortable-list").sortable({
-  	  opacity: 0.6, 
-  	  placeholder: 'ui-state-highlight',
-  	  cursor: 'move',
-  	  handle: 'img.drag-icon',
-  	  axis: 'y',	
-  	  distance: 0,
-      update:function() {  
-        order = $("#sortable-list").sortable("toArray");
-        $.ajax({
-          type:"post",
-          url:"/shop/update_order",
-          data: 'order=' + order + "&shop=<%= @action_shop %>"
-        });
-      }    
-    }).addTouch();
-  	$( "#sortable-list" ).disableSelection();
-  	$(".shop-name:[title]").tooltip({
-    		tip: '.tooltip',
-    		effect: 'fade',
-    		fadeOutSpeed: 100,
-    		predelay: 100,
-    		position: "center right",
-    		offset: [0, 0]
-    	}).css('cursor','help');
-    $("img.drag-icon-foo").hover(
-      function () {
-        $(this).addClass("drag-hover");
-      },
-      function () {
-        $(this).removeClass("drag-hover");
-    });	
-  });
+/* Edit dialog: setup */
+$("#item-edit-form").dialog({
+	autoOpen: false,
+	modal: true,
+	close: function() {
+	}
+});
 
-  $(".cart").click(function() {
-   if ($(this).hasClass("cart-selected")) { 
-     $(this).removeClass("cart-selected");
-     $(this).attr("src", "<%= pick_image_off %>");
-   } 
-   else { 
-     $(this).addClass("cart-selected"); 
-     $(this).attr("src", "<%= pick_image_on %>");
-   };
-		$.ajax({		  
-		  type: "post",
-			url: "/shop/update",
-			data: "id=" + $(this).attr('item_id') + "&value=" + $(this).hasClass("cart-selected") + "&shop=<%= @action_shop %>",
-		  error: function (request, status, error) {
-        alert(request.responseText);
-      }
-		});    
-    return false;
-  });
-  
-  $(".edit-icon")
-		.click(function() {
-			var itemId = $(this).attr("item_id");
-			var itemName = $(this).attr("item-name");
-			var itemNote = $(this).attr("item-note");
-			var itemWeight = $(this).attr("item-weight");
-			var itemUnit = $(this).attr("item-unit");
-			$("#edit-id").attr("value", itemId);
-			$("#edit-name").attr("value", itemName);
-			$("#edit-note").attr("value", itemNote);
-			$("#edit-weight").attr("value", itemWeight);
-			$("#edit-unit").attr("value", itemUnit);
-			$( "#item-edit-form" ).dialog( "open" );
-      return false;
+/** Edit dialog: remove from shopping list **/
+$("#delete-button").click(function() {
+  var itemId = $("#edit-id").attr("value");
+  $("#item-edit-form").dialog("close");
+  $.ajax({		  
+	  type: "post",
+		url: "/shop/remove_from_shopping_list",
+		data: "id=" + itemId
 	});
+	li_item_remove("#" + itemId, "fast", "#shop-list");
+});	
+
+
+/* Show info as tooltip */
+$(".shop-name:[title]").tooltip({
+	tip: '.tooltip',
+	effect: 'fade',
+	fadeOutSpeed: 100,
+	predelay: 100,
+	position: "center right",
+	offset: [0, 0]
+}).css('cursor','help');
 	
-	$(".delete-icon")
-		.click(function() {
-			var itemId = $(this).attr("item_id");
-			$.ajax({		  
-			  type: "post",
-				url: "/shop/delete",
-				data: "id=" + itemId
-			});
-	    $("li#" + itemId).fadeTo("slow", 0.00, function(){
-	      $(this).slideUp("slow", function() {
-	         $(this).remove();
-	       });
-	    });
-	});
+/* Shop List: Toggle needed */
+$("#shop-list").delegate("#shop-list .cart", "click", function() {
+  if ($(this).hasClass("cart-selected")) { 
+    $(this).removeClass("cart-selected");
+    $(this).attr("src", "/images/icons/cart_off.png");
+  } 
+  else { 
+    $(this).addClass("cart-selected"); 
+    $(this).attr("src", "/images/icons/cart_on.png");
+  };
+	$.ajax({		  
+	  type: "post",
+		url: "/shop/update",
+		data: "id=" + $(this).attr('item_id') + "&value=" + $(this).hasClass("cart-selected") + "&shop=true"
+	});    
+});
 
-	$("#item-edit-form").dialog({
-		autoOpen: false,
-		modal: true,
-		close: function() {
-		}
-	});
+/* Shop List: fill and open edit dialog */
+$("#shop-list").delegate(".edit-icon", "click", function() {
+		var itemId = $(this).attr("item_id");
+		var itemName = $(this).attr("item-name");
+		var itemNote = $(this).attr("item-note");
+		var itemWeight = $(this).attr("item-weight");
+		var itemUnit = $(this).attr("item-unit");
+		$("#edit-id").attr("value", itemId);
+		$("#edit-name").attr("value", itemName);
+		$("#edit-note").attr("value", itemNote);
+		$("#edit-weight").attr("value", itemWeight);
+		$('#edit-unit').find('option:contains("' + itemUnit + '")').attr('selected', 'selected');
+		$( "#item-edit-form" ).dialog( "open" );
+    return false;
+});
 
-  $("#delete_button").click(function() {
-    var itemId = $("#edit-id").attr("value");
-    $("#item-edit-form").dialog("close");
-    $.ajax({		  
-		  type: "post",
-			url: "/shop/delete",
-			data: "id=" + itemId
-		});
-    $("li#" + itemId).fadeTo("slow", 0.00, function(){
-      $(this).slideUp("slow", function() {
-         $(this).remove();
-       });
-     });
+/** Meals: add recipe ingredients **/
+$("#my-meals-list").delegate(".my-meals-add-ingredients", "click", function() {
+  $.post('/shop/add_recipe_ingredients', 'recipe_id=' + $(this).attr('recipe-id'),
+  function(data) {
+    updateShopList(data);
   });
+});
+
+/** update default servings  **/
+$("#shop-servings-input").blur(function() {
+  $.post("/shop/update_default_servings", "kitchen[default_servings]=" + $(this).val());
+});
+
+/** clear the shopping list **/
+function shopListClear(){
+  if(confirm("Remove all items from the shopping cart?")) {
+    $.post("/shop/clear_shopping_list", 
+      function(data) {
+        updateShopList(data);
+      }
+    );
+  }
+};
+
+/** Take out all bought items in shopping list **/
+function shoppingDone(){
+  if(confirm("Remove all bought items from the shopping cart?")) {
+    $.post("/shop/done_shopping", 
+      function(data) {
+        updateShopList(data);
+      }
+    );
+  }
+};
+
+/** update the shopping list **/
+function updateShopList(data) {
+  $('#shop-list .overview').html(data);
+  $('#shop-list').tinyscrollbar_update();
+  setupSortableShopList();
+};
 
 </script>
 
-<% end # no items in list %>

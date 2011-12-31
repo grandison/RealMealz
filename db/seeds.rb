@@ -6,8 +6,8 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-@user = User.create!(:first => 'Guest', :confirmed_at => Time.current, :password => 'dummy_password', :email => 'dummy@nothere.com')
+#@user = User.create!(:first => 'Guest', :confirmed_at => Time.current, :password => 'dummy_password', :email => 'dummy@nothere.com')
 
 #Set the role, overriding the checks
-@user.send :attributes=, {:role => 'guest'}, false
-@user.save!
+#@user.send :attributes=, {:role => 'guest'}, false
+#@user.save!

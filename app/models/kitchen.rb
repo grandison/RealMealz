@@ -6,105 +6,192 @@ class Kitchen < ActiveRecord::Base
   has_many :sort_orders
   has_many :ingredients_kitchens
   has_many :ingredients, :through => :ingredients_kitchens
+  has_many :recipes
   validates_presence_of :name
-  
-  DEFAULT_MEAL_DAYS = '12345' # Days of week. 0=Sunday, 1=Monday
-  
-  #-------------------------------------------
-  def update_default_servings(servings)
-    self.default_servings = servings
-    self.save!
-  end
-  
-  #-------------------------------------------
-  def get_food_balance
-    return Balance.get_food_balance(self.ingredients_kitchens)
-  end
   
   #-------------------------------------------
   def get_sorted_pantry_items
-    SortOrder.list_sort(id, :pantry_order, ingredients_kitchens.includes(:ingredient))
+    SortOrder.list_sort(id, :pantry_order, ingredients_kitchens.includes(:ingredient)).
+      delete_if {|ik| ik.ingredient.nil?}
   end
   
   #-------------------------------------------
   def get_sorted_shopping_items
-    SortOrder.list_sort(id, :shop_order, ingredients_kitchens.includes(:ingredient).where(:needed => true))
+    SortOrder.list_sort(id, :shop_order, ingredients_kitchens.includes(:ingredient).where('needed = ?', true)).
+      delete_if {|ik| ik.ingredient.nil?}
   end
 
   #-------------------------------------------
-  def get_sorted_meal_recipes
-    SortOrder.list_sort(id, :meal_order, next_recipes)
+  def get_sorted_my_meals
+    SortOrder.list_sort(id, :meal_order, filter_meals('my_meals'))
   end
   
   #-------------------------------------------
-  def need_pantry_ingredient?(ingredient)
-    ik = ingredients_kitchens.where(:ingredient_id => ingredient.id).first
-    return ik.nil? || ik.needed?
+  def filter_meals(meals_field = nil)
+    meals.delete_if {|m| (!meals_field.nil? && !eval("m.#{meals_field}")) ||
+     m.recipe.nil? || m.recipe.name.blank? || m.recipe.preptime.nil?}
   end
   
   #-------------------------------------------
-  def add_new_pantry_item(ingredient_name)
-    return if ingredient_name.blank?
-    name = ingredient_name.chomp.make_singular
-    i = Ingredient.find_or_create_by_name(name, :kitchen_id => self.id)
-    ik = IngredientsKitchen.create(:ingredient => i, :needed => false, :bought => false)
-    ingredients_kitchens << ik
+  def have_ingredients
+    have_ingredient_items.map {|ik| ik.ingredient}
+  end
+
+  #-------------------------------------------
+  def have_ingredient_items
+    ingredients_kitchens.includes(:ingredient).where("have = ? AND ingredient_id IS NOT NULL", true).order('ingredients.name')
+  end
+  
+  #-------------------------------------------
+  def starred_meal_ingredient_ids
+    recipe_ids = ActiveRecord::Base.connection.select_values("SELECT recipe_id FROM meals WHERE kitchen_id = #{self.id} AND starred = 1") 
+    # The above is about 30ms faster in some tests since objects are not instantiated
+    #  recipe_ids = meals.where(:starred => true).map {|m| m.recipe_id}
+    return recipe_ids || []
+  end
+
+  #-------------------------------------------
+  def my_meals_recipe_ids
+    recipe_ids = ActiveRecord::Base.connection.select_values("SELECT recipe_id FROM meals WHERE kitchen_id = #{self.id} AND my_meals = 1") 
+    # The above is about 30ms faster in some tests since objects are not instantiated
+    #recipe_ids = meals.where(:my_meals => true).map {|m| m.recipe_id}
+     return recipe_ids || []
+  end  
+  
+  #-------------------------------------------
+  # Need just ingredient_name. However, other attributes can be added too
+  def add_new_pantry_item(ingredient_name, attributes)
+    ingr = Ingredient.find_or_create_by_name(ingredient_name, self.id)
+    return nil if ingr.nil?
+
+    ik = ingredients_kitchens.find_by_ingredient_id(ingr)
+    if ik.nil?
+      ik = ingredients_kitchens.create({:ingredient => ingr, :needed => false, :bought => false, :have => false})
+    end
+    ik.update_attributes!(attributes)
     return ik
   end
   
-  #-------------------------------------------
-  ## Returns emails of all users under the kitchen
-  def users_emails
-    users.map {|user| user.email}
+  #-------------------
+  def add_or_update_pantry_ingredient(ingr_id, checked)
+    ik = ingredients_kitchens.find_by_ingredient_id(ingr_id)
+    if ik.nil?
+      ik = ingredients_kitchens.create(:ingredient_id => ingr_id)
+    end
+    ik.have = checked
+    ik.save!
   end
   
-  #-------------------------------------------
-  ## Update the default days of the week the kitchen recipes displays
-  def set_default_meal_days(meal_days)
-    self.default_meal_days = meal_days.to_s
-    self.save!
+  #--------------------------------
+  def update_ingredients_kitchens(ingredient_name_or_id, attributes)
+    ingr = Ingredient.find_or_create_by_name_or_id(ingredient_name_or_id, self.id)
+    return nil if ingr.nil?
+
+    user_ingr = ingredients_kitchens.find_by_ingredient_id(ingr.id)
+    if user_ingr.nil?
+      user_ingr = ingredients_kitchens.create(:ingredient_id => ingr.id)
+    end
+    user_ingr.update_attributes!(attributes)
+    return user_ingr
   end
   
   #-------------------------------------------
   def done_shopping
-    bought_list = ingredients_kitchens.where(:bought => true)
-    bought_list.each do |item_bought|
-      item_bought.update_attributes!(:bought => false, :needed => false)
-    end
+    IngredientsKitchen.update_all({:bought => false, :needed => false, :have => true, :weight => 0}, 
+      {:kitchen_id => self.id, :bought => true})
   end
   
-  #-------------------------------------------
-  def get_uneaten_recipes(end_date, start_date)
-    return_recipes = []
-    meals.includes(:courses).where(["scheduled_date >= ? AND scheduled_date <= ? AND courses.is_eaten = ?", start_date, end_date, false]).each do |m|
-      return_recipes << m.recipes
+  #-------------------
+  def update_shop_list(ik_id, state, shop_list)
+    ik = IngredientsKitchen.find(ik_id)
+    if shop_list
+      ik.bought = state
+    else # pick list
+      ik.needed = state
+      # if removing from the needed list, also clear the bought flag. Otherwise if they put
+      # back on the needed list, it will show up in the shop list as already purchased.
+      if !state
+        ik.bought = false
+      end
     end
-    return return_recipes.flatten
-  end
-  
-  #-------------------------------------------
-  def planned_meal_shopping_list(end_date, start_date)
-    recipe_list = get_uneaten_recipes(end_date, start_date)
-    ingr_list = []    
-    recipe_list.each do |r|
-      ingr_list << r.ingredients.where(:stock_item => false)
-    end
-    ingr_list.flatten.uniq
-  end
-  
-  #-------------------------------------------
-  def add_recipes_to_pantry_and_cart(ingr_list)
-    ingr_list.each do |ingr|
-      ik = ingredients_kitchens.find_or_create_by_ingredient_id(ingr.id)
-      ik.needed = true
-      ik.save!
-      ingredients_kitchens << ik
-    end
-  end
+    ik.save!
+  end  
 
   #-------------------------------------------
-  def next_recipes
-    meals.map {|meal| meal.recipes}.flatten
+  def remove_from_shopping_list(ik_id)
+    IngredientsKitchen.find(ik_id).update_attributes!(:bought => false, :needed => false, :weight => 0)
+  end
+  
+  #-------------------------------------------
+  def clear_shopping_list
+    IngredientsKitchen.update_all({:bought => false, :needed => false, :weight => 0}, 
+      {:kitchen_id => self.id, :needed => true})
+  end
+  
+  #-------------------------------------------
+  def add_ingredients_to_shopping_list(ingr_list, recipe_servings)
+    
+    # Determine how to scale recipe ingredients depending on the servings
+    if !recipe_servings.nil? && recipe_servings != 0 && !default_servings.nil? && default_servings != 0
+      factor = 1.0 * default_servings / recipe_servings
+    else
+      factor = 1
+    end
+
+    # Add ingredients unless excluded and scale weights 
+    ingr_list.each do |ir|
+      next if ir.group
+      ik = ingredients_kitchens.find_or_create_by_ingredient_id(ir.ingredient_id)
+      next if ik.exclude
+      ik.needed = true
+      unless ir.weight.nil?
+        if ik.weight.nil? 
+          ik.weight = ir.weight * factor
+        else
+          ik.weight += ir.weight * factor  ## TO-DO adjust for possibly different units
+        end
+      end
+      ik.unit = ir.unit
+      ik.save!
+    end
+  end
+  
+  #-------------------------------------------
+  def add_recipe_ingredients_to_shopping_list(recipe_id)
+    recipe = Recipe.find(recipe_id)
+    add_ingredients_to_shopping_list(recipe.ingredients_recipes, recipe.servings)
+  end
+
+  #---------------------------------
+  def update_meals(recipe_id, my_meals, starred)
+    m = meals.find_by_recipe_id(recipe_id)
+    if m.nil?
+      m = meals.create!(:recipe_id => recipe_id)
+    end
+    m.my_meals = my_meals unless my_meals.nil?
+    m.starred = starred unless starred.nil?
+    m.save!
+  end
+    
+  #---------------------------------
+  def remove_recipe_and_ingredients(recipe_id)
+    meals.find_by_recipe_id(recipe_id).update_attributes!(:my_meals => false)
+
+    ingr_ids = Recipe.find(recipe_id).ingredients.map {|i| i.id}
+    IngredientsKitchen.update_all({:weight => 0, :have => false}, 
+      ["kitchen_id = ? AND have = ? AND ingredient_id in (?)", self.id, true, ingr_ids])
+  end
+  
+  #---------------------------------
+  def increment_seen_count(recipe_id)
+    return if recipe_id.blank?
+    
+    m = meals.find_by_recipe_id(recipe_id)
+    if m.nil?
+      m = meals.create!(:recipe_id => recipe_id)
+    end
+    m.seen_count = m.seen_count + 1
+    m.save!
   end
   
   #######################
@@ -120,7 +207,7 @@ class Kitchen < ActiveRecord::Base
      else
        kitchen_name = last_name
      end
-     Kitchen.create!(:name => kitchen_name, :default_meal_days => DEFAULT_MEAL_DAYS, :default_servings => 1)
+     Kitchen.create!(:name => kitchen_name, :default_servings => 4)
   end
  
 end

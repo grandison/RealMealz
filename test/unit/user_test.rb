@@ -1,78 +1,97 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
- 
-  ########################3
-  ## Tests
-  ## => add_recipe
-  ## => deactivate_recipe
-  ## => get_active_recipe_ids 
-  
-  test "add_recipe" do
-    u = User.find_by_id(1)
-    u.add_recipe(505,"discover")
-    u.add_recipe(507,"discover")
-    assert_equal [505,507], u.get_active_recipe_ids
 
-    u.deactivate_recipe(505)
-    assert_equal [507], u.get_active_recipe_ids
-
-    u.add_recipe(505,"discover")
-    assert_equal [505,507], u.get_active_recipe_ids
-
-    u.update_recipe_rating(505,2)
-    assert_equal 2, u.get_recipe_rating(505)
+  def setup
+    @kitchen = Kitchen.create!(:name => 'Dunn Family')
+    @user = User.create(:first => 'Max', :last => 'Dunn', :email => 'max@mail.com', :password => 'password', :password_confirmation => 'password')
+    @user.kitchen_id = @kitchen.id
+    @user.role = 'kitchen_admin'
+    @user.save!
   end
   
-  test "get_allergy_free_mains" do
-    u = User.find_by_id(2)
-    assert_equal [502, 564], u.get_allergy_free_mains
+  test "get recipes" do
+    Recipe.delete_all
+    Meal.delete_all
+    r1 = Recipe.create!(:name => 'Public Recipe 1', :picture_file_name => 'recipe1.jpg')
+    r2 = Recipe.create!(:name => 'Public Recipe 2', :picture_file_name => 'recipe2.jpg', :public => true)
+    r3 = Recipe.create!(:name => 'Private Recipe 3', :picture_file_name => 'recipe3.jpg', :public => false, :kitchen_id => @kitchen.id)
+    r4 = Recipe.create!(:name => 'Private other Recipe 4', :picture_file_name => 'recipe4.jpg', :public => false, :kitchen_id => 123456)
+    r5 = Recipe.create!(:name => 'Private without picture Recipe 5', :public => false, :kitchen_id => @kitchen.id)
+    r6 = Recipe.create!(:name => 'Private/Public Recipe 6', :picture_file_name => 'recipe5.jpg', :public => true, :kitchen_id => @kitchen.id)
+    m1 = Meal.create!(:kitchen_id => @kitchen.id, :recipe_id => r2.id, :starred => true)
+    
+    # Get all recipes for this user
+    # Should include all public recipes, plus all private recipes for this kitchen, even if no picture
+    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
+    [r1, r2, r3, r5, r6].each do |r|
+      assert r_list.include?(r), r.name + ' not found'
+    end
+
+    # Get starred recipes
+    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
+    assert_equal 1, r_list.count, 'Number of starred recipes'
+    assert_equal r2.id, r_list.first.id, 'Correct recipe is starred'
+
+    # Not one starred recipes, should get normal list
+    m1.update_attributes!(:starred => false)
+    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
+    assert_equal 5, r_list.count, 'None starred: number of recipes'
+
+    # Get search list
+    r_list = @user.get_favorite_recipes(ids_shown = [], {'search' => 'Recipe 2'})
+    assert_equal 5, r_list.count, 'Searched for Recipe 2'
+    assert_equal r2.name, r_list.first.name
+    
+    # Seen should be last
+    m2 = Meal.create!(:kitchen_id => @kitchen.id, :recipe_id => r1.id, :seen_count => 1)
+    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
+    assert_equal r1.name, r_list.last.name, "Seen should be last"
+    
   end
-  
-  test "add_meal" do
-    u = User.find_by_id(1)
-    m = u.add_meal(:dinner, Date.today)
-    assert_equal 3,m.meal_type_id
-    assert_equal 1,m.kitchen_id
-    assert_equal Date.today, m.scheduled_date
+
+  test "update like avoid" do
+    name = 'Soy sauce'
+    
+    # Create new user_ingredient
+    user_ingr1 = @user.update_users_ingredients(name, :like => true)
+    assert_equal name, user_ingr1.ingredient.name, "Ingredient name"
+    assert user_ingr1, "Ingredient user, :like"
+    assert_equal @kitchen.id, user_ingr1.ingredient.kitchen_id, "Kitchen id of ingredient"
+    
+    # Make sure second time finds it by name and doesn't create a new one
+    user_ingr2 = @user.update_users_ingredients(name, :like => false, :avoid => true)
+    assert_equal user_ingr1.id, user_ingr2.id, 'Created separate ingredient'
+    assert user_ingr2.avoid, "Avoid not set"
+    
+    # Now find by id
+    user_ingr2 = @user.update_users_ingredients(user_ingr2.ingredient.id, :avoid => false)
+    assert !user_ingr2.avoid, "Avoid not set"
   end
 
   test "add_and_destroy_allergy" do
-    user = User.find(3)
-    assert_equal ["germ", "gluten", "seitan", "wheat"], user.get_allergy_names.sort
-    
-    user.add_allergy("salmon")  ## adding salmon to allergies
-    user = User.find(3)
-    assert_equal ["germ", "gluten", "salmon", "seitan", "wheat"], user.get_allergy_names.sort
-    
-    user.add_allergy("fish")  ## adding fish to allergies, should add fish sub allergies too
-    user = User.find(3)
-    allergy_names = user.get_allergy_names
-    ["fish","trout","sea bas","tuna","grouper","halibut","cod","worcestershire sauce","caviar","roe"].each do |name|
-      assert allergy_names.include?(name), "Allergy names did not include '#{name}'"
-    end
-    
-    user.destroy_allergy("fish")
-    user = User.find(3)
-    assert_equal ["germ", "gluten", "seitan", "wheat"], user.get_allergy_names.sort
-  end
-  
+    gluten = Allergy.create(:name => 'gluten')
+    Allergy.create(:name => 'wheat', :parent_id => gluten.id)
+    Allergy.create(:name => 'beechnut')
+
+    @user.add_allergy('beechnut') 
+    assert_equal ['beechnut'], @user.get_allergy_names.sort
+
+    @user.add_allergy('gluten')  
+    assert_equal ['beechnut', 'gluten', 'wheat'], @user.get_allergy_names.sort
+
+    @user.destroy_allergy("gluten")
+    @user.reload
+    assert_equal ["beechnut"], @user.get_allergy_names.sort
+  end  
+
   test "update_basic_allergy_list" do
-    user = User.find(3)
-    user.update_basic_allergy_list(['gluten', 'beechnut'])
-    
-    user = User.find(3)
-    assert_equal ['beechnut', 'gluten'], user.get_allergy_names.sort
+    gluten = Allergy.create(:name => 'gluten')
+    Allergy.create(:name => 'wheat', :parent_id => gluten.id)
+    Allergy.create(:name => 'beechnut')
+
+    @user.update_basic_allergy_list(['gluten', 'beechnut'])
+    assert_equal ['beechnut', 'gluten', 'wheat'], @user.get_allergy_names.sort
   end
-  
-  test "create_with_saved" do
-    user = User.create_with_saved(:first => 'Max', :last => 'Dunn', :email => 'max@gmail.com',
-      :password => 'hello', :password_confirmation => 'hello',
-      :recipes => [502, 564], 'allergies' => ['beechnut', 'gluten'])
-    assert_equal "MaxDunn", user.first + user.last
-    assert_equal 'kitchen_admin', user.role
-    assert_equal "Dunn", user.kitchen.name
-    assert_equal ["beechnut", "gluten"], user.get_allergy_names.sort
-    assert_equal [502, 564], user.get_active_recipe_ids.sort
-  end
+
 end

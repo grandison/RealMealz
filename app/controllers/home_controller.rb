@@ -1,27 +1,26 @@
 class HomeController < ApplicationController
 
   skip_before_filter :require_super_admin
+  before_filter :require_user, :only => [:welcome]
 
   def index
     session[:saved] = {:recipes => [], :allergies => []}.with_indifferent_access
   end
-
-  def index1
-    save_choices
+  
+  def welcome
+    @background_recipe = Recipe.random_background_image
   end
 
-  def index2
-    save_choices  
+  def about_us
+    @background_recipe = Recipe.random_background_image
   end
 
-  def index3
-    save_choices
+  def privacy_policy
+    @background_recipe = Recipe.random_background_image
   end
-
-  def index4
-    save_choices  
-    @allergies_checked = session[:saved][:allergies]
-    @allergy_names = Allergy.get_displayed_allergy_names
+  
+  def terms_of_service
+    @background_recipe = Recipe.random_background_image
   end
   
   def sign_up
@@ -30,25 +29,23 @@ class HomeController < ApplicationController
     @user.first = params[:save][:first] rescue ''
     @user.last = params[:save][:last] rescue ''
     sign_out
+    @background_recipe = Recipe.random_background_image
   end
 
-  def welcome
-    @user = User.create_with_saved(session[:saved].merge(params[:user])) # Don't save password in session but merge here
+  def create_user
+    if session[:saved]
+      attribs = session[:saved].merge(params[:user]) # Don't save password in session but merge here
+    else
+      attribs = params[:user]
+    end
+      
+    @user = User.create_with_saved(attribs) 
     if @user.errors.empty?
       sign_in(@user)
+      redirect_to '/home/welcome'
     else
       render :action => :sign_up
     end
-  end
-
-  def login_guest
-    sign_in User.find_by_role('guest')
-    redirect_to :action => 'index'
-  end
-
-  def get_started
-    sign_out
-    redirect_to '/users/sign_up'
   end
   
   ##############
