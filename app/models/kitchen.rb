@@ -44,7 +44,7 @@ class Kitchen < ActiveRecord::Base
   
   #-------------------------------------------
   def starred_meal_ingredient_ids
-    recipe_ids = ActiveRecord::Base.connection.select_values("SELECT recipe_id FROM meals WHERE kitchen_id = #{self.id} AND starred = 1") 
+    recipe_ids = ActiveRecord::Base.connection.select_values("SELECT recipe_id FROM meals WHERE kitchen_id = #{self.id} AND starred = TRUE") 
     # The above is about 30ms faster in some tests since objects are not instantiated
     #  recipe_ids = meals.where(:starred => true).map {|m| m.recipe_id}
     return recipe_ids || []
@@ -52,7 +52,7 @@ class Kitchen < ActiveRecord::Base
 
   #-------------------------------------------
   def my_meals_recipe_ids
-    recipe_ids = ActiveRecord::Base.connection.select_values("SELECT recipe_id FROM meals WHERE kitchen_id = #{self.id} AND my_meals = 1") 
+    recipe_ids = ActiveRecord::Base.connection.select_values("SELECT recipe_id FROM meals WHERE kitchen_id = #{self.id} AND my_meals = TRUE") 
     # The above is about 30ms faster in some tests since objects are not instantiated
     #recipe_ids = meals.where(:my_meals => true).map {|m| m.recipe_id}
      return recipe_ids || []
