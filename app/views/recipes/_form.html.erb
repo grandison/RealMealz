@@ -1,0 +1,117 @@
+<%= form_for(@recipe, :action => 'new', :html => { :multipart => true })  do |f| %>
+  <% if @recipe.errors.any? %>
+    <div id="error_explanation">
+      <b><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</b>
+
+      <ul>
+      <% @recipe.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div id="recipe-new">
+      <table border="0">
+      <tr>
+      	<td valign=top>
+      	  <p>
+      			<b>Recipe Name</b></br>
+      			<%= f.text_field(:name, :size => 77, :placeholder => "Amazing Fruit Bowl") %>
+    			</p>
+    			<p>
+      			<b>Photo</b><br />
+      			Choose picture from local computer
+      			<%= f.file_field(:picture) %><br />
+      			or enter URL of picture<br />
+      			<%= f.url_field(:picture_remote_url, :size => '77', :placeholder => 'www.google.com/image/taco_picture.jpg')%>
+      		</p>
+
+          <p>
+      			<b>Why do you love this Recipe?</b><br />
+      			<%= f.text_area(:intro, :cols => 58, :rows => 4, :placeholder => "I love making this on a hot summer day!") %>
+    			</p>
+    			<p>
+      			<%= link_to("Ingredients", "/ingredients", :target => "_blank")%> 
+      			
+      			(<%= link_to("Reprocess", "", :id => "recipe-reprocess-ingredients", "recipe-id" => @recipe.id)%>)<br />
+
+      			<%= f.text_area(:ingredient_list, :id => "recipe-ingredients-list", :cols => 58, :rows => 10, :placeholder => "1/3 cup rice") %>
+    			</p>
+    			
+    			<p>
+      			<b>Original Ingredients (For reference only)</b><br />
+      			<%= f.text_area(:original_ingredient_list, :cols => 58, :rows => 10, :placeholder => "(This will be automatically filled with Ingredients on first save)",
+      			:disabled => "disabled") %>
+          </p>
+          
+    		</td>
+    		<td valign=top style="padding-left: 5px">
+          <p>
+      			<b>Cooking Instructions</b><br />
+      			Prep:<br /><%= f.text_area(:prepsteps, :cols => 58, :rows => 10, :placeholder => "1. Wash the vegetables") %>
+            <br />
+      			Cook:<br /><%= f.text_area(:cooksteps, :cols => 58, :rows => 10, :placeholder => "1. Saute the vegetables") %>
+    			</p>
+
+          <p>
+      			<b>Number of Servings: </b>	
+      			  <%= f.text_field(:servings, :size => 1, :placeholder => "4") %><br />
+    			  <b>Prep time (in min): </b>
+    			    <%= f.text_field(:preptime, :size => 1, :placeholder => "20") %> (chopping, marinating...)<br />
+    			  <b>Cook time (in min): </b> 
+    			    <%= f.text_field(:cooktime, :size => 1, :placeholder => "10") %> (salad tossing, baking, steaming...)
+    			</p>
+
+    			<p>
+    			  <b>Credit: </b>
+    			  <%= f.text_field(:source, :size => 50, :placeholder => "Connie Kwan") %><br />
+      			<b>Source: </b>
+      			<%= f.text_field(:source_link, :size => 50, :placeholder => "http://myrecipeblog.com" ) %>
+    			</p>
+
+    			<p>
+    			  <b>Tags: </b>
+    			  <%= f.text_field(:tags, :size => 50, :placeholder => "snack, main, sandwich, vegan, meat") %><br />
+    			  <b>Skills: </b>
+    			  <%= f.text_field(:skills, :size => 50, :placeholder => "saute, bake, slowcook, fry") %>
+    			  <b><%= f.label(:public)%></b> <%= f.check_box(:public)%>
+    			</p>
+    			<p>
+    			  <input value="Save" type="submit" class="green-button" />
+    			  <%= link_to 'Back', recipes_path %>
+  			  </p>
+      	</td>
+      </tr>
+      </table>
+  </div>
+<% end %>
+
+<div id="recipe-ingredient-dialog" class="gray-background" title="Edit Ingredient" style="display: none;"></div>
+
+<script type="text/javascript">
+$("#recipe-reprocess-ingredients").click(function() {
+  var postData = {
+    "recipe_id": $(this).attr("recipe-id"), 
+    "ingredient_list": $("#recipe-ingredients-list").val()
+  }
+  $.post("/recipes/reprocess", postData, function(list) {
+    $("#recipe-ingredients-list").val(list);
+  });
+  return false;
+});
+
+$("#ingredient-edit-button").click(function() {
+  $.post("/ingredients/edit_or_create_by_name", "ingredient_name=" + $("#ingredient_name").val(), function(data) {
+    $("#recipe-ingredient-dialog").html(data);
+    $("#recipe-ingredient-dialog").dialog({ 
+      buttons: { "Cancel": function() { $(this).dialog("close"); } },
+      modal: true,
+      position: 'center',
+      minWidth: 320 
+    });
+  });
+  return false;
+});
+
+</script>

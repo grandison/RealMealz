@@ -1,0 +1,91 @@
+<div class="recipe-title"><%= @recipe.name %></div>
+
+<%= render :partial => 'recipe_source', :locals => {:recipe => @recipe}%><br />
+
+<div id="recipe-info" class="gray-background">
+<table>
+  <% unless @recipe.servings.blank? %>
+  <tr>
+    <td>
+      <b>Servings: </b></td> <td><%= text_field(:recipe, :servings, 
+        :id => "recipe-servings-input", "recipe-id" => @recipe.id, :size => 5) %>
+    </td>
+  </tr>
+  <% end %>
+  <% unless @recipe.preptime.blank? %>
+  <tr>
+    <td><b>Prep time: </b></td> <td><%= @recipe.preptime %> mins</td>
+  </tr>
+  <% end %>
+  <% unless @recipe.cooktime.blank? %>
+  <tr>
+    <td><b>Cook time: </b></td> <td><%= @recipe.preptime %> mins</td>
+  </tr>
+  <% end %>
+</table>  
+</div>
+
+<div id="recipe-intro">
+  <% unless @recipe.intro.blank? %>
+    <%= @recipe.intro %><br />
+  <% end %>
+</div>
+
+<% if current_user.role == 'super_admin' %>
+  <%= button_to("Edit", {:controller => "recipes", :action => "edit", :id => @recipe.id}, 
+  :method => :get, :id => "cook-recipe-edit", :class => "green-button") %>
+<% end %>
+<%= button_to("I'm done cooking", {:controller => "cook", :action => "done_cooking", :recipe_id => @recipe.id}, 
+:confirm => "Remove this recipe from My Meal and remove all ingredients from the pantry?", 
+:id => "cook-done-cooking", :class => "gray-button") %>
+
+<br />
+
+<div id="recipe-ingredients-detailed" class="gray-background">
+  <b>Ingredients</b><br />
+  <div id="recipe-ingredients-list">
+    <%= render :partial => 'recipe_ingredient_list', :locals => {:ingredients_recipes => @recipe.ingredients_recipes} %>
+  </div>
+</div>
+
+<div id="recipe-spacer">&nbsp;</div>
+
+<div id="recipe-prep-and-cook-steps" class="gray-background">
+  <% unless @recipe.prepsteps_list.blank? %>
+    <p>
+      <b>Prep Instructions</b><br />
+      <% @recipe.prepsteps_list.each do |prep_line| %>
+      <%= sanitize(prep_line) %><br />
+      <% end %>
+    </p>
+  <% end %>
+
+  <p>
+    <b>Cook Instructions</b><br />
+    <% @recipe.cooksteps_list.each do |cook_line| %>
+    <%= sanitize(cook_line) %><br />
+    <% end %>
+  </p>
+</div>   
+
+<script type="text/javascript">
+  /** update servings if either enter pressed or focus is lost **/
+  $("#recipe-servings-input").keypress(function(e) {
+    if (e.keyCode == 13) { updateServings(); }
+  });
+  $("#recipe-servings-input").blur(function() { updateServings(); });
+  
+  /* Only update if value is different. This will prevent double update when enter is pressed and then focus lost */
+  var lastValue = 0
+  function updateServings() {
+    var $this = $("#recipe-servings-input");
+    if (lastValue != $this.val()) {
+      lastValue = $this.val();
+      $.post("/recipes/update_servings", "new_servings=" + $this.val() + "&recipe_id=" + $this.attr("recipe-id"),
+      function(data){
+        $('#recipe-ingredient-list').html(data);
+      })
+    }
+  }
+</script> 
+

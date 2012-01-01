@@ -1,0 +1,10 @@
+<% unless recipe.source.blank? %> 
+  <div id="recipe-source">
+    By: 
+    <% unless recipe.source_link.blank? %>
+      <%= link_to(recipe.source, recipe.source_link, :target => '_blank') %>
+    <% else %>
+      <%= recipe.source %>
+    <% end %>
+  </div>
+<% end %>

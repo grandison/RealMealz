@@ -1,0 +1,43 @@
+<div class="gray-background">
+  <h1>Listing recipes</h1>
+  <p>
+    <%= link_to 'New Recipe', new_recipe_path %>&nbsp;
+    <%= form_tag '/recipes/create_from_url' do %>
+      <%= url_field_tag(:url, '', {:size => '80', :placeholder => 'http://www.foodnetwork.com/recipes'} ) %>
+      <input value="Import recipe" type="submit" class="gray-button" />
+    <% end %>
+  </p>
+</div>
+
+<table id='recipe-list-table' class="gray-background">
+  <tr>
+    <th>Name</th>
+    <th>Ingredients</th>
+    <th>Intro</th>
+    <th>Tags</th>
+    <th>Public</th>
+    <th>Picture</th>
+  </tr>
+
+<% @recipes.each do |recipe| %>
+  <tr>
+    <td><%= link_to(recipe.name, edit_recipe_path(recipe)) %></td>
+    <td class="no-wrap">
+      <% recipe.ingredients_recipes.each do |ir| %>
+        <%= ir.name unless ir.nil? %><br />
+      <% end %>
+    </td>
+    <td><%= recipe.intro %></td>
+    <td><%= recipe.tags %></td>
+    <td><%= recipe.public %></td>
+    <td><%= link_to(image_tag(recipe.picture.url(:thumbnail), :width => "100px", :height => "100px"),
+      recipe.picture.url(:original) ) %></td>
+    <td><%= link_to 'Destroy', recipe, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% @background_recipe = Recipe.random_background_image %>
+

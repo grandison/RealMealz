@@ -1,0 +1,24 @@
+<div id='cook-recipe-dialog'>
+  <div id='cook-recipe-scroll'>
+    <div id='cook-recipe-box'>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+/* load the recipe when the user clicks on it */
+$(".recipe-display").click(function() {
+  $.post("/recipes/recipe_setup", "recipe_id=" + $(this).attr('recipe-id'),
+  function(data) {
+    $('#cook-recipe-box').html(data);
+    setup_scroll('#cook-recipe-scroll');
+  });		
+});
+
+/* auto-load the first recipe, if one */
+if ($(".recipe-display").first() != 'undefined') {
+  $(".recipe-display").first().click();
+};
+  
+</script>
