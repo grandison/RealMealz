@@ -28,6 +28,9 @@ gem 'haml'
 gem 'cells'
 gem 'nokogiri'
 
+#---- For Heroku ----
+gem 'thin'
+
 #--- For debugging  -----
 # gem "ruby-debug"
 gem "yaml_db"
