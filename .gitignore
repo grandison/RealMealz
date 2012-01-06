@@ -1,5 +1,6 @@
 .bundle
 db/*.sqlite3
+db/data.yml
 log/*.log
 tmp/
 .svn*
@@ -7,3 +8,6 @@ tmp/
 .project
 *.tmproj
 .rvm*
+/public/assets/
+realmealz_dev
+realmealz_test
