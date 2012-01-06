@@ -27,6 +27,11 @@ class ApplicationController < ActionController::Base
     return hash
   end
   
+  #-------------------------
+  def check_user_role(role)
+    current_user.nil? || (!role.nil? && current_user.role != role.to_s)
+  end
+  
   ##############
   protected
   ##############
@@ -54,7 +59,7 @@ class ApplicationController < ActionController::Base
   
   #-------------------------
   def require_user(role = nil)
-    if current_user.nil? || (!role.nil? && current_user.role != role.to_s)
+    if check_user_role(role)
       store_location
       if role.nil?
         flash[:notice] = "You must be logged in to access this page"

@@ -22,11 +22,12 @@ gem "paperclip", "~> 2.4"
 gem 'fog'
 gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete", "~> 0.9.0"
-gem 'will_paginate', '3.0.pre2'
+gem 'will_paginate'
 gem 'rest-open-uri'
 gem 'haml'
 gem 'cells'
 gem 'nokogiri'
+gem 'admin_data', '= 1.1.14'
 
 #---- For Heroku ----
 gem 'thin'

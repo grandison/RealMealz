@@ -6,7 +6,7 @@ class IngredientsRecipe < ActiveRecord::Base
 
   #-------------------
   def name
-    if group
+    if group?
       return "*#{description}*"
     else
       return weight_and_unit_name
@@ -15,7 +15,7 @@ class IngredientsRecipe < ActiveRecord::Base
 
   #-------------------
   def name_and_description
-    if group
+    if group?
       return name
     elsif description.blank?
       return name

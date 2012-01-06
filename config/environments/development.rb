@@ -22,13 +22,8 @@ RealMealz::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
-  # Setup test email. Will only go to email addresses recognized by maxwiki
+  # Setup development url for email links
   config.action_mailer.default_url_options = { :host => 'local.realmealz.com:3000' }
-  config.action_mailer.smtp_settings = {
-    :address => "mail.maxwiki.com",
-    :port => 587,
-    :domain => "maxwiki.com",
-    :authentication => :none
-  }
+
 end
 

@@ -140,7 +140,7 @@ class Kitchen < ActiveRecord::Base
 
     # Add ingredients unless excluded and scale weights 
     ingr_list.each do |ir|
-      next if ir.group
+      next if ir.group?
       ik = ingredients_kitchens.find_or_create_by_ingredient_id(ir.ingredient_id)
       next if ik.exclude
       ik.needed = true

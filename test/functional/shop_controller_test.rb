@@ -172,9 +172,10 @@ class ShopControllerTest < ActionController::TestCase
     Ingredient.create!(:name => 'Rice')
     @recipe = Recipe.create!({:name => 'Rice recipe', :ingredient_list => "1 cup rice", :servings => 1})
     @recipe.process_ingredient_list
+
     post :add_recipe_ingredients, :recipe_id => @recipe.id, :render => 'json'
     assert_response :success
-    
+
     resp = JSON.parse(response.body)
     assert_equal 1, resp.length
     ik = resp.first["ingredients_kitchen"]

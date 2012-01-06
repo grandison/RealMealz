@@ -144,7 +144,7 @@ class RecipeTest < ActiveSupport::TestCase
 	  
 	  # First group of ingredients
 	  assert_equal 'For the Brown Chicken Stock:', recipe.ingredients_recipes[12].description
-	  assert recipe.ingredients_recipes[12].group, "First group"
+	  assert recipe.ingredients_recipes[12].group?, "First group"
 	  assert_equal '*For the Brown Chicken Stock:*', recipe.ingredients_recipes[12].name
 	  
 	  # Last group

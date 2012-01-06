@@ -13,8 +13,8 @@ class Recipe < ActiveRecord::Base
   # sort_score is used internally for sorting the recipes by their score
   attr_accessor :prepsteps_list, :cooksteps_list, :ingredient_list, :sort_score
 
-  DEFAULT_URL = "/assets/recipes/missing:size_id.png"
-  DEFAULT_ORIGINAL_LARGE_URL = "/assets/recipes/missing_large.png"
+  DEFAULT_URL = "/images/missing:size_id.png"
+  DEFAULT_ORIGINAL_LARGE_URL = "/images/missing_large.png"
 
   # Paperclip resize note:
   #   The > in 1024x1024 is an ImageMagick command that won't resize unless an image dimension is larger

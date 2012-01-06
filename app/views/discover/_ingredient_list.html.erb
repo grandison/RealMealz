@@ -15,7 +15,7 @@ end
 <ul class="<%=class_name %>" style="<%=display%>">
   <% recipe.ingredients_recipes.each do |ir|; next if ir.nil? %>
 
-    <% if ir.group %>
+    <% if ir.group? %>
       <li>
         <%= check_and_add_group_html(ir.name) %>
       </li>
