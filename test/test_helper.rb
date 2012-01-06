@@ -14,23 +14,9 @@ class ActiveSupport::TestCase
   def sign_in(user)
     UserSession.create(user)
   end
-
-  def setup_recipes
-    Recipe.delete_all
-    recipes = []
-    ['Corn Beef', 'Chicken Curry', 'Lasagna', 'Upside-down Pizza'].each do |name|
-      recipe = Recipe.new(:name => name)
-      recipe.save!(:validate => false)
-      recipes << recipe
-    end
-    return recipes
-  end
-
-  def setup_active_recipes(recipes)
-    UsersRecipe.delete_all
-    recipes.each do |recipe|
-      UsersRecipe.create!(:user_id => User.first, :recipe_id => recipe.id, :active => true)
-    end
+  
+  def signed_in?
+    UserSession.find
   end
 
 end
@@ -50,27 +36,6 @@ class ActionDispatch::IntegrationTest
 
   def get_methods(controller)
     eval("#{controller}.new.methods") - ApplicationController.methods - Object.methods - ApplicationController.new.methods
-  end
-
-  def user_signed_in?
-    defined?(@integration_session) && @integration_session.session["warden.user.user.key"]
-  end
-
-  #def current_user
-  #  if !defined?(session) || session.nil? || session["warden.user.user.key"].nil?
-  # else
-  #    User.find(session["warden.user.user.key"][1][0])
-  #  end
-  #end
-
-  def sign_in(user)
-    session["warden.user.user.key"] = new.Array[4]
-    session["warden.user.user.key"][1] = new.Array
-    session["warden.user.user.key"][1][0] = user.id
-  end
-
-  def sign_out
-    get '/users/sign_out'
   end
 
 end

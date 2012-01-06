@@ -1,9 +1,10 @@
 <div id="my-meals">
   <div id="my-meals-header" class="gray-background"><h2>My Meals</h2>
-  	<!-- MAKE THIS DefAULT SERVINGS SHOW ONLY FOR SHOP PAGE 
-  	<div id="shop-default-servings">
-      Default servings: <%= text_field(:kitchen, :default_servings, :id => "shop-servings-input", :size => 2) %>
-   </div> -->
+    <% if show_servings %>
+    	<div id="shop-default-servings">
+        Default servings: <%= text_field_tag('kitchen[default_servings]', kitchen.default_servings, :id => "shop-servings-input", :size => 1) %>
+     </div>
+   <% end %>
   </div>
   
   <div id="my-meals-list">

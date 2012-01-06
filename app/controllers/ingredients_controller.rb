@@ -9,17 +9,27 @@ class IngredientsController < ApplicationController
     else
       ingr_from = Ingredient.find(params[:checked][:from])
       ingr_to = Ingredient.find(params[:checked][:to])
-      Ingredient.combine_ingredients(ingr_from, ingr_to)
-      flash[:notice] = "'#{ingr_from.name}' combined into '#{ingr_to.name}'"
+
+      if current_user.role != 'super_admin' && 
+        (ingr_from.kitchen_id != current_user.kitchen_id ||
+        ingr_to.kitchen_id != current_user.kitchen_id)
+        flash[:notice] = "Security violation!"
+      else
+        Ingredient.combine_ingredients(ingr_from, ingr_to)
+        flash[:notice] = "'#{ingr_from.name}' combined into '#{ingr_to.name}'"
+      end    
     end
-    
     redirect_to "/ingredients"
   end
-  
+
   #------------------------- 
   def index
-    @ingredients = Ingredient.all.sort_by {|i| i.name}
-
+    if current_user.role == 'super_admin'
+      @ingredients = Ingredient.all.sort_by {|i| i.name}
+    else
+      @ingredients = Ingredient.where(:kitchen_id => current_user.kitchen_id).sort_by {|i| i.name}
+    end
+        
     respond_to do |format|
       format.html #"index" 
       format.xml  { render :xml => @ingredients }
@@ -35,6 +45,9 @@ class IngredientsController < ApplicationController
   #------------------------- 
   def new
     @ingredient = Ingredient.new
+    if current_user.role != 'super_admin'
+      @ingredient.kitchen_id = current_user.kitchen_id  
+    end
 
     respond_to do |format|
       format.html #{ render "ingredient_form" }
@@ -60,6 +73,9 @@ class IngredientsController < ApplicationController
   #------------------------- 
   def create
     @ingredient = Ingredient.new(params[:ingredient])
+    if current_user.role != 'super_admin'
+      @ingredient.kitchen_id = current_user.kitchen_id  
+    end
 
     respond_to do |format|
       if @ingredient.save
@@ -104,7 +120,7 @@ class IngredientsController < ApplicationController
     else
       # Find this manually because the relation between kitchens and unique ingredients is not setup
       # Since ingredients_kitchens is for panty ingredients     
-      @ingredient = Ingredient.where(:kitchen_id => current_user.kitchen.id, :id => id).first
+      @ingredient = Ingredient.where(:kitchen_id => current_user.kitchen_id, :id => id).first
     end
   end   
 
@@ -113,7 +129,7 @@ class IngredientsController < ApplicationController
     if current_user.role == 'super_admin'
       kitchen_id = 0
     else
-      kitchen_id = current_user.kitchen.id
+      kitchen_id = current_user.kitchen_id
     end
     @ingredient = Ingredient.find_or_create_by_name(name, kitchen_id)
   end   

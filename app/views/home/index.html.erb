@@ -1,6 +1,75 @@
 <% @show_footer = true %>
 
-<img width="940" height="756" src="/images/title.png" usemap="#signup">
-<map name="signup">
-  <area shape="rect" coords="600,600,1175,918" href="/home/sign_up" alt="SIGN UP! >>>>" />		
-</map>
+
+<div id="video-dialog" title="Youtube Video" style="display:none">
+   <object width="560" height="315"> <!--(900x505)-->
+    <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw"></param>
+    <param name="allowFullScreen" value="true"></param>
+    <param name="allowscriptaccess" value="always"></param>
+    <embed src="http://www.youtube.com/v/00Tkhc_s4iw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
+    </embed>
+  </object> 
+</div>
+
+<!-- replace below with dynamic background graphic -->
+<% @background_recipe = Recipe.random_background_image %>
+
+
+<table id="frontpage-table">
+	<tr>
+		<td>
+			<div class="frontpage-boxes gray-background" href="http://www.youtube.com/v/00Tkhc_s4iw" title="Discover Tonight's Dinner with RealMealz"><img src="/images/1discover.png"></img>
+			<h1>Discover</h1><h4>new & easy recipes</h4>
+			</div>
+		</td>
+		<td class="frontpage-spacer"></td>
+		<td>
+				<div class="frontpage-boxes gray-background" href="http://www.youtube.com/v/GxcX3EU13c8" title="Cook 30 minute Meals with RealMealz">
+				<br><br><img class="frontpage-horizontal-spacer" src="/images/2cook.png"></img>
+				<br><h1>Cook</h1><h4>meals within 30 minutes</h4>
+				</div>
+		</td>
+		<td class="frontpage-spacer"></td>
+		<td>
+			<div class="frontpage-boxes gray-background" href="http://www.youtube.com/v/36QfEObYj9g" title="Track your Food Wellness and Earn Points">
+			<br><img class="frontpage-horizontal-spacer" src="/images/3track.png"></img>
+			<br><br><h1>Track</h1><h4>food wellness and points for prizes</h4></div>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+  	<td class="frontpage-spacer"></td>
+  	<td></td>
+  	<td class="frontpage-spacer"></td>
+  	<td>
+  		<form method="link" action="/home/sign_up" align="right">
+	  <input value="Sign Up! >>" type="submit" class="gray-button" /></form>
+	  </td>
+	</tr>
+</table>
+</body>
+
+<script type="text/javascript">
+
+$('.frontpage-boxes').click(function() {
+  var title = $(this).attr('title');
+  var link = $(this).attr('href');
+  var $dialog = $("#video-dialog");
+  $dialog.dialog("destroy");
+  $dialog.attr('title', title);
+  $dialog.find('param[name="movie"]').attr('value', link);
+  $dialog.find("embed").attr("src", link);
+  $( "#video-dialog" ).dialog({
+     width: 600,
+     height: 380,
+     modal: true
+   });;
+  return false;
+});
+
+ </script>
+
+
+
+
+

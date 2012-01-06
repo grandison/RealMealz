@@ -15,12 +15,38 @@ class Recipe < ActiveRecord::Base
 
   DEFAULT_URL = "/assets/recipes/missing:size_id.png"
   DEFAULT_ORIGINAL_LARGE_URL = "/assets/recipes/missing_large.png"
-  # The > in 1024x1024 is an ImageMagick command that won't resize unless an image dimension is larger
-  # This makes sure that we don't increase the file size of the original file
-  has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
-  :url => "/assets/recipes/:basename:size_id.:extension",  
-  :path => ":rails_root/public/assets/recipes/:basename:size_id.:extension",  
-  :default_url => DEFAULT_URL
+
+  # Paperclip resize note:
+  #   The > in 1024x1024 is an ImageMagick command that won't resize unless an image dimension is larger
+  #   This makes sure that we don't increase the file size of the original file
+
+  STORAGE = 'fog'
+  if STORAGE == 's3'
+    # s3_aws doesn't recognize the new Amazon S3 path with the bucket at front, like: realmealz.recipes.s3.amazonaws.com    
+    has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+    :storage => :s3, 
+    :s3_credentials => "#{Rails.root}/config/s3.yml", 
+    :s3_options => {:server => 'realmealz-recipes.s3-website-us-west-2.amazonaws.com'},
+    :url => ":s3_domain_url",
+    :path => ":basename:size_id.:extension",
+    :default_url => DEFAULT_URL
+  elsif STORAGE == 'fog'
+    options = YAML::load(ERB.new(File.read("#{Rails.root}/config/fog_s3.yml")).result)
+    has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+    :storage => :fog, 
+    :fog_credentials => options['fog_credentials'], 
+    :fog_directory => options['bucket'],
+    :fog_host => "http://#{options['bucket']}.#{options['s3_host_name']}",
+    :fog_public => true,
+    :url => '/',
+    :path => ":basename:size_id.:extension",
+    :default_url => DEFAULT_URL
+  else
+    has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+    :url => "/assets/recipes/:basename:size_id.:extension",  
+    :path => ":rails_root/public/assets/recipes/:basename:size_id.:extension",  
+    :default_url => DEFAULT_URL
+  end
 
   Paperclip.interpolates :size_id do |attachment, style|
     style == :original ? "" : "_#{style}"

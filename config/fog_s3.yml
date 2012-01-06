@@ -1,0 +1,11 @@
+fog_credentials:
+  provider: AWS
+  aws_access_key_id: AKIAIE3NGR56KQ74WCNA
+  aws_secret_access_key: 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
+  region: us-west-2
+  scheme: http
+  port: 80
+
+bucket: realmealz-recipes
+s3_host_name: s3-website-us-west-2.amazonaws.com
+

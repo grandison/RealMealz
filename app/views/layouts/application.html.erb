@@ -45,11 +45,10 @@
         <div id="message-bar" class="content-width">
           
           <div id="flash-div">
-            <% flash_shown = false; flash.each do |name, msg| %>
-              <% if msg.is_a?(String); flash_shown = true%>
-                <%= content_tag(:span, msg, {:id => "flash-#{name}", :class => 'flash'}) %>
-              <% end %>  
-            <% end %>
+            <% flash_shown = false; %>
+            <% if flash[:notice].is_a?(String); flash_shown = true %>
+              <%= content_tag(:span, flash[:notice], {:id => "flash-notice", :class => 'flash'}) %>
+            <% end %>  
           </div>
           
           <% unless @background_recipe.nil? || flash_shown %>

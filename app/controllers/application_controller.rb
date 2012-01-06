@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :prepend_view_path_if_mobile
   after_filter :flash_to_headers
   after_filter :check_points
+  before_filter :logging
 
   #------------------------- 
   # For AJAX calls, return the flash messages in the header
@@ -131,6 +132,13 @@ class ApplicationController < ActionController::Base
     unless users_point.nil? || users_point.point.nil?
       flash[:notice] = "You got #{users_point.point.points} point#{users_point.point.points == 1 ? '' : 's'}!" 
       flash[:points] = current_user.get_points
+    end
+  end
+  
+  #------------------------- 
+  def logging
+    if logger && current_user
+      logger.info "User: #{current_user.name}"
     end
   end
   

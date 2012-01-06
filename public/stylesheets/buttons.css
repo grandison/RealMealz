@@ -213,7 +213,8 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
 .gray-button:hover,.gray-button:hover:visited,.gray-button:focus,.gray-button:focus:visited {
   color: #222
 }
-.gray-button:active {
+.gray-button:active,
+.gray-button-active {
   background-color: #fff;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #cbcbcb), color-stop(40%, #d3d3d3), color-stop(85%, #d3d3d3), color-stop(100%, #e5e5e5));
   background-image: -moz-linear-gradient(top, #cbcbcb 0%, #d3d3d3 40%, #d3d3d3 85%, #e5e5e5 100%);
@@ -225,6 +226,7 @@ http://brandonmathis.com/projects/fancy-buttons/demo/
   -o-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
   box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset
 }
-.gray-button:active,.gray-button:active:visited {
+.gray-button:active,.gray-button:active:visited,
+.gray-button-active {
   color: #222
 }

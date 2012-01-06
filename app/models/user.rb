@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.login_field = false 
     c.login_field = :email
+    c.disable_perishable_token_maintenance = true
   end 
 
   # Setup accessible (or protected) attributes for your model
@@ -173,14 +174,12 @@ class User < ActiveRecord::Base
       meal = Meal.where(:recipe_id => r.id, :kitchen_id => self.kitchen_id).first
       unless meal.nil? 
         
-        # Subtract 100 for each time seen, except if searching subtract 10 for each time
+        # Subtract 100 for each time seen, except if searching
         if search_for.blank?
           r.sort_score -= 100 * meal.seen_count 
-        else
-          r.sort_score -= 10 * meal.seen_count 
         end
         
-        # Subtract 75 if in my meals, else if searching add 25
+        # Subtract 75 if in my meals, else if searching add 50
         if search_for.blank?    
           r.sort_score -= 75 if meal.my_meals
         else
@@ -346,6 +345,12 @@ class User < ActiveRecord::Base
     return nil if num >= point.max_times
 
     users_points.create(:point_id => point.id, :date_added => Time.now)
+  end
+  
+  #--------------------------------
+  def deliver_password_reset_instructions!
+    reset_perishable_token!
+    SiteMailer.password_reset_instructions(self).deliver!
   end
 
   ##################################

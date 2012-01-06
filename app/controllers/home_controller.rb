@@ -44,6 +44,7 @@ class HomeController < ApplicationController
       sign_in(@user)
       redirect_to '/home/welcome'
     else
+      @background_recipe = Recipe.random_background_image
       render :action => :sign_up
     end
   end

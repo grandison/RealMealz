@@ -240,7 +240,8 @@ body {
 }
 
 #flash-error {
-  color: #FFB60A;
+  color: rgb(73, 68, 41);
+  font-style: italic;
 }
 
 #welcome {
@@ -270,6 +271,17 @@ body {
 	line-height: 100%;
 }
 
+/** Welcome Page **/
+#welcome-page-video{
+	text-align: center;
+	margin-left: 230px;
+	width: 700px;
+	height: 50px;
+}
+
+#welcome-page-basic-equipment{
+	
+}
 /*** Discover ***/
 .discover-recipe {
   position: relative;
@@ -295,6 +307,32 @@ body {
   width: 100%;
 }
 
+/** Frontpage details **/
+#frontpage-table {
+	margin-left: auto;
+	margin-right: auto;
+}
+.frontpage-boxes{
+	width: 310px;
+	height: 460px;
+	text-align: center;
+	display: inline-block;	
+}
+.frontpage-boxes h1{
+	font-size: 2.8em;	
+	margin: 0px;
+	padding: 0px;
+}
+.frontpage-boxes h4{
+	margin: 0px;
+	padding: 0px;
+}
+.frontpage-spacer{
+	width: 20px;
+}
+.frontpage-horizontal-spacer{
+	padding-bottom: 16px;
+}
 /*** Discover details ***/
 .discover-detail-main {
   position: absolute;
@@ -939,13 +977,29 @@ body {
 /** Session **/
 #session-login {
   margin: 0px auto;
-  width: 200px;
+  width: 300px;
+}
+
+#session-forgot-password {
+  margin: 0px auto;
+  width: 300px;
+}
+
+#session-reset-password {
+  margin: 0px auto;
+  width: 300px;
+}
+
+/** User **/
+#user-edit {
+  margin: 0px auto;
+  width: 300px;
 }
 
 /** Home **/
 #home-signup {
   margin: 0px auto;
-  width: 200px;
+  width: 300px;
 }
 
 .home-pics {
@@ -1134,7 +1188,7 @@ body {
   margin: 0px auto;
   text-align: center;
   width: 400px;
-  height: 300px;
+  height: 200px;
 }
 
 #cook-recipe-edit {

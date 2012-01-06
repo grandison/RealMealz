@@ -39,7 +39,7 @@
 <span class="tooltip">&nbsp;</span>
 
 <% unless mobile_request? %>
-  <%= render_cell :meals, :meals_list, current_user, show_plus = true %>
+  <%= render_cell :meals, :meals_list, current_user, show_plus = true, show_servings = true %>
 <% end %>  
 
 <div id="shop-column">
@@ -51,12 +51,8 @@
 <div id="shop-controls">
   <div id="shop-controls-box">
     <h2>Let's Go Shopping!</h2>
-    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <img src="/images/icons/pantry_has.png"> in your "My Meals" list.  We will automatically exclude items on your <a href="/settings">exclude items list</a> so you won't see items like salt and pepper every time you create your list.  Then, use our mobile web-app to see and manage your shopping list while you shop!  </p>
+    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <img src="/images/icons/pantry_has.png"> in your "My Meals" list.  We will automatically exclude items on your <a href="/settings">exclude items list</a> so you won't see items like salt and pepper every time you create your list.  Then, go to m.realmealz.com on your mobile phone to see and manage your shopping list while you shop!    </p>
     
-    <div id="shop-default-servings">
-      <b>Default servings: </b><%= text_field(:kitchen, :default_servings, :id => "shop-servings-input", :size => 5) %>
-    </div>
-
     <div id="shop-add-item">
       <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
         <input name="item[needed]" value="true" type="hidden" />
@@ -81,7 +77,7 @@
     <div id="shop-add-item">
       <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
         <%= autocomplete_field_tag('item[name]', '', '/shop/autocomplete_ingredient_name', :size => 20) %>
-    	  <input value="Add Pantry Item" type="submit" class="green-button" />
+    	  <input value="Add Pantry Item" type="submit" class="gray-button" />
       <% end %>
     </div>
     

@@ -1,6 +1,6 @@
 <div id="welcome">
   <% if current_user %>
-    <a href='/users/my_account'>Welcome, <%= "#{current_user.first} #{current_user.last}" %>! </a>| 
+    Welcome, <a href='/users/edit'><%= "#{current_user.first} #{current_user.last}" %>! </a>| 
       <span id="logout"><%= link_to("Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?") %></span>
     <br />
     <span id="points-msg">You have <span id="points"><%= current_user.get_points %></span> points.</span> 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111230223409) do
+ActiveRecord::Schema.define(:version => 20120103062700) do
 
   create_table "allergies", :force => true do |t|
     t.string  "name"
@@ -245,6 +245,7 @@ ActiveRecord::Schema.define(:version => 20111230223409) do
     t.string   "persistence_token"
     t.datetime "last_request_at"
     t.integer  "balance_id"
+    t.string   "perishable_token",                  :default => ""
   end
 
   add_index "users", ["email"], :name => "index_members_on_email", :unique => true

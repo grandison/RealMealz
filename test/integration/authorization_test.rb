@@ -10,7 +10,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'GET/home', :sign_in_required => false}, 
     {:path => 'POST/home/create_user', :sign_in_required => false, :redirect_to => '/home/welcome'},
     {:path => 'GET/home/sign_up', :sign_in_required => false},
-    {:path => 'POST/home/sign_up', :sign_in_required => false},
+    {:path => 'POST/home/sign_up', :sign_in_required => false, :sign_out_required => true},
     {:path => 'GET/home/about_us', :sign_in_required => false},
     {:path => 'GET/home/privacy_policy', :sign_in_required => false},
     {:path => 'GET/home/terms_of_service', :sign_in_required => false},
@@ -18,10 +18,12 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
 
     {:path => 'GET/users/new', 
       :sign_in_required => false, 
+      :sign_out_required => true,
       :flash => 'You must be logged out to access this page',
       :logged_in_redirect_to => '/users'}, 
     {:path => 'POST/users/new', 
-      :sign_in_required => false, 
+      :sign_in_required => false,
+      :sign_out_required => true, 
       :logged_in_redirect_to => '/users',
       :logged_in_flash =>'You must be logged out to access this page'}, 
     {:path => 'POST/users/edit', :redirect_to => '/users/my_account', :flash => 'Account updated!'}, 
@@ -60,6 +62,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       obj = klass.new
       obj.id = 1
       obj.save(:validate => false)
+      ActiveRecord::Base.connection.reset_pk_sequence!(klass.table_name)  if ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
     end
     
     @email = 'name@gmail.com'
@@ -123,11 +126,13 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   
   #----------
   test "allow access when signed in" do
-    do_sign_in
-
     get_routes.each do |route|
-      ActiveRecord::Base.connection.begin_db_transaction #wrap in transaction so deletes don't mess up later tests
-      
+      next if route[:sign_out_required]
+
+      # Have to setup each time because some log out and some delete records that will be needed later
+      # Tried using transactions and savepoints, but they don't work on sqlite3
+      setup
+      do_sign_in
       do_action(route)
 
       check_response(route[:logged_in_redirect_to] || route[:redirect_to], route[:name])
@@ -137,8 +142,6 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       else
         assert(flash[:notice] == nil, "flash[:notice]='#{flash[:notice]}' for #{route[:name]}") 
       end
-
-      ActiveRecord::Base.connection.rollback_db_transaction
     end
   end
   
@@ -155,7 +158,9 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       end  
       follow_redirect! # follow the redirect to clear any flash messages
     else
-      assert(response.success?, "Expected response 200 but was #{response.status} for #{route_name}")
+      assert(response.success?, "Expected response 200 but was #{response.status} for #{route_name}\n" +
+      "flash[:notice]='#{flash[:notice]}'\n" +
+      "body=>#{response.body}")
     end
   end
   
@@ -264,8 +269,6 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       when 'POST'
         begin
           post(route[:path], post_params)
-        # rescue => exception
-        # puts exception.backtrace
         end
       when 'DELETE'
         delete(route[:path])
@@ -280,6 +283,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   def do_sign_in
     post '/user_session', :user_session => {:email => @email , :password => @password}
     assert_response :redirect
+    assert_equal 'Login successful!', flash[:notice], "For sign_in" 
     get response.redirect_url  # Eat the "login successful" flash notice 
   end
     

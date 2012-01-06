@@ -47,7 +47,14 @@ RealMealz::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  # Custom configuration
-  config.action_mailer.default_url_options = { :host => 'realmealz.com' }
+  # Setup email.
+  config.action_mailer.default_url_options = { :host => 'beta.realmealz.com' }
+  config.action_mailer.smtp_settings = {
+    :address => "localhost",
+    :port => 25,
+    :domain => "maxwiki.com",
+    :authentication => :none
+  }
+  
   
 end

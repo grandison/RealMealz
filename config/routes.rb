@@ -74,12 +74,16 @@ RealMealz::Application.routes.draw do
   get "/user_session/new", :controller=>"user_sessions", :action=>"new"
   post "/user_session", :controller=>"user_sessions", :action=>"create"
   delete "/user_session", :controller=>"user_sessions", :action=>"destroy"
+  get "/user_sessions/forgot_password"
+  post "/user_sessions/forgot_password", :controller=>"user_sessions", :action=>"forgot_password_email"
   
   get "/users", :controller=>"users", :action=>"my_account"
   get "/users/my_account"
   get "/users/new"
   post "/users/new", :controller=>"users", :action=>"create"
   get "/users/edit"
-  post "/users/edit", :controller=>"users", :action=>"update"
+  put "/users/edit", :controller=>"users", :action=>"update"
+  get "/users/reset_password"
+  post "/users/reset_password", :controller=>"users", :action=>"reset_password_submit"
   
 end

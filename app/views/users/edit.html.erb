@@ -1,9 +1,11 @@
-<h1>Edit My Account</h1>
+<% @background_recipe = Recipe.random_background_image %>
 
-<%= form_for @user, :url => "/users/edit" do |f| %>
-  <%= f.error_messages %>
-  <%= render :partial => "form", :object => f %>
-  <%= f.submit "Update" %>
-<% end %>
+<div id="user-edit" class="gray-background">
+  <h1>Edit My Account</h1>
 
-<br /><%= link_to "My Profile", "/users/my_account" %>
+  <%= form_for @user, :url => "/users/edit" do |f| %>
+    <%= f.error_messages %>
+    <%= render :partial => "form", :object => f %>
+    <%= f.submit "Update", :class => "gray-button" %>
+  <% end %>
+</div>

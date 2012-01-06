@@ -1,15 +1,15 @@
 <p><%= form.label :first %><br />
-<%= form.text_field :first %></p>
+<%= form.text_field :first, :size => 30 %></p>
 
 <p><%= form.label :last %><br />
-<%= form.text_field :last %></p>
+<%= form.text_field :last, :size => 30 %></p>
 
 <p><%= form.label :email %><br />
-<%= form.email_field :email %></p>
+<%= form.email_field :email, :size => 30 %></p>
 
 <p><%= form.label :password, form.object.new_record? ? nil : "Change password" %><br />
-<%= form.password_field :password %></p>
+<%= form.password_field :password, :size => 30 %></p>
 
 <p><%= form.label :password_confirmation %><br />
-<%= form.password_field :password_confirmation %></p>
+<%= form.password_field :password_confirmation, :size => 30 %></p>
 

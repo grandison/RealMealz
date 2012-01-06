@@ -5,20 +5,21 @@ gem 'rails', '3.0.9'
 gem 'rake'
 
 # If you use a different adapter, change it here but don't check it in. Default: gem 'mysql2', '~> 0.2.7'
-#gem 'sqlite3'
+gem 'sqlite3'
 #gem 'mysql'
-#gem 'mysql2', '~> 0.2.7'
+gem 'mysql2', '~> 0.2.7'
 gem 'pg'
 
 # ruby_units needs to be loaded first because it adds a String.from method that conflicts with the Rails String.from
 # method that active_scaffold uses. Otherwise, it will produce errors like "'as_categories' Unit not recognized"
-gem "ruby-units"
+gem "ruby-units", "= 1.3.2"
 
 # Other units for RealMealz
 gem "mongrel", '>= 1.2.0.pre2'
 gem "authlogic"
 gem 'dynamic_form'
 gem "paperclip", "~> 2.4"
+gem 'fog'
 gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete", "~> 0.9.0"
 gem 'will_paginate', '3.0.pre2'
@@ -29,7 +30,7 @@ gem 'nokogiri'
 
 #--- For debugging  -----
 # gem "ruby-debug"
-# gem "yaml_db"
+gem "yaml_db"
 
 #--- experimental ---
 # gem 'rhoconnect-rb'

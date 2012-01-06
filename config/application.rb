@@ -43,13 +43,6 @@ module RealMealz
     config.colorize_logging = false
     
     # Custom configuration
-    config.action_mailer.default_url_options = { :host => 'alpha.realmealz.com' }
-    config.action_mailer.smtp_settings = {
-      :address => "mail.maxwiki.com",
-      :port => 587,
-      :domain => "maxwiki.com",
-      :authentication => :none
-    } 
 
   end
 end

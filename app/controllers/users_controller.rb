@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   
-  skip_before_filter :require_super_admin, :only => [:new, :create, :show, :my_account, :edit, :update]
+  skip_before_filter :require_super_admin, :only => [:new, :create, :show, :my_account, :edit, :update, :reset_password, :reset_password_submit]
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :except => [:new, :create]
-  
+  before_filter :require_user, :except => [:new, :create, :reset_password, :reset_password_submit]
+
   #-------------------------
   def new
     @user = User.new
@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   #-------------------------
   def create
     @user = User.new(params[:user])
+    @user.reset_perishable_token
     if @user.save
       flash[:notice] = "Account registered!"
       redirect_to '/home/welcome'
@@ -37,12 +38,45 @@ class UsersController < ApplicationController
 
   #-------------------------
   def update
-    @user = current_user # makes our views "cleaner" and more consistent
+    @user = current_user
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
-      redirect_to '/users/my_account'
+      redirect_to '/home/welcome'
     else
       render :action => :edit
     end
   end
+  
+  #-------------------------
+  def reset_password
+    get_user_by_token
+  end
+
+  #-------------------------
+  def reset_password_submit
+    get_user_by_token
+    return if @user.nil?
+    
+    if @user.update_attributes(params[:user].merge({:active => true}))
+      @user.reset_perishable_token!
+      flash[:notice] = "Successfully reset password."
+      redirect_to "/home/welcome"
+    else
+      flash[:error] = "There was a problem resetting your password."
+      render :action => :reset_password
+    end
+  end  
+  
+  ############
+  private
+  ###########
+  def get_user_by_token
+    @token = params[:token]
+    @user = User.find_using_perishable_token(@token, 1.week)
+    if @user.nil?
+      flash[:error] = "Password reset token not valid"
+      redirect_to :controller => :user_sessions, :action => :forgot_password
+    end
+  end
+
 end

@@ -1,18 +1,24 @@
-login: &login
-  #adapter: postgresql
-  #host: localhost
-  #username: postgres
-  #password: happyfeet
-  #encoding: unicode
-  #min_messages: error
+<%# db = 'postgres' %>
+<%# db = 'sqlite3' %>
+<% db = 'mysql' %>
 
-  #adapter: sqlite3
-  
-  adapter: mysql2
-  host: localhost
-  username: root
-  password: happyfeet
-  encoding: utf8 
+login: &login
+  <% if db == 'postgres'  %>
+    adapter: postgresql
+    host: localhost
+    username: postgres
+    password: happyfeet
+    encoding: unicode
+    min_messages: error
+  <% elsif db == 'sqlite3' %>
+    adapter: sqlite3
+  <% else %>  
+    adapter: mysql2
+    host: localhost
+    username: root
+    password: happyfeet
+    encoding: utf8 
+  <% end %>
 
 development:
   database: realmealz_dev

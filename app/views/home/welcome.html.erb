@@ -1,34 +1,33 @@
 <% @show_footer = true %>
 
-<table id="table-home">
-	<tr>
-		<td class="gray-background">
-		  <img class="home-pics" src="/images/family_cooking.png">
-		</td>
-		<td class="gray-background" style="vertical-align: top;">
-		  <h2>Welcome, <%= current_user.first %>!<br />Here's How to Cook at Home using RealMealz!</h2>
-			<h3>
-				<br>1. <a href="/settings">Customize</a> your settings.<br>
-					<br>2. <a href="/discover">Discover</a> new recipes for your recipe box. <br>
-				<br>3. <a href="/plan">Plan</a>-<a href="/shop">Shop</a>-<a href="/cook">Cook</a> your way to deliciousness.<br></h3>
-				<br><br>
-				<b>Tips:</b>
-				<ul class="subtle-links">
-				<li>Don't want to plan?  Or throwing a meal together on short notice? Go directly to <a href="/cook">Cook</a> to discover real-time recipes based on what you already have. </li>
-				<br><li>Use the shopping list and we will keep track of what you have so we can recommend relevant recipes.  Try logging items on the shopping list to see what we recommend under <a href="/cook">Cook</a>. </li>
+<!-- for debugging on connie's computer 
+	<body style="background:url(/assets/recipes/rm_israeli_couscous_with_mushrooms_medium.jpg)">
+	 -->
+	
+<div id="welcome-page-video" class="gray-background">
+	 <h1>Welcome, <%= current_user.first %>!</h1><h3>Are you ready to make dinner in 30 minutes or less?</h3>
+			<!--<img class="home-pics" src="/images/family_cooking.png">-->
+			 <!-- video -->
+		 		  <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
+<!--
+		  <br><br>
+			<b>Tips:</b>
+			<ul class="subtle-links">
+				<li>On the <a href="/discover">Discover page</a>, you can "star" your favorite recipes.  This way, you can browse your "star only" recipes at a future time.  </li>
+				<li>To cook multiple recipes you <a href="/discover">Discover</a>, click on "Add to My Meals."  The entire list of your Meals will then show up on the <a href="/shop">Shop</a> and <a href="/cook">Cook</a> pages.</li>
+				
 				<br><li>If you like to check pantry inventory before you shop, try using the <a href="/shop/pantry_list">Shopping List Builder</a> to keep track of your common items and quickly pick them off when you need to buy more.</li>
 				<br><li>Getting tired of the same recipes? Check out what's under <a href="/discover">Discover</a> to find something new!  </li>
-				</ul>
-		</td>
-	</tr>
-</table>
-<div class="gray-background">
-  <h2>Things you need to start:</h2>
-  <p>If your kitchen is not stocked, don't worry!  You don't need to spend a fortune to get started.  With the basic equipment set and spices you can cook most meals!</p>
+</ul> -->
 </div>
+<br><br><br>
+<div id="welcome-page-basic-equipment" class="gray-background">
+  <h2>Basic Kitchen Equipment: </h2>
+  <p>If you are brand new at cooking and your kitchen is not stocked, don't worry!  You don't need to spend a fortune to get started.  With the basic equipment and spices you can cook most recipes that we have.</p>
 
-<table id="table-things-you-need">
-	<tr><td class="gray-background">
+
+<table id="table-things-you-need" class="gray-background">
+	<tr><td>
 			<h3>Basic Equipment (only 8):</h3><img class="home-pics2" src="/images/basic_equipment.jpg">	
 			<br>These 8 pieces of equipment will cook most meals: 
 			<ol>
@@ -42,7 +41,7 @@
 				<li>A Large Mixing Bowl</li>
 			</ol>
 		</td>
-		<td style="vertical-align: top;" class="gray-background"><h3>Basic Spices (only 11):</h3>
+		<td style="vertical-align: top;"><h3>Basic Spices (only 11):</h3>
 			<img class="home-pics2" src="/images/basic_pantry_with_soyasauce.jpg"> 
 			<br>These basic spices will give you a great start:
 			<ol>
@@ -58,14 +57,13 @@
 				<li>Peanut Butter</li>
 				<li>Bread</li>
 			</ol>
-			<br><br>
 		</td>
 	</tr>
 </table>
-<br />
+</div>
 <p>
-  <form method="link" action="/settings" align="right">
-	  <input value="Let's Start by Customizing! >>>>" type="submit" class="green-button" />
+  <form method="link" action="/discover" align="right">
+	  <input value="Start Discovering Tonight's Meal! >>>>" type="submit" class="gray-button" />
   </form>
 </p>
 
