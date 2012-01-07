@@ -1,6 +1,7 @@
 <%# db = 'postgres' %>
 <%# db = 'sqlite3' %>
-<% db = 'mysql' %>
+<%# db = 'mysql' %>
+<% db = 'bluebox' %>
 
 login: &login
   <% if db == 'postgres'  %>
@@ -12,6 +13,13 @@ login: &login
     min_messages: error
   <% elsif db == 'sqlite3' %>
     adapter: sqlite3
+  <% elsif db == 'bluebox' %>
+    adapter: mysql2
+    host: maxdunn.com
+    port: 3300
+    username: realmealz
+    password: food4health
+    encoding: utf8 
   <% else %>  
     adapter: mysql2
     host: localhost

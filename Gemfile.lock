@@ -70,6 +70,7 @@ GEM
       daemons (~> 1.0.10)
       gem_plugin (~> 0.2.3)
     multi_json (1.0.4)
+    mysql2 (0.2.18)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.2.2)
@@ -133,6 +134,7 @@ DEPENDENCIES
   fog
   haml
   mongrel (>= 1.2.0.pre2)
+  mysql2 (~> 0.2.7)
   newrelic_rpm
   nokogiri
   paperclip (~> 2.4)
