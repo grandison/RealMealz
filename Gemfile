@@ -31,6 +31,7 @@ gem 'admin_data', '= 1.1.14'
 
 #---- For Heroku ----
 gem 'thin'
+gem 'newrelic_rpm'
 
 #--- For debugging  -----
 # gem "ruby-debug"
