@@ -85,15 +85,10 @@ class Recipe < ActiveRecord::Base
   # Uploads the recipe picture and process the ingredient_list
   def process_recipe
     unless picture_remote_url.blank? || Rails.env.test?
+      self.picture = OpenURI::open_uri(picture_remote_url) 
       extname = File.extname(picture_remote_url)
       basename = File.basename(picture_remote_url, extname)
-      file = Tempfile.new([basename, extname])
-      file.binmode
-      open(URI.parse(picture_remote_url)) do |data|  
-        file.write data.read
-      end
-      file.rewind
-      self.picture = file
+      self.picture.instance_write('file_name', basename + extname) # Use the original name, not the temp name
     end
     process_ingredient_list
     save!
