@@ -134,7 +134,7 @@ DEPENDENCIES
   fog
   haml
   mongrel (>= 1.2.0.pre2)
-  mysql2
+  mysql2 (~> 0.2.7)
   newrelic_rpm
   nokogiri
   paperclip (~> 2.4)
