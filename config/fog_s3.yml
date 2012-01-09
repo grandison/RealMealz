@@ -7,5 +7,5 @@ fog_credentials:
   port: 80
 
 bucket: realmealz-recipes
-s3_host_name: s3.realmealz.com
-
+s3_host_name: realmealz-recipes.s3-website-us-west-2.amazonaws.com
+cloud_front_host_name: s3.realmealz.com

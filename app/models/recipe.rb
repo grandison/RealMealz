@@ -36,7 +36,7 @@ class Recipe < ActiveRecord::Base
     :storage => :fog, 
     :fog_credentials => options['fog_credentials'], 
     :fog_directory => options['bucket'],
-    :fog_host => "http://#{options['bucket']}.#{options['s3_host_name']}",
+    :fog_host => "http://#{options['cloud_front_host_name']}",
     :fog_public => true,
     :url => '/',
     :path => ":basename:size_id.:extension",
