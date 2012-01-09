@@ -30,7 +30,8 @@ gem 'nokogiri'
 gem 'admin_data', '= 1.1.14'
 
 #---- For Heroku ----
-gem 'thin'
+#gem 'thin'
+gem 'unicorn'
 gem 'newrelic_rpm'
 
 #--- For debugging  -----

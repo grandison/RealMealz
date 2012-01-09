@@ -1,7 +1,7 @@
 <%# db = 'postgres' %>
 <%# db = 'sqlite3' %>
-<%# db = 'mysql' %>
-<% db = 'bluebox' %>
+<% db = 'mysql' %>
+<%# db = 'bluebox' %>
 
 login: &login
   <% if db == 'postgres'  %>
