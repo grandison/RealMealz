@@ -14,6 +14,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.reset_perishable_token
     if @user.save
+      UserSession.create(@user) if Rails.env.test?# If doing test, we turn off automatic login so do it here
       flash[:notice] = "Account registered!"
       redirect_to '/home/welcome'
     else
@@ -40,6 +41,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     if @user.update_attributes(params[:user])
+      UserSession.create(@user) if Rails.env.test? # If doing test, we turn off automatic login so do it here
       flash[:notice] = "Account updated!"
       redirect_to '/home/welcome'
     else

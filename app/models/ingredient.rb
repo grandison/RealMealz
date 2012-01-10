@@ -56,9 +56,9 @@ class Ingredient < ActiveRecord::Base
 
 	#--------------------------------------
 	# make sure that the other_names field is filled, otherwise searches by name won't work
-	def self.new(attribs = {})
-	  if !attribs.nil? && attribs[:other_names].blank? && !attribs[:name].blank?
-	    attribs[:other_names] = "|#{attribs[:name].downcase}|" 
+	def self.new(attributes = nil, options = {})
+	  if !attributes.nil? && attributes[:other_names].blank? && !attributes[:name].blank?
+	    attributes[:other_names] = "|#{attributes[:name].downcase}|" 
     end
 	  super
   end

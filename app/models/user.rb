@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
     c.login_field = false 
     c.login_field = :email
     c.disable_perishable_token_maintenance = true
+    c.maintain_sessions = false if Rails.env.test? # Needed so tests will work
   end 
 
   # Setup accessible (or protected) attributes for your model

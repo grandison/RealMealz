@@ -27,12 +27,22 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       :logged_in_redirect_to => '/users',
       :logged_in_flash =>'You must be logged out to access this page'}, 
     {:path => 'POST/users/edit', :redirect_to => '/users/my_account', :flash => 'Account updated!'}, 
+    {:path => 'PUT/users/edit', :redirect_to => '/home/welcome', :flash => 'Account updated!'}, 
+    {:path => 'GET/users/reset_password', 
+      :logged_out_redirect_to => '/user_sessions/forgot_password',
+      :logged_in_redirect_to => '/user_sessions/forgot_password'}, 
+    {:path => 'POST/users/reset_password', :signs_out => true, 
+      :logged_out_redirect_to => '/user_sessions/forgot_password',
+      :logged_in_redirect_to => '/user_sessions/forgot_password'}, 
 
     {:path => 'GET/user_session/new', :sign_in_required => false, :signs_out => true },
     {:path => 'POST/user_session', :sign_in_required => false, :logged_out_flash => 'Login successful!'},
     {:path => 'DELETE/user_session', :role => :kitchen_admin, :signs_out => true, 
       :logged_in_flash => 'Logout successful!',
       :logged_in_redirect_to => '/user_session/new'},
+    {:path => 'GET/user_sessions/forgot_password', :sign_in_required => false }, 
+    {:path => 'POST/user_sessions/forgot_password', :sign_in_required => false, :redirect_to => '/', :flash => 'Instructions to reset your password have been emailed to you'}, 
+      
     
     {:path => 'POST/recipes/new', :redirect_to => '/recipes/new_recipe'},  
     {:path => 'POST/recipes', :redirect_to => true, :flash => 'Recipe was successfully created.'},  
@@ -40,14 +50,20 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'DELETE/recipes/1', :redirect_to => '/recipes'},  
 
     {:path => 'POST/ingredients/new', :redirect_to => '/ingredients/new_recipe'},  
-    {:path => 'POST/ingredients', :redirect_to => true, :flash => 'Ingredient was successfully created.'},  
+    {:path => 'POST/ingredients', :logged_in_redirect_to => true, :logged_in_flash => 'Ingredient was successfully created.'},  
     {:path => 'PUT/ingredients/1', :redirect_to => '/ingredients', :flash => 'Ingredient was successfully updated.'},  
-    {:path => 'POST/ingredients/combine_ingredients', :redirect_to => '/ingredients', :flash => 'Please select both a From and a To ingredient to combine'},  
+    {:path => 'POST/ingredients/combine_ingredients', :logged_in_redirect_to => '/ingredients', :flash => 'Please select both a From and a To ingredient to combine'},  
 
     {:path => 'POST/cook/done_cooking', :redirect_to => '/cook'}, 
     {:path => 'POST/settings/save_food_balance', :redirect_to => '/settings'}, 
     {:path => 'POST/settings/save_user', :redirect_to => '/settings'}, 
     {:path => 'POST/track/save_food_balance', :redirect_to => '/settings'}, 
+
+    {:path => '/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
+    {:path => 'GET/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
+    {:path => 'PUT/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
+    {:path => 'POST/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
+    {:path => 'DELETE/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
   ]
   
   @@cached_routes = []
@@ -65,13 +81,14 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       ActiveRecord::Base.connection.reset_pk_sequence!(klass.table_name)  if ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
     end
     
-    @email = 'name@gmail.com'
-    @password = 'password'
-
     @kitchen = Kitchen.find(1)
     @kitchen.update_attributes!(:name => 'Kwan Family')
     @balance = Balance.create!
         
+    @email = 'name@gmail.com'
+    @super_email = 'super@gmail.com'
+    @password = 'password'
+
     @user = User.find(1)
     @user.update_attributes!(:first => "Connie", :last => "Kwan", 
       :email => @email , :password => @password, :password_confirmation => @password)
@@ -79,6 +96,11 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     @user.balance_id = @balance.id
     @user.role = :kitchen_admin
     @user.save!
+
+    @super_user = User.new(:first => "Max", :last => "Dunn", 
+      :email => @super_email , :password => @password, :password_confirmation => @password)
+    @super_user.role = :super_admin
+    @super_user.save!
     
     @recipe = Recipe.find(1)
     @recipe.update_attributes!(:name => 'Tacos', :servings => 4, :picture_file_name => 'taco_picture.jpg', :kitchen_id => @kitchen.id)  
@@ -105,8 +127,17 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       next if route[:sign_in_required] == false
       
       do_action(route)  
-      assert_response :redirect, "For #{route[:name]}"
-      assert_equal 'http://www.example.com/user_session/new', response.redirect_url, "For #{route[:name]}" 
+      # Bug in assert_response doesn't show message, so show it here first
+      if response.status != 302 
+        puts "Expected redirect for '#{route[:name]}', Flash[:notice]=#{flash[:notice]}, flash[:error]=#{flash[:error]}"
+        assert_response :redirect
+      end  
+      
+      if redirect_to = route[:logged_out_redirect_to]
+        assert_equal "http://www.example.com#{redirect_to}", response.redirect_url, "For #{route[:name]}" 
+      else
+        assert_equal 'http://www.example.com/user_session/new', response.redirect_url, "For #{route[:name]}" 
+      end
       if route[:role] == :super_admin
         assert_equal 'You must be logged in as a SuperAdmin to access this page', flash[:notice], "For #{route[:name]}" 
       else
@@ -127,20 +158,20 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   #----------
   test "allow access when signed in" do
     get_routes.each do |route|
-      next if route[:sign_out_required]
+      next if route[:sign_out_required] || route[:skip_signed_in_tests]
 
       # Have to setup each time because some log out and some delete records that will be needed later
       # Tried using transactions and savepoints, but they don't work on sqlite3
       setup
-      do_sign_in
+      do_sign_in(route[:role])
       do_action(route)
 
       check_response(route[:logged_in_redirect_to] || route[:redirect_to], route[:name])
       flash_msg = route[:logged_in_flash] || route[:flash]
       if flash_msg
-        assert(flash[:notice] == flash_msg, "flash[:notice]=#{flash[:notice]} for #{route[:name]}") 
+        assert(flash[:notice] == flash_msg, "Flash was: flash[:notice]='#{flash[:notice]}', should have been '#{flash_msg}' for #{route[:name]}") 
       else
-        assert(flash[:notice] == nil, "flash[:notice]='#{flash[:notice]}' for #{route[:name]}") 
+        assert(flash[:notice] == nil, "No notice expected but flash[:notice]='#{flash[:notice]}' for #{route[:name]}") 
       end
     end
   end
@@ -186,12 +217,15 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
        :controller => r.requirements[:controller], :action => r.requirements[:action]}} 
     
     # Delete all the extra paths that AS inserts that aren't used in Rails 3
+    # Also delete the admin_data test paths 
     extra_paths = %W[new_existing edit_associated add_association destroy_existing add_existing update_column render_field]
+    extra_paths += %W[jstest klass(/:klass)]
     routes.delete_if {|r| extra_paths.find_index {|s| r[:path_template].include?(s)} } 
 
     # Fixup path to take out variable parts, assign the name and add any special path information
     routes.each do |r| 
-      r[:path] = r[:path_template].gsub('(.:format)','').gsub(':id','1')
+      r[:path] = r[:path_template].gsub('(.:format)','').gsub(':id','1').gsub('(/:klass)','/recipe').
+        gsub(':klasss', 'recipe').gsub(':klass', 'recipe').gsub('*file', 'images/add.png')
       r[:name] = r[:verb] + r[:path]
       special_params = find_special_params(r[:name])
       unless special_params.nil?
@@ -263,7 +297,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       :ingredient_name => 'rice',
     }
       
-    #puts route[:name] # For debugging
+#puts route[:name] # For debugging
     putc('.')
     case route[:verb]
       when 'POST'
@@ -280,8 +314,13 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   end
   
   #----------
-  def do_sign_in
-    post '/user_session', :user_session => {:email => @email , :password => @password}
+  def do_sign_in(role = :kitchen_admin)
+    if role == :super_admin
+      email = @super_email
+    else
+      email = @email
+    end
+    post '/user_session', :user_session => {:email => email , :password => @password}
     assert_response :redirect
     assert_equal 'Login successful!', flash[:notice], "For sign_in" 
     get response.redirect_url  # Eat the "login successful" flash notice 

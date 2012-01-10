@@ -4,3 +4,4 @@ require 'ruby_ext'
 
 # Initialize the rails application
 RealMealz::Application.initialize!
+

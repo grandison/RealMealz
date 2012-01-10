@@ -8,6 +8,7 @@ class IngredientsControllerTest < ActionController::TestCase
     @user.kitchen = @kitchen
     @user.role = "kitchen_admin"
     @user.save!  
+    UserSession.create(@user)
     
     @ingredient_attributes_1 = {:name => 'Chicken', :other_names => "|chicken|chickens|", :kitchen_id => @kitchen.id}
     @ingredient_attributes_2 = {:name => 'Max bars', :other_names => "|max bars|"}
