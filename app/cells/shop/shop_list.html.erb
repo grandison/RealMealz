@@ -1,10 +1,10 @@
 <%
  if action_shop
-   pick_image_on = "/images/icons/cart_on.png" 
-   pick_image_off = "/images/icons/cart_off.png"
+   pick_image_on = asset_path("icons/cart_on.png") 
+   pick_image_off = asset_path("icons/cart_off.png")
  else
-   pick_image_on = "/images/icons/grocery_list_on.png" 
-   pick_image_off = "/images/icons/grocery_list_off.png" 
+   pick_image_on = asset_path("icons/grocery_list_on.png") 
+   pick_image_off = asset_path("icons/grocery_list_off.png") 
  end
 %>
 
@@ -47,10 +47,10 @@
   		<% end %>
 		
 		  <!-- Edit icon -->  
-  		<td width="30px"><img class="edit-icon" item_id="<%= item.id %>" item-name="<%= item.ingredient.name %>" item-note="<%= item.note %>" item-weight="<%= item.weight %>" item-unit="<%= item.unit %>" src="/images/icons/edit_24x24.png" alt="edit"/></td>
+  		<td width="30px"><img class="edit-icon" item_id="<%= item.id %>" item-name="<%= item.ingredient.name %>" item-note="<%= item.note %>" item-weight="<%= item.weight %>" item-unit="<%= item.unit %>" src="<%= asset_path 'icons/edit_24x24.png' %>" alt="edit"/></td>
 	  
 		  <!-- Drag icon -->  
-		  <td width="30px"><img class="drag-icon touchable" src="/images/icons/draggable-icon-36px.png" alt="drag" /></td>
+		  <td width="30px"><img class="drag-icon touchable" src="<%= asset_path 'icons/draggable-icon-36px.png' %>" alt="drag" /></td>
 		
   		</tr></table>
   	</li>

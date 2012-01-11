@@ -3,7 +3,7 @@
     <div class="my-meals-recipe" recipe-id="<%= recipe.id %>">
       <%= image_tag(recipe.picture.url(:medium), :class => 'my-meals-recipe-img') %>
       <div class="my-meals-recipe-caption">
-        <div id="my-meals-delete"><%= image_tag('/images/small_red_x.png') %></div>
+        <div id="my-meals-delete"><%= image_tag('small_red_x.png') %></div>
         <%= recipe.name %>
       </div>
     </div>

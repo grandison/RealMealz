@@ -51,7 +51,7 @@
 <div id="shop-controls">
   <div id="shop-controls-box">
     <h2>Let's Go Shopping!</h2>
-    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <img src="/images/icons/pantry_has.png"> in your "My Meals" list.  We will automatically exclude items on your <a href="/settings">exclude items list</a> so you won't see items like salt and pepper every time you create your list.  Then, go to m.realmealz.com on your mobile phone to see and manage your shopping list while you shop!    </p>
+    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <%= image_tag "icons/pantry_has.png" %> in your "My Meals" list.  We will automatically exclude items on your <a href="/settings">exclude items list</a> so you won't see items like salt and pepper every time you create your list.  Then, go to m.realmealz.com on your mobile phone to see and manage your shopping list while you shop!    </p>
     
     <div id="shop-add-item">
       <%= form_tag("/shop/add_item", :method => "post", :name => "add_item") do %>
@@ -83,8 +83,8 @@
     
     <div id="pick-list">
       <%= render_cell :shop, :pick_list, current_user, 
-      pick_image_on = "/images/icons/grocery_list_on.png", 
-      pick_image_off = "/images/icons/grocery_list_off.png", 
+      pick_image_on = asset_path('icons/grocery_list_on.png'), 
+      pick_image_off = asset_path('icons/grocery_list_off.png'), 
       mobile_request? %>
     </div>
   </div>
@@ -141,11 +141,11 @@ $(".shop-name:[title]").tooltip({
 $("#shop-list").delegate("#shop-list .cart", "click", function() {
   if ($(this).hasClass("cart-selected")) { 
     $(this).removeClass("cart-selected");
-    $(this).attr("src", "/images/icons/cart_off.png");
+    $(this).attr("src", "<%= asset_path 'icons/cart_off.png' %>");
   } 
   else { 
     $(this).addClass("cart-selected"); 
-    $(this).attr("src", "/images/icons/cart_on.png");
+    $(this).attr("src", "<%= asset_path 'icons/cart_on.png' %>");
   };
 	$.ajax({		  
 	  type: "post",

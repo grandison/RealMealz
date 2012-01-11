@@ -1,3 +1,4 @@
 <li ingredient-id="<%= ingredient.id %>" >
-  <%= ingredient.name.capitalize %> <a href='#'><img class="delete-icon" ingredient-id="<%= ingredient.id %>" src="/images/icons/delete_orange_48x48.png" style="width: 10px;" alt="delete"/></a>
+  <%= ingredient.name.capitalize %> <a href='#'>
+    <%= image_tag "icons/delete_orange_48x48.png", :class => "delete-icon", "ingredient-id" => ingredient.id, :style => "width: 10px;", :alt => "delete" %></a>
 </li>

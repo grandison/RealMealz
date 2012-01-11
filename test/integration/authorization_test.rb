@@ -218,8 +218,9 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     
     # Delete all the extra paths that AS inserts that aren't used in Rails 3
     # Also delete the admin_data test paths 
+    # Also delete the /assets path
     extra_paths = %W[new_existing edit_associated add_association destroy_existing add_existing update_column render_field]
-    extra_paths += %W[jstest klass(/:klass)]
+    extra_paths += %W[jstest klass(/:klass) assets]
     routes.delete_if {|r| extra_paths.find_index {|s| r[:path_template].include?(s)} } 
 
     # Fixup path to take out variable parts, assign the name and add any special path information

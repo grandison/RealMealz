@@ -3,7 +3,7 @@
     <input id="discover-search-input" type="text" placeholder="i.e. pizza">
   <span id="discover-have-button" class="discover-button"> I have </span> |
   <span id="discover-avoid-button" class="discover-button"> I avoid </span> |
-  <span id="discover-fav-button" class="discover-button"> <%= image_tag('/images/star.png', :size => '25x25', :id => 'discover-like-bar-star') %> Only </span>
+  <span id="discover-fav-button" class="discover-button"> <%= image_tag('star.png', :size => '25x25', :id => 'discover-like-bar-star') %> Only </span>
   <%= render :partial => 'have_dialog' %>
   <%= render :partial => 'avoid_dialog' %>
   </div>
@@ -373,7 +373,7 @@ $("#discover-fav-button").click(function() {
     $('#discover-next-div').text('next');
 	} else {
     $(this).addClass("discover-button-active");
-    $('#discover-next-div').html('<img alt="" src="/images/star.png" />');
+    $('#discover-next-div').html('<img alt="" src="<%= asset_path 'star.png' %>" />');
 	}
 });
 

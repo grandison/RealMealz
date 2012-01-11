@@ -10,9 +10,9 @@
    	<% end %>
   <% end %>
   <% if controller.controller_name == "settings" %>
-    <div class="menu-tab-customize"> <a href="/settings"><img src="/images/small_gear_selected.png" /></a></div>
+    <div class="menu-tab-customize"> <a href="/settings"><%= image_tag "small_gear_selected.png" %></a></div>
   <% else %>
-    <div class="menu-tab-customize"> <a href="/settings"><img src="/images/small_gear.png" /></a></div>
+    <div class="menu-tab-customize"> <a href="/settings"><%= image_tag "small_gear.png" %></a></div>
   <% end %>
 <% else %>
   <% if controller.controller_name == "user_sessions" %>

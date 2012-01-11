@@ -6,7 +6,6 @@
 	
 <div id="welcome-page-video" class="gray-background">
 	 <h1>Welcome, <%= current_user.first %>!</h1><h3>Are you ready to make dinner in 30 minutes or less?</h3>
-			<!--<img class="home-pics" src="/images/family_cooking.png">-->
 			 <!-- video -->
 		 		  <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
 <!--
@@ -28,7 +27,7 @@
 
 <table id="table-things-you-need" class="gray-background">
 	<tr><td>
-			<h3>Basic Equipment (only 8):</h3><img class="home-pics2" src="/images/basic_equipment.jpg">	
+			<h3>Basic Equipment (only 8):</h3><%= image_tag "basic_equipment.jpg", :class => "home-pics2" %> 
 			<br>These 8 pieces of equipment will cook most meals: 
 			<ol>
 				<li>A Good Knife</li>
@@ -42,7 +41,7 @@
 			</ol>
 		</td>
 		<td style="vertical-align: top;"><h3>Basic Spices (only 11):</h3>
-			<img class="home-pics2" src="/images/basic_pantry_with_soyasauce.jpg"> 
+		  <%= image_tag "basic_pantry_with_soyasauce.jpg", :class => "home-pics2" %>
 			<br>These basic spices will give you a great start:
 			<ol>
 				<li>Salt</li>

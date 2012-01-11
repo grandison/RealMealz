@@ -1,8 +1,6 @@
 source 'http://rubygems.org'
 
-# RealMealz is currently using Rails version 3.0.9
-gem 'rails', '~> 3.1'
-gem 'rake'
+gem 'rails', '3.1.3'
 
 # If you use a different adapter, change it here but don't check it in. Default: gem 'mysql2', '~> 0.2.7'
 #gem 'sqlite3'
@@ -27,47 +25,33 @@ gem 'haml'
 gem 'cells'
 gem 'nokogiri'
 gem 'admin_data'
+gem 'jquery-rails'
+gem "yaml_db"
 
-#--- If not using Heroku
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails',   '~> 3.1.5'
+  gem 'coffee-rails', '~> 3.1.1'
+  gem 'uglifier', '>= 1.0.3'
+end
+
+group :test do
+  # Pretty printed test output
+  gem 'turn', '~> 0.8.3', :require => false
+end
+
+# If not using Heroku
 group :development do
   gem "thin"
 end
 
-#---- For Heroku ----
+# For Heroku
 group :production do
   gem 'pg'
   gem 'unicorn'
   gem 'newrelic_rpm'
 end
 
-#--- For debugging  -----
-# gem "ruby-debug"
-gem "yaml_db"
 
-#--- experimental ---
-# gem 'rhoconnect-rb'
 
-#----- Below here are units from the original Gemfile ------
-# Use unicorn as the web server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
-# gem 'ruby-debug'
-# gem 'ruby-debug19', :require => 'ruby-debug'
-
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
-
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-group :development, :test do
-  # gem 'factory_girl_rails'
-  # gem 'machinist', '>= 2.0.0.beta2'
-end

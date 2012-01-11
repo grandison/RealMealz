@@ -2,23 +2,9 @@
 <html>
   <head>
     <title>RealMealz</title>
-    <%= stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.16.custom.css' %>
-    <%= stylesheet_link_tag 'buttons.css' %>    
-    <%= stylesheet_link_tag 'realmealz.css' %>
-
-    <%= javascript_include_tag 'jquery-1.6.2.min.js' %>
-    <%= javascript_include_tag 'jquery-ujs.js' %>
-    <%= javascript_include_tag 'jquery-ui-1.8.16.custom.min.js'%>
-    <%= javascript_include_tag 'jquery.jcarousel.min.js' %>
-    <%= javascript_include_tag 'touchable.js' %>
-    <script src="http://cdn.jquerytools.org/1.2.6/tiny/jquery.tools.min.js" type="text/javascript"></script>
-    <%= javascript_include_tag 'autocomplete-rails.js' %>
-    <%= javascript_include_tag 'highcharts.js' %>
-    <%= javascript_include_tag 'rm-highchart-theme.js' %>
-    <%= javascript_include_tag 'jquery.mousewheel.js' %>
-    <%= javascript_include_tag 'jquery.tinyscrollbar.min.js' %>
-    <%= javascript_include_tag 'application.js' %>
-
+    
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tag %>
     
     <% if @background_recipe %>
@@ -34,7 +20,7 @@
       <div id="header" class="content-width">
         <div id="realmealz-logo">
           <a href="<%= current_user.blank? ? '/' : '/home/welcome' %>">
-            <img src="/images/realmealz-logo-100px.png" height="100px">
+            <%= image_tag 'realmealz-logo-100px.png', :height => "100px" %>
           </a>
         </div>
         <table id="top2" class="content-width">
