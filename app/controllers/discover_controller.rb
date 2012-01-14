@@ -76,7 +76,7 @@ class DiscoverController < ApplicationController
     # Only send 5 recipes but save the ids of the rest
     num_to_send = (recipe_ids.length < 5)? recipe_ids.length : 5
     session[:next_recipe_ids] = recipe_ids[num_to_send..-1]
-    return Recipe.where('id IN (?)', recipe_ids[0..num_to_send - 1].join(','))
+    return Recipe.where(:id => recipe_ids[0..num_to_send - 1])
   end
   
   #------------------------- 
