@@ -149,5 +149,4 @@ class String
 		end
 		return number
 	end
-	
 end

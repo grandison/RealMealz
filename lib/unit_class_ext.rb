@@ -91,5 +91,3 @@ class Unit < Numeric
   end
 end
 
-
-

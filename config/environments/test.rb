@@ -32,4 +32,13 @@ RealMealz::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
+  # MD Jan 2012. Turn off cache for testing
+  class CacheOff < Object
+    def self.fetch(n, o = nil, &block)
+      yield(block)
+    end
+  end
+  config.cache_store = CacheOff
+
 end

@@ -17,6 +17,7 @@ Cucumber Salad with Olives, Oregano, and Almonds
 **instructions**
     1. Evenly spread cucumber slices on paper towel-lined baking sheet. Refrigerate while preparing dressing.
     2. Bring vinegar to simmer in saucepan over medium-low heat; cook until reduced to 2 tablespoons, 4 to 6 minutes. Transfer vinegar to bowl and set aside to cool to room temperature, about 10 minutes. Whisk in lemon juice, oil, sugar, salt, and pepper.
+<<<<<<< HEAD
     3. When ready to serve, add cucumbers, olives, shallot, parsley, and oregano to dressing and toss to combine. Let stand for 5 minutes; retoss, sprinkle with almonds, and serve.
 
 **serves**
@@ -25,13 +26,29 @@ Cucumber Salad with Olives, Oregano, and Almonds
 **worktime**
 15
 
+=======
+    3. When ready to serve, add cucumbers, olives, shallot, parsley, and oregano to dressing and toss to combine. Let stand for 5 minutes; retoss, sprinkle with almonds, and serve.
+
+**serves**
+4-6
+
+**worktime**
+15
+
+>>>>>>> a88ff639b719e97580adba500184b902cfdedf7a
 **waittime**
 15
 
 **tags**
+<<<<<<< HEAD
 salad, side dish, vegetarian
 
 **source**
+=======
+salad, side dish, vegetarian
+
+**source**
+>>>>>>> a88ff639b719e97580adba500184b902cfdedf7a
 http://www.cooksillustrated.com/recipes/detail.asp?docid=29693#player2Tabs-0
 Published July 1, 2011.   From Cook's Illustrated.
 Why this recipe works:

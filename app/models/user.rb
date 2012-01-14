@@ -132,79 +132,106 @@ class User < ActiveRecord::Base
 
   #---------------------------------
   def get_favorite_recipes(recipe_ids_shown, filters)
-    allergy_ingredient_ids = allergies.map{|a| a.id}
-    like_ingredient_ids = users_ingredients.where(:like => true).map{|ui| ui.ingredient_id}
-    avoid_ingredient_ids = users_ingredients.where(:avoid => true).map{|ui| ui.ingredient_id}
-    recipe_list = Recipe.includes(:ingredients, :meals).where('public = ? or kitchen_id = ?', true, self.kitchen_id).delete_if do |r|
-      r.blank? || (r.picture_file_name.blank? && r.kitchen_id != self.kitchen_id) || recipe_ids_shown.include?(r.id)
-    end  
+    start_time = Time.now 
+    cache_miss = false
+    
+    # Allergies currently not used, so comment out for now
+    # allergy_ingredient_ids = allergies.select('allergies.id').map{|a| a.id}
+    like_ingredient_ids = users_ingredients.where(:like => true).select('ingredient_id').map{|ui| ui.ingredient_id}
+    avoid_ingredient_ids = users_ingredients.where(:avoid => true).select('ingredient_id').map{|ui| ui.ingredient_id}
+    kitchen_meals = Meal.where(:kitchen_id => kitchen.id)
+   
+    public_recipe_list = Rails.cache.fetch("public_recipe_list", :expires_in => 1.hour) do
+      cache_miss = true
+      create_recipe_list(['public = ? AND picture_file_name IS NOT NULL', true]) 
+    end || []
 
+    private_recipe_list = Rails.cache.fetch("private_recipe_list_id_#{self.id}", :expires_in => 1.hour) do
+      create_recipe_list(['kitchen_id = ?', self.kitchen_id])  #Ok to show private recipes without a picture
+    end || []
+    recipe_list = public_recipe_list + private_recipe_list
+    
     if filters.nil?
       filters = {}
     end
+    
+    starred_recipe_ids = []
     if filters['star']
       starred_recipe_ids = kitchen.meals.where(:starred => true).map {|m| m.recipe_id}
-      starred_recipe_list = recipe_list.dup.delete_if {|r| !starred_recipe_ids.include?(r.id) }
-      if starred_recipe_list.size >= 1
-        recipe_list = starred_recipe_list 
-      end
     end
     search_for = (filters['search'] || '').downcase
+    
+    recipe_list.each do |rh|
+      next unless starred_recipe_ids.blank? || starred_recipe_ids.include?(rh[:id])
       
-    recipe_list.each do |r|
-      r.sort_score = 0
-      r.ingredients.each do |i|
+      rh[:ingredients].each do |ih|
         # Add 10 for each like ingredient
-        r.sort_score += 10 if like_ingredient_ids.include?(i.id)
-        
+        rh[:scores][:ingr_like] = 10 if like_ingredient_ids.include?(ih[:id])
+      
         # Add 100 if filtering and matches ingredient
-        r.sort_score += 100 if filters['ingredients'] && filters['ingredient_ids'].include?(i.id.to_s)
-        
+        rh[:scores][:ingr_have] += 100 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
+      
         # Subtract 20 if in avoid
-        r.sort_score -= 20 if avoid_ingredient_ids.include?(i.id)
-        
+        rh[:scores][:avoid] -= 20 if avoid_ingredient_ids.include?(ih[:id])
+      
+        # Allergies currently not used, so comment out for now
         # Subtract 100 if in allergy
-        r.sort_score -= 100 if allergy_ingredient_ids.include?(i.allergen1_id) ||
-          allergy_ingredient_ids.include?(i.allergen2_id) ||
-          allergy_ingredient_ids.include?(i.allergen3_id)
-          
-        # Add 100 if search matches ingredient
-        r.sort_score += 100 if r.ingredients.index {|i| i.name.downcase.include?(search_for)} unless search_for.blank?
-      end
-
-      meal = Meal.where(:recipe_id => r.id, :kitchen_id => self.kitchen_id).first
-      unless meal.nil? 
+        #rh[:scores][:allergy] -= 100 if allergy_ingredient_ids.include?(ih[:allergen1_id]) ||
+        #  allergy_ingredient_ids.include?(ih[:allergen2_id]) ||
+        #  allergy_ingredient_ids.include?(ih[:allergen3_id])
         
+        # Add 100 if search matches ingredient
+        rh[:scores][:ingr_search] += 100 if rh[:ingredients].index {|i| ih[:other_names].include?(search_for)} unless search_for.blank?
+      end
+      
+      meal = kitchen_meals.find {|m| m.recipe_id == rh[:id]}
+      unless meal.nil? 
+      
         # Subtract 100 for each time seen, except if searching
         if search_for.blank?
-          r.sort_score -= 100 * meal.seen_count 
+          rh[:scores][:seen] = -100 * meal.seen_count 
         end
-        
+      
         # Subtract 75 if in my meals, else if searching add 50
         if search_for.blank?    
-          r.sort_score -= 75 if meal.my_meals
+          rh[:scores][:my_meals] = -75 if meal.my_meals?
         else
-          r.sort_score += 50 if meal.my_meals
+         rh[:scores][:my_meals] = 50 if meal.my_meals?
         end
-        
+      
         # Subtract 50 if starred, else if searching add 50
         if search_for.blank?    
-          r.sort_score -= 50 if meal.starred
+          rh[:scores][:star] = -50 if meal.starred?
         else
-          r.sort_score += 50 if meal.starred
+          rh[:scores][:star] = 50 if meal.starred?
         end
       end
-    
-      # Add 300 if search is in title      
-      r.sort_score += 300 if r.name.downcase.include?(search_for) unless search_for.blank?
       
+      # Take off 500 if it is already in the user's browsers queue
+      rh[:scores][:seen] = -500 if recipe_ids_shown.include?(rh[:id])
+      
+      # Add 300 if search is in title      
+      rh[:scores][:title_search] = 300 if rh[:name].downcase.include?(search_for) unless search_for.blank?
+    
       # Add some variability
-      r.sort_score += rand(30).to_i
+      rh[:scores][:random] = rand(30).to_i
+      
+      # Add up scores
+      rh[:sort_score] = 0
+      rh[:scores].each {|k, v| rh[:sort_score] += v} 
     end
 
-    recipe_list.sort! {|r1, r2| r2.sort_score <=> r1.sort_score}
-    # Rails.logger.debug('==> Recipe score: ' + recipe_list.map {|r| "#{r.name}: #{r.sort_score}"}.to_json)
-    return recipe_list
+   recipe_list_ids = recipe_list.sort {|rh1, rh2| rh2[:sort_score] <=> rh1[:sort_score]}.map {|rh| rh[:id]}
+   
+    end_time = Time.now
+    r = Recipe.find(recipe_list_ids.first)
+    rh = recipe_list.find {|rh| rh[:id] == r.id}
+    Rails.logger.info "===> get_favorite_recipes: Cache miss=#{cache_miss}, Total time =#{end_time - start_time}"
+    Rails.logger.info "     First recipe=#{rh[:name]}, score=#{rh[:sort_score]}"
+    Rails.logger.info "     Filters=#{filters.to_json}"
+    Rails.logger.info "     Scores=#{rh[:scores].to_json}"
+    
+    return recipe_list_ids
   end
 
   #---------------------------------
@@ -381,17 +408,32 @@ class User < ActiveRecord::Base
     return user
   end
 
-  #---------------------------------
   ##################################
-  protected
+  private
   ##################################
 
+  #---------------------------------
   def destroy_users_allergy_by_name(allergy_name)
     allergy = Allergy.find_by_name(allergy_name)
     return nil if allergy.nil?
     ua = users_allergies.find_by_allergy_id(allergy.id)
     return nil if ua.nil?
     ua.destroy
+  end
+
+  #---------------------------------
+  def create_recipe_info_hash(r)
+   {:id => r.id, :name => r.name, :picture_file_name => r.picture_file_name, :sort_score => 0,
+    :scores => {:ingr_like => 0, :ingr_have => 0, :avoid => 0, :allergy => 0, :ingr_search => 0, :seen => 0,
+      :my_meals => 0, :star => 0, :title_search => 0, :random => 0},
+    :ingredients => r.ingredients.map {|i| {:id => i[:id], :other_names => i.other_names.downcase,
+        :allergen1_id => i.allergen1_id, :allergen2_id => i.allergen2_id, :allergen3_id => i.allergen3_id} } }
+  end
+
+  #---------------------------------
+  def create_recipe_list(conditions)
+      Recipe.where(conditions).includes('ingredients').select('id, name, picture_file_name').
+        map { |r| create_recipe_info_hash(r) }
   end
 
 end

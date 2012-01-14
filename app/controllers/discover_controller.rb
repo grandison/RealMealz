@@ -71,12 +71,12 @@ class DiscoverController < ApplicationController
   #------------------------- 
   def get_new_recipes(recipe_ids_shown, filters)
     # Sort all recipes by standard criteria
-    recipes = current_user.get_favorite_recipes(recipe_ids_shown, filters)
+    recipe_ids = current_user.get_favorite_recipes(recipe_ids_shown, filters)
     
     # Only send 5 recipes but save the ids of the rest
-    num_to_send = (recipes.length < 5)? recipes.length : 5
-    session[:next_recipe_ids] = recipes[num_to_send..-1].map {|r| r.id}
-    return recipes[0..num_to_send - 1]
+    num_to_send = (recipe_ids.length < 5)? recipe_ids.length : 5
+    session[:next_recipe_ids] = recipe_ids[num_to_send..-1]
+    return Recipe.where('id IN (?)', recipe_ids[0..num_to_send - 1].join(','))
   end
   
   #------------------------- 

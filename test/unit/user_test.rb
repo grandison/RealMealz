@@ -9,7 +9,7 @@ class UserTest < ActiveSupport::TestCase
     @user.role = 'kitchen_admin'
     @user.save!
   end
-  
+
   test "get recipes" do
     Recipe.delete_all
     Meal.delete_all
@@ -23,30 +23,30 @@ class UserTest < ActiveSupport::TestCase
     
     # Get all recipes for this user
     # Should include all public recipes, plus all private recipes for this kitchen, even if no picture
-    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
+    r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
     [r1, r2, r3, r5, r6].each do |r|
-      assert r_list.include?(r), r.name + ' not found'
+      assert r_list_ids.include?(r.id), r.name + ' not found'
     end
 
     # Get starred recipes
-    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
-    assert_equal 1, r_list.count, 'Number of starred recipes'
-    assert_equal r2.id, r_list.first.id, 'Correct recipe is starred'
+    r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
+    assert_equal r2.id, r_list_ids.first, 'Starred recipe is first'
+    assert_equal 6, r_list_ids.count, 'Number of recipes returned'
 
     # Not one starred recipes, should get normal list
     m1.update_attributes!(:starred => false)
-    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
-    assert_equal 5, r_list.count, 'None starred: number of recipes'
+    r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
+    assert_equal 5, r_list_ids.count, 'None starred: number of recipes'
 
     # Get search list
-    r_list = @user.get_favorite_recipes(ids_shown = [], {'search' => 'Recipe 2'})
-    assert_equal 5, r_list.count, 'Searched for Recipe 2'
-    assert_equal r2.name, r_list.first.name
+    r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'search' => 'Recipe 2'})
+    assert_equal 5, r_list_ids.count, 'Searched for Recipe 2'
+    assert_equal r2.id, r_list_ids.first
     
     # Seen should be last
     m2 = Meal.create!(:kitchen_id => @kitchen.id, :recipe_id => r1.id, :seen_count => 1)
-    r_list = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
-    assert_equal r1.name, r_list.last.name, "Seen should be last"
+    r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
+    assert_equal r1.id, r_list_ids.last, "Seen should be last"
     
   end
 

@@ -30,5 +30,9 @@ RealMealz::Application.configure do
   
   # MD Jan-2012 Setup development url for email links
   config.action_mailer.default_url_options = { :host => 'local.realmealz.com:3000' }
+  
+  # MD Jan 2012
+  #config.cache_store = :dalli_store 
+  
 end
 

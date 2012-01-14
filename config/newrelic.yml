@@ -17,3 +17,22 @@
      transaction_threshold: apdex_f
    capture_params: false
    log_level: info
+   
+ development:
+   error_collector:
+     capture_source: true
+     enabled: true
+     ignore_errors: ActionController::RoutingError
+   apdex_t: 0.5
+   ssl: false
+   monitor_mode: false
+   license_key: 952ca1aaadb5651a38640d6f6a711996276b307e
+   developer_mode: true
+   app_name: RealMealz
+   transaction_tracer:
+     record_sql: raw
+     enabled: true
+     stack_trace_threshold: 0.5
+     transaction_threshold: apdex_f
+   capture_params: false
+   log_level: info   

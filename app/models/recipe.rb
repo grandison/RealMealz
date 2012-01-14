@@ -7,7 +7,6 @@ class Recipe < ActiveRecord::Base
   has_many :users_recipes
   has_many :users, :through => :users_recipes
   belongs_to :kitchen
-  default_scope :include => [:ingredients_recipes, :ingredients] # Doesn't seem to be working
 
   # The lists are to pass information back into the form for easier display, 
   # sort_score is used internally for sorting the recipes by their score

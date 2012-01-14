@@ -1,0 +1,232 @@
+/* 
+https://github.com/imathis/fancy-buttons 
+They use Compass for development, so this is grabbed from the demo page:
+http://brandonmathis.com/projects/fancy-buttons/demo/
+*/
+
+.fancy-button-reset-base-class,.fancy-button-base,a.big,.green-button,.red-button, .gray-button {
+  font-family: "Lucida Grande",Lucida,Arial,sans-serif;
+  background: url(<%= asset_data_uri 'button_bg.png' %>) repeat-x bottom left;
+  margin: 0;
+  width: auto;
+  overflow: visible;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  border-style: solid;
+  font-weight: bold
+}
+.fancy-button-reset-base-class::-moz-focus-inner,.fancy-button-base::-moz-focus-inner,a.big::-moz-focus-inner,.green-button::-moz-focus-inner,.red-button::-moz-focus-inner, .gray-button::-moz-focus-inner  {
+  border: none;
+  padding: 0
+}
+.fancy-button-reset-base-class:focus,.fancy-button-base:focus,a.big:focus,.green-button:focus,.red-button:focus,.gray-button:focus {
+  outline: none
+}
+.fancy-button-base,a.big,.green-button,.red-button,.gray-button {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1.2em;
+  padding: 0.3em 1em;
+  border-width: 1px;
+  background-color: #444;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #989898), color-stop(10%, #6a6a6a), color-stop(50%, #3c3c3c), color-stop(50%, #353535), color-stop(100%, #4e4e4e));
+  background-image: -moz-linear-gradient(top, #989898 0%, #6a6a6a 10%, #3c3c3c 50%, #353535 50%, #4e4e4e 100%);
+  background-image: linear-gradient(top, #989898 0%, #6a6a6a 10%, #3c3c3c 50%, #353535 50%, #4e4e4e 100%);
+  border-color: #1e1e1e;
+  text-shadow: #040404 0px 1px 1px;
+  -moz-box-shadow: rgba(255,255,255,0.267) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255,255,255,0.267) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255,255,255,0.267) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255,255,255,0.267) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box;
+  margin: 0 2px;
+  vertical-align: middle
+}
+.fancy-button-base,a.big,button,.fancy-button-base:visited,a.big:visited,.green-button:visited,.red-button:visited,.gray-button:visited  {
+  color: #fff
+}
+.fancy-button-base:hover,a.big:hover,button:hover,.fancy-button-base:focus,a.big:focus,.green-button:focus,.red-button:focus,.gray-button:focus {
+  background-color: #3c3c3c;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #919191), color-stop(10%, #636363), color-stop(50%, #353535), color-stop(50%, #2d2d2d), color-stop(100%, #474747));
+  background-image: -moz-linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
+  background-image: linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
+  border-color: #161616;
+  text-shadow: #000 0px 1px 1px
+}
+.fancy-button-base:hover,a.big:hover,.fancy-button-base:hover:visited,a.big:hover:visited,button:hover:visited,.fancy-button-base:focus,a.big:focus,button:focus,.fancy-button-base:focus:visited,a.big:focus:visited,button:focus:visited,.green-button:focus:visited,.red-button:focus:visited,.gray-button:focus:visited {
+  color: #fff
+}
+.fancy-button-base:active,a.big:active,.green-button:active,.red-button:active,.gray-button:active {
+  background-color: #353535;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #353535), color-stop(30%, #3a3a3a), color-stop(50%, #303030), color-stop(50%, #282828), color-stop(100%, #494949));
+  background-image: -moz-linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
+  background-image: linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
+  border-color: #0e0e0e;
+  text-shadow: #000 0px -1px -1px;
+  -moz-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset
+}
+.fancy-button-base:active,a.big:active,.fancy-button-base:active:visited,a.big:active:visited,button:active:visited,.green-button:active:visited,.red-button:active:visited,.gray-button:active:visited {
+  color: #fff
+}
+
+.green-button {
+  background-color: #3ab700;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #9ee080), color-stop(10%, #66ce36), color-stop(50%, #418721), color-stop(50%, #3b7b1e), color-stop(100%, #4fa428));
+  background-image: -moz-linear-gradient(top, #9ee080 0%, #66ce36 10%, #418721 50%, #3b7b1e 50%, #4fa428 100%);
+  background-image: linear-gradient(top, #9ee080 0%, #66ce36 10%, #418721 50%, #3b7b1e 50%, #4fa428 100%);
+  border-color: #295615;
+  text-shadow: #123800 0px 1px 1px;
+  -moz-box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box
+}
+.green-button,.green-button:visited {
+  color: #fff
+}
+.green-button:hover,.green-button:focus {
+  background-color: #35a800;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #95dd73), color-stop(10%, #5fc430), color-stop(50%, #3b7b1e), color-stop(50%, #356e1b), color-stop(100%, #499725));
+  background-image: -moz-linear-gradient(top, #95dd73 0%, #5fc430 10%, #3b7b1e 50%, #356e1b 50%, #499725 100%);
+  background-image: linear-gradient(top, #95dd73 0%, #5fc430 10%, #3b7b1e 50%, #356e1b 50%, #499725 100%);
+  border-color: #234912;
+  text-shadow: #0d2800 0px 1px 1px
+}
+.green-button:hover,.green-button:hover:visited,.green-button:focus,.green-button:focus:visited {
+  color: #fff
+}
+.green-button:active {
+  background-color: #309900;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #3b7b1e), color-stop(30%, #3f8320), color-stop(50%, #37721c), color-stop(50%, #316619), color-stop(100%, #4b9b26));
+  background-image: -moz-linear-gradient(top, #3b7b1e 0%, #3f8320 30%, #37721c 50%, #316619 50%, #4b9b26 100%);
+  background-image: linear-gradient(top, #3b7b1e 0%, #3f8320 30%, #37721c 50%, #316619 50%, #4b9b26 100%);
+  border-color: #1e3d0f;
+  text-shadow: #081900 0px -1px -1px;
+  -moz-box-shadow: #295615 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #295615 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #295615 0 0.08em 0.1em 1px inset;
+  box-shadow: #295615 0 0.08em 0.1em 1px inset
+}
+.green-button:active,.green:active:visited {
+  color: #fff
+}
+
+/* Red button */
+.red-button {
+  background-color: #b70300;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #e08180), color-stop(10%, #ce3836), color-stop(50%, #872321), color-stop(50%, #7b201e), color-stop(100%, #a42a28));
+  background-image: -moz-linear-gradient(top, #e08180 0%, #ce3836 10%, #872321 50%, #7b201e 50%, #a42a28 100%);
+  background-image: linear-gradient(top, #e08180 0%, #ce3836 10%, #872321 50%, #7b201e 50%, #a42a28 100%);
+  border-color: #561615;
+  text-shadow: #380100 0px 1px 1px;
+  -moz-box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255,255,255,0.359) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box
+}
+.red-button,.red-button:visited {
+  color: #fff
+}
+.red-button:hover,.red-button:focus {
+  background-color: #a80300;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #dd7573), color-stop(10%, #c43330), color-stop(50%, #7b201e), color-stop(50%, #6e1c1b), color-stop(100%, #972725));
+  background-image: -moz-linear-gradient(top, #dd7573 0%, #c43330 10%, #7b201e 50%, #6e1c1b 50%, #972725 100%);
+  background-image: linear-gradient(top, #dd7573 0%, #c43330 10%, #7b201e 50%, #6e1c1b 50%, #972725 100%);
+  border-color: #491312;
+  text-shadow: #280100 0px 1px 1px
+}
+.red-button:hover,.red-button:hover:visited,.red-button:focus,.red-button:focus:visited {
+  color: #fff
+}
+.red-button:active {
+  background-color: #990300;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #7b201e), color-stop(30%, #832220), color-stop(50%, #721d1c), color-stop(50%, #661a19), color-stop(100%, #9b2826));
+  background-image: -moz-linear-gradient(top, #7b201e 0%, #832220 30%, #721d1c 50%, #661a19 50%, #9b2826 100%);
+  background-image: linear-gradient(top, #7b201e 0%, #832220 30%, #721d1c 50%, #661a19 50%, #9b2826 100%);
+  border-color: #3d100f;
+  text-shadow: #190000 0px -1px -1px;
+  -moz-box-shadow: #561615 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #561615 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #561615 0 0.08em 0.1em 1px inset;
+  box-shadow: #561615 0 0.08em 0.1em 1px inset
+}
+.red-button:active,.red:active:visited {
+  color: #fff
+}
+
+/* gray button */
+.gray-button {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #ffffff), color-stop(100%, #cecece));
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #cecece 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #cecece 100%);
+  border-color: #b7b7b7;
+  text-shadow: #fff 0px 1px 1px;
+  -moz-box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255,255,255,0.867) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box
+}
+.gray-button,.gray-button:visited {
+  color: #222
+}
+.gray-button:hover,.gray-button:focus {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #fcfcfc), color-stop(100%, #c6c6c6));
+  background-image: -moz-linear-gradient(top, #fcfcfc 0%, #c6c6c6 100%);
+  background-image: linear-gradient(top, #fcfcfc 0%, #c6c6c6 100%);
+  border-color: #afafaf;
+  text-shadow: #fff 0px 1px 1px
+}
+.gray-button:hover,.gray-button:hover:visited,.gray-button:focus,.gray-button:focus:visited {
+  color: #222
+}
+.gray-button:active,
+.gray-button-active {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #cbcbcb), color-stop(40%, #d3d3d3), color-stop(85%, #d3d3d3), color-stop(100%, #e5e5e5));
+  background-image: -moz-linear-gradient(top, #cbcbcb 0%, #d3d3d3 40%, #d3d3d3 85%, #e5e5e5 100%);
+  background-image: linear-gradient(top, #cbcbcb 0%, #d3d3d3 40%, #d3d3d3 85%, #e5e5e5 100%);
+  border-color: #a7a7a7;
+  text-shadow: #fff 0px -1px -1px;
+  -moz-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset;
+  box-shadow: #b7b7b7 0 0.08em 0.1em 1px inset
+}
+.gray-button:active,.gray-button:active:visited,
+.gray-button-active {
+  color: #222
+}
