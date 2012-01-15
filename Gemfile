@@ -2,11 +2,6 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.3'
 
-# If you use a different adapter, change it here but don't check it in. Default: gem 'mysql2', '~> 0.2.7'
-group :sqlite do
-  gem 'sqlite3'
-end
-
 group :mysql do
   gem 'mysql2'
 end
@@ -44,6 +39,7 @@ group :test do
   # Pretty printed test output
   #gem 'turn', '~> 0.8.3', :require => false
   gem 'single_test'
+  gem 'sqlite3' # Heroku bombs on this and BUNDLE_WITHOUT doesnt work so put it here under test
 end
 
 # For local development
