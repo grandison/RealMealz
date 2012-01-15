@@ -17,9 +17,7 @@
       %div{:class => "discover-starred-update discover-starred-off discover-detail-#{size_suffix}",
        "recipe-id" => recipe.id}
     %div{:class => "discover-detail-title discover-detail-#{size_suffix}"}
-      .recipe-title
-        = recipe.name
-        =render :partial => 'recipes/recipe_source', :locals => {:recipe => recipe}
+      = render :partial => 'recipes/recipe_source', :locals => {:recipe => recipe}
     %div{:class => "discover-detail-button discover-detail-#{size_suffix}"}
     %div{:class => "discover-detail-scroll discover-detail-#{size_suffix}"}
       .discover-balance.food-balance{:protein => recipe.food_balance[:protein], 

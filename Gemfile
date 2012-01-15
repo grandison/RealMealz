@@ -3,10 +3,13 @@ source 'http://rubygems.org'
 gem 'rails', '3.1.3'
 
 # If you use a different adapter, change it here but don't check it in. Default: gem 'mysql2', '~> 0.2.7'
-#gem 'sqlite3'
-#gem 'mysql'
-#gem 'mysql2', '~> 0.2.7'
-gem 'mysql2'
+group :sqlite do
+  gem 'sqlite3'
+end
+
+group :mysql do
+  gem 'mysql2'
+end
 
 # ruby_units needs to be loaded first because it adds a String.from method that conflicts with the Rails String.from
 # method that active_scaffold uses. Otherwise, it will produce errors like "'as_categories' Unit not recognized"
@@ -27,6 +30,7 @@ gem 'nokogiri'
 gem 'admin_data'
 gem 'jquery-rails'
 gem "yaml_db"
+gem "dalli"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -38,20 +42,24 @@ end
 
 group :test do
   # Pretty printed test output
-  gem 'turn', '~> 0.8.3', :require => false
+  #gem 'turn', '~> 0.8.3', :require => false
+  gem 'single_test'
 end
 
-# If not using Heroku
+# For local development
 group :development do
-  gem "thin"
+  gem "thin", :platforms => :ruby
 end
 
 # For Heroku
-group :production do
+group :heroku do
   gem 'pg'
   gem 'unicorn'
   gem 'newrelic_rpm'
 end
 
-
+# For BlueBox
+group :bluebox do
+  gem 'mysql'
+end
 

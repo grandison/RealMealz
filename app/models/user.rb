@@ -169,10 +169,10 @@ class User < ActiveRecord::Base
         rh[:scores][:ingr_like] = 10 if like_ingredient_ids.include?(ih[:id])
       
         # Add 100 if filtering and matches ingredient
-        rh[:scores][:ingr_have] += 100 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
+        rh[:scores][:ingr_have] = 100 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
       
         # Subtract 20 if in avoid
-        rh[:scores][:avoid] -= 20 if avoid_ingredient_ids.include?(ih[:id])
+        rh[:scores][:avoid] = -20 if avoid_ingredient_ids.include?(ih[:id])
       
         # Allergies currently not used, so comment out for now
         # Subtract 100 if in allergy
@@ -181,7 +181,7 @@ class User < ActiveRecord::Base
         #  allergy_ingredient_ids.include?(ih[:allergen3_id])
         
         # Add 100 if search matches ingredient
-        rh[:scores][:ingr_search] += 100 if rh[:ingredients].index {|i| ih[:other_names].include?(search_for)} unless search_for.blank?
+        rh[:scores][:ingr_search] = 100 if rh[:ingredients].index {|i| ih[:other_names].include?(search_for)} unless search_for.blank?
       end
       
       meal = kitchen_meals.find {|m| m.recipe_id == rh[:id]}

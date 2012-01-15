@@ -1,6 +1,6 @@
 require 'csv'
 
-#Usage: load ‘parsers/import_skills.rb’  #adds the skills using the skills.csv file
+#Usage: load ï¿½parsers/import_skills.rbï¿½  #adds the skills using the skills.csv file
 #make sure skills.csv file is comma delimited, if containing old record name then has the updated version of the data because the file will update the data
 #csv must come in the column order of scategory_id, name, description, level, video_link
 #make sure scategory table has id=1, name=technique, id=2, name=ingredient

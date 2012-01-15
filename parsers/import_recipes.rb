@@ -1,4 +1,3 @@
-#require "C:/connie/Workspace/RealMealz/config/environment"
 #require "C:/connie/Workspace/RealMealz/app/models/recipe.rb"
 #require File.expand_path('../../config/environment', __FILE__)
 require 'ruby_ext'

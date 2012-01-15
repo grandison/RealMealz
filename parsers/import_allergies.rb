@@ -71,5 +71,3 @@ while cnt != myfile_array.length
 	cnt=cnt+1
 end
 
-
-

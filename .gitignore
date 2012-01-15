@@ -8,6 +8,6 @@ tmp/
 .project
 *.tmproj
 .rvm*
-/public/assets/
 realmealz_dev
 realmealz_test
+parsers/*

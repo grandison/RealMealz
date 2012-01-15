@@ -41,5 +41,3 @@ get_parent_allergies.each do |allergy|
     end
   end
 end
-
- 

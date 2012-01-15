@@ -1,3 +1,11 @@
+<div class="recipe-title">
+  <% if !recipe.source_link.blank? && recipe.source_link.downcase.include?('macheesmo') %>
+    <%= link_to(recipe.name, recipe.source_link, :target => '_blank') %>
+  <% else %>
+    <%= recipe.name %>
+  <% end %>
+</div>
+
 <% unless recipe.source.blank? %> 
   <div id="recipe-source">
     By: 
