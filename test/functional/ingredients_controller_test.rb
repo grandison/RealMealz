@@ -42,7 +42,7 @@ class IngredientsControllerTest < ActionController::TestCase
     assert_response :success
     ingr = JSON.parse(response.body)['ingredient']    
     assert_equal @ingredient_attributes_2[:name], ingr['name'], "Ingredient name"
-    assert_equal @ingredient_attributes_2[:other_names], ingr['other_names']
+    assert_equal @ingredient_attributes_2[:other_names], ingr['other_names'], "Ingredient other names"
 
     # Fail if second ingredient with same name
     post :create, :ingredient => @ingredient_attributes_2, :render => 'json'
