@@ -70,20 +70,28 @@ class IngredientsController < ApplicationController
     render :partial => "ingredient_form"
   end
 
-  #------------------------- 
+ #-------------------------
   def create
     @ingredient = Ingredient.new(params[:ingredient])
     if current_user.role != 'super_admin'
-      @ingredient.kitchen_id = current_user.kitchen_id  
+      @ingredient.kitchen_id = current_user.kitchen_id
     end
 
-    respond_to do |format|
-      if @ingredient.save
-        format.html { redirect_to('/ingredients', :notice => 'Ingredient was successfully created.') }
-        format.xml  { render :xml => @ingredient, :status => :created, :location => @ingredient }
+    if @ingredient.save
+      if params[:render] == 'json'
+        render :json => @ingredient #@item_list.to_json(:methods => :ingredient_name)
+      elsif params[:render] == 'xml'
+        render :xml => @ingredient, :status => :created
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @ingredient.errors, :status => :unprocessable_entity }
+        redirect_to('/ingredients', :notice => 'Ingredient was successfully created.')
+      end
+    else
+      if params[:render] == 'json'
+        render :json => @ingredient.errors, :status => :unprocessable_entity
+      elsif params[:render] == 'xml'
+        render :xml => @ingredient.errors, :status => :unprocessable_entity
+      else
+        render :action => "new"
       end
     end
   end

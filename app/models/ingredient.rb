@@ -10,6 +10,7 @@ class Ingredient < ActiveRecord::Base
   belongs_to :allergen3, :class_name => 'Allergy', :foreign_key => "allergen3_id"
   
   validates_presence_of :name
+  validates_uniqueness_of :name, :scope => :kitchen_id
   
   #--------------------------------------
   def get_balance_category
