@@ -48,7 +48,7 @@ class IngredientsControllerTest < ActionController::TestCase
     post :create, :ingredient => @ingredient_attributes_2, :render => 'json'
     assert_response :unprocessable_entity
     ingr = JSON.parse(response.body)
-    assert 'has already been taken', ingr['name'].first
+    assert 'has already been taken', ingr['name'].first, "Name already taken"
   end
 
   test "should show ingredient" do
