@@ -207,7 +207,7 @@ class Ingredient < ActiveRecord::Base
   UNIT_NAMES = [
     %w(cup cups c. cu),
     %w(tsp tsps teaspoon teaspoons t.),
-    %w(tbs tablespoon tablespoons),
+    %w(tbs tbsp tablespoon tablespoons),
     %w(lbs lb pound pounds),
     %w(oz ozs oz. ounce ounces),
     %w(whole clove cloves bunch bunches handful handfuls pinch pinches slice slices sprig sprigs),

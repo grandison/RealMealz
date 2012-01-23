@@ -14,6 +14,7 @@ class IngredientTest < ActiveSupport::TestCase
   #--------------
   test "find unit name" do
 	  assert_equal "tbs", Ingredient.find_unit("2 tablespoons olive oil")
+    assert_equal "tbs", Ingredient.find_unit("2 tbsp butter")
 	  assert_equal "tsp", Ingredient.find_unit("1 1/4 teaspoons kosher salt")
 	  assert_equal "cup", Ingredient.find_unit("2 1/2 cups button mushrooms")
   	assert_equal "oz", Ingredient.find_unit("3/4oz. ")

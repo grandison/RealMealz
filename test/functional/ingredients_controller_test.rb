@@ -32,7 +32,7 @@ class IngredientsControllerTest < ActionController::TestCase
     end
     assert_redirected_to ingredients_path
     ingr = Ingredient.last
-    assert_equal @ingredient_attributes_2[:name], ingr.name
+    assert_equal @ingredient_attributes_2[:name], ingr.name, "Ingredient name"
     assert_equal @ingredient_attributes_2[:other_names], ingr.other_names
     assert_equal @kitchen.id, ingr.kitchen_id, "Kitchen private ingredient"
   end
@@ -48,7 +48,7 @@ class IngredientsControllerTest < ActionController::TestCase
     post :create, :ingredient => @ingredient_attributes_2, :render => 'json'
     assert_response :unprocessable_entity
     ingr = JSON.parse(response.body)
-    assert 'has already been taken', ingr['name'].first, "Name already taken"
+    assert_equal 'has already been taken', ingr['name'].first, "Name already taken"
   end
 
   test "should show ingredient" do
