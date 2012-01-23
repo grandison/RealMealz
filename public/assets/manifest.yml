@@ -142,3 +142,5 @@ site.png: site-f4994a0152a657d299b9c082df077174.png
 sort_by_asc.jpg: sort_by_asc-68d8cea544cf9575cbede1be0d30fea5.jpg
 sort_by_desc.jpg: sort_by_desc-72dff53f0a9d07848caa7b7d0e58a8f0.jpg
 sort_by_nothing.jpg: sort_by_nothing-38b845e6138bdc208db6c5805fc32f59.jpg
+admin_data.js: admin_data-5f11394ec7efa836c15824bc99db3036.js
+admin_data.css: admin_data-52d657e2587186ee3db635613417303a.css
