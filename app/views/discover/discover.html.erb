@@ -253,7 +253,20 @@ $("#discover-carousel").jcarousel({
 /** Search **/
 $('#discover-search-input').keyup(function() {
   var search = $(this).val();
-  if (!search.length) { search = 'next'};
+  var fontSize = 20;
+  if (!search.length) { 
+    search = 'next';  
+  }
+  if (search.length > 20) {
+    fontSize = 12;
+  } else if (search.length > 10) {
+    fontSize = 15;
+  } else if (search.length > 5) {
+    fontSize = 18;
+  } else {
+    fontSize = 20;
+  }
+  $('#discover-next-div').css('font-size', fontSize + 'px'); 
   $('#discover-next-div').text(search);
 });
 
