@@ -29,7 +29,7 @@ class Kitchen < ActiveRecord::Base
   #-------------------------------------------
   def filter_meals(meals_field = nil)
     meals.delete_if {|m| (!meals_field.nil? && !eval("m.#{meals_field}")) ||
-     m.recipe.nil? || m.recipe.name.blank? || m.recipe.preptime.nil?}
+     m.recipe.nil? || m.recipe.name.blank?}
   end
   
   #-------------------------------------------
