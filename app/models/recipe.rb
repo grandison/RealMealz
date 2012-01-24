@@ -114,9 +114,10 @@ class Recipe < ActiveRecord::Base
     ingredients_recipes.reload
     
     ingr_array.each_with_index do |line, index|
-      next if line.empty? || line.strip.empty?
+      line.strip!
+      next if line.empty?
       
-      # check for groups first in parenthesis, then ingredients
+      # check for groups first, then ingredients. Groups are deliminated with stars like this: *Group*
       attrs = {}
       if line =~ /^\*(.*)\*$/
         attrs[:description] = $1
@@ -124,7 +125,7 @@ class Recipe < ActiveRecord::Base
       else
         # If a comma, assume everything past is a comment so only parse the first part but then 
         # add it back in before processing the description
-        line = line.strip.downcase
+        line.downcase!
         comma_index = line.index(",")
         desc_part = ''
         unless comma_index.blank?

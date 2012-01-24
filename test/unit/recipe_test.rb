@@ -85,6 +85,36 @@ class RecipeTest < ActiveSupport::TestCase
     assert_equal 'baby leaves, washed and rough chopped', recipe.ingredients_recipes[10].description
   end
 
+  #--------------
+  test "process group with same name as ingredient" do
+    test_ingredients = <<-EOF
+      2 cups black-eyed peas
+      2 english muffins
+      Sriracha sauce (opt.)
+      
+      *Hollandaise Sauce*
+      1 large egg yolk
+      1 cup butter, melted preferably clarified
+     EOF
+    ['black-eyed peas', 'english muffins', 'sriracha sauce', 'hollandaise sauce', 'egg yolk', 'butter'].each do |names| 
+      Ingredient.create(:name => names.split("|")[0].capitalize, :other_names => names)
+    end
+    Ingredient.reset_cache
+    
+    recipe = Recipe.new
+    recipe.ingredient_list = test_ingredients
+    recipe.process_ingredient_list
+
+    assert_equal 'Hollandaise Sauce', recipe.ingredients_recipes[3].description
+    assert recipe.ingredients_recipes[3].group?, "Group"
+    
+    #Reprocess again
+    recipe.process_ingredient_list
+    recipe.ingredient_list = nil # force recipe to regenerate list
+    assert_equal 'Hollandaise Sauce', recipe.ingredients_recipes[3].description
+    assert recipe.ingredients_recipes[3].group?, "Group"
+  end
+
 	#--------------
 	test "ingredient_list" do
 	  recipe = Recipe.create
@@ -103,7 +133,7 @@ class RecipeTest < ActiveSupport::TestCase
     Ingredient.reset_cache
 	  
 	  recipe = Recipe.new({"name"=>"Max's Recipe", "cooksteps"=>"2. Cook", "picture_remote_url"=>"", "intro"=>"Love this recipe", 
-	    "ingredient_list"=>"3 cup rice\n1 stalk celery\n1/2 lbs chicken", "skills"=>"Bake", "tags"=>"Main", "preptime"=>"10", 
+	    "ingredient_list"=>"3 cup rice\r\n1 stalk celery\r\n1/2 lbs chicken", "skills"=>"Bake", "tags"=>"Main", "preptime"=>"10", 
 	    "servings"=>"4", "prepsteps"=>"1. Put together", "source"=>"Max source", "cooktime"=>"10"})
     recipe.process_recipe
         
