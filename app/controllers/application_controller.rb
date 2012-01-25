@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
   after_filter :check_points
   before_filter :logging
 
+  if ENV['RAILS_MAINTENANCE'] || File.exist?("#{Rails.root}/tmp/maintenance.txt")
+    layout 'maintenance'
+  end
   #------------------------- 
   # For AJAX calls, return the flash messages in the header
   def flash_to_headers

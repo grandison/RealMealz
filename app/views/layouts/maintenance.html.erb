@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RealMealz Maintenance</title>
+    
+    <%= stylesheet_link_tag "application" %>
+
+    <style type="text/css">
+      <% @background_recipe = Recipe.random_background_image %>
+      body {background-image: url("<%= @background_recipe.picture.url(:large) %>"); }
+      #maintenance { width: 300px; margin: 0px auto; }
+    </style>
+    
+    <meta name = "viewport" content = "width = 1040">
+  </head>
+  <body>
+    <div id="content" class="content-width">
+      <div id="header" class="content-width">
+        <div id="realmealz-logo">
+          <%= image_tag 'realmealz-logo-100px.png', :height => "100px" %>
+        </div>
+        <table id="top2" class="content-width">
+          <tr> 
+            <td><%= render 'layouts/menu' %></td>
+          </tr>
+        </table>
+        <div id="message-bar" class="content-width">
+          <div id="flash-div">
+            <div id="message-bar-recipe-name">
+              <%= @background_recipe.name %>
+            </div>
+          </div>
+        </div> <!-- message-bar -->
+      </div> <!-- header -->
+      <div id="main" class="content-width main-height">
+        <br /><br />
+        <div  id="maintenance" class="gray-background-rounded">
+          <p>RealMealz is being moved.</p>
+          <p>Beta.RealMealz.com DNS updates will propagate in about 4 hours.</p>
+          <p>In the meantime, you can visit us 
+          at <a href="http://test.realmealz.com">test.realmealz.com</a></p>
+        </div>
+      </div> <!-- main -->
+      
+    </div> <!-- content -->
+    		
+		<script type="text/javascript">
+		
+		  /* Make sure #main is as at least high as the window 
+		   * However, only resize if the starting height of #main is not already fullHeight
+		   * This will make sure we don't resize windows that are already being resized
+		  */
+		  function set_main_height() {
+		    if (resizeMain) {
+  		    var fullHeight = full_scroll_height('#main') + 10;
+  		    if (initMainHeight < fullHeight) {
+            $('#main').height(fullHeight);
+          }
+        }
+		  };
+		  $(window).resize(function() {  
+		    set_main_height();
+      });
+      var initMainHeight = $('#main').height();
+	    var initFullHeight = full_scroll_height('#main') + 10;
+	    //Add a 2px fudge factor
+	    var resizeMain = (initMainHeight < initFullHeight - 2) || (initMainHeight > initFullHeight + 2)
+      set_main_height();
+
+  </body>
+</html>
+
+
