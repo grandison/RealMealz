@@ -61,6 +61,7 @@ RealMealz::Application.routes.draw do
   post "/recipes/create_from_url"
   post "/recipes/update_servings"
   post "/recipes/reprocess"
+  post "/recipes/new"
   
   resources :ingredients
   post "/ingredients/combine_ingredients"

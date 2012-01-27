@@ -1,10 +1,15 @@
 <div class="gray-background">
-  <h1>Listing recipes</h1>
+  <h1>Recipes List</h1>
   <p>
-    <%= link_to 'New Recipe', new_recipe_path %>&nbsp;
-    <%= form_tag '/recipes/create_from_url' do %>
-      <%= url_field_tag(:url, '', {:size => '80', :placeholder => 'http://www.foodnetwork.com/recipes'} ) %>
-      <input value="Import recipe" type="submit" class="gray-button" />
+    <%= form_tag 'recipes/new' do %>
+      <input value="Add New Recipe" type="submit" class="gray-button" />
+    <% end %>
+    
+    <% if current_user.role == "super_admin"%>
+	    <%= form_tag '/recipes/create_from_url' do %>
+	      <%= url_field_tag(:url, '', {:size => '80', :placeholder => 'http://www.foodnetwork.com/recipes'} ) %>
+	      <input value="Import recipe" type="submit" class="gray-button" />
+	    <% end %>
     <% end %>
   </p>
 </div>
