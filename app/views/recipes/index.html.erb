@@ -5,7 +5,7 @@
       <input value="Add New Recipe" type="submit" class="gray-button" />
     <% end %>
     
-    <% if current_user == "super_admin"%>
+    <% if current_user.role == "super_admin"%>
 	    <%= form_tag '/recipes/create_from_url' do %>
 	      <%= url_field_tag(:url, '', {:size => '80', :placeholder => 'http://www.foodnetwork.com/recipes'} ) %>
 	      <input value="Import recipe" type="submit" class="gray-button" />
