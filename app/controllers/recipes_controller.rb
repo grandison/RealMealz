@@ -12,6 +12,12 @@ class RecipesController < ApplicationController
   #------------------------- 
   def create_from_url
     recipe = Recipe.create_from_html(params[:url])
+    if recipe.nil?
+      flash[:notice] = 'Website not supported'
+      redirect_to :recipes
+      return
+    end
+    
     recipe.kitchen_id = current_user.kitchen_id
     recipe.save!
     params[:id] = recipe.id
