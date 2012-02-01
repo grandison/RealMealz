@@ -36,12 +36,6 @@
               <%= content_tag(:span, flash[:notice], {:id => "flash-notice", :class => 'flash'}) %>
             <% end %>  
           </div>
-          
-          <% unless @background_recipe.nil? || flash_shown %>
-            <div id="message-bar-recipe-name">
-              <%= @background_recipe.name %>
-            </div>
-          <% end %>
 
           <%= render 'layouts/welcome' %>
         </div> <!-- message-bar -->
