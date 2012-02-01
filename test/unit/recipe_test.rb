@@ -53,13 +53,15 @@ class RecipeTest < ActiveSupport::TestCase
 		  1 shallot, minced
 		  1 pinch salt, and black pepper to taste
 		  4 1/2 cups baby arugula leaves, washed and rough chopped
+		  1 can beans
      EOF
     ['quinoa', 'water', 'salt', 'soy', 'apple|apples', 'lime|limes', 'lime juice', 'garlic',
-      'mint', 'shallot|shallots', 'pepper', 'arugula'].each do |names| 
+      'mint', 'shallot|shallots', 'pepper', 'arugula', 'beans'].each do |names| 
 	    Ingredient.create(:name => names.split("|")[0].capitalize, :other_names => names)
     end
     Ingredient.find_by_name('Garlic').update_attributes!(:whole_unit => 'clove')
     Ingredient.find_by_name('Salt').update_attributes!(:whole_unit => 'pinch')
+    Ingredient.find_by_name('Beans').update_attributes!(:whole_unit => 'can')
     Ingredient.reset_cache
     
     recipe = Recipe.new
@@ -83,6 +85,7 @@ class RecipeTest < ActiveSupport::TestCase
     assert_equal '1 pinch Salt', recipe.ingredients_recipes[9].name
     assert_equal '4.5 cups Arugula', recipe.ingredients_recipes[10].name
     assert_equal 'baby leaves, washed and rough chopped', recipe.ingredients_recipes[10].description
+    assert_equal '1 can Beans', recipe.ingredients_recipes[11].name_and_description
   end
 
   #--------------
@@ -156,7 +159,7 @@ class RecipeTest < ActiveSupport::TestCase
   end
 
 	#--------------
-	test "parse html" do
+	test "parse food network" do
 	  Ingredient.delete_all
     ['Olive oil', 'Salt', 'Pepper', 'Butter', 'Mushroom', 'Shallot', 'Tomato',
       'Onion', 'Carrot', 'Celery', 'Chicken', 'White wine'].each do |name| 
@@ -191,6 +194,31 @@ class RecipeTest < ActiveSupport::TestCase
 	  assert_equal 'Food Network', recipe.source, 'source'
 	  assert_equal url, recipe.source_link, 'source_link'
 	  assert_equal 'http://img.foodnetwork.com/FOOD/2007/07/12/EE0909_Chasseur_Chicken_lg.jpg', recipe.picture_remote_url, 'picture remote url'
+  end
+  
+  #--------------
+  test "parse open source food" do
+    Ingredient.delete_all
+    ['Olive oil', 'Salt', 'Pepper', 'Butter', 'Mushroom', 'Shallot', 'Tomato',
+      'Onion', 'Carrot', 'Celery', 'Chicken', 'White wine'].each do |name| 
+      Ingredient.create(:name => name)
+    end
+    Ingredient.reset_cache
+    
+    url = 'test/fixtures/opensourcefood.com_recipe.html'
+    recipe = Recipe.create_from_html(url)
+
+    # Main list of ingredients
+    assert_equal 'Open Source Food', recipe.source, 'source'
+    assert_equal url, recipe.source_link, 'source_link'
+    assert_equal 'Fragrant Chinese Beef Stew Recipe', recipe.name
+    assert_equal '1 Cup Water, boiling', recipe.ingredients_recipes[0].name
+    assert_equal '1 Tsp Sesame oil', recipe.ingredients_recipes[17].name_and_description
+    assert_equal 'http://img.foodnetwork.com/FOOD/2007/07/12/EE0909_Chasseur_Chicken_lg.jpg', recipe.picture_remote_url, 'picture remote url'
+    
+    # Other recipe info
+    assert_equal '2 cups dark chicken stock', recipe.cooksteps[0,25], 'cooksteps'
+    assert_equal 'Glazed Carrots.', recipe.cooksteps[-17,15], 'cooksteps'
   end
   
   #--------------

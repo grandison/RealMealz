@@ -135,6 +135,11 @@ class Recipe < ActiveRecord::Base
         attrs[:weight] = Ingredient.find_num(line)
         attrs[:unit] = Ingredient.find_unit(line)
         line.slice!(desc_part) # Make sure desc_part is not included twice
+        
+        # if using the whole_unit, take it out here so it doesn't get repeated in the description
+        if attrs[:unit] == 'whole' && !attrs[:ingredient].whole_unit.blank?
+          line.slice!(attrs[:ingredient].whole_unit)
+        end
         attrs[:description] = Ingredient.find_description(line + desc_part) 
       end
       attrs[:line_num] = index
@@ -226,50 +231,94 @@ class Recipe < ActiveRecord::Base
   def self.create_from_html(url)
     return nil if url.blank?
     
-    attribs = {}
-    attribs[:source_link] = url
-    
     if url.include?('foodnetwork.com')
-      doc = Nokogiri::HTML(open(url))
-
-      attribs[:source] = 'Food Network'
-      attribs[:name] = doc.css('#fn-w h1.fn').first.content
-      attribs[:preptime] = doc.css('#recipe-meta .prepTime').first.content.to_i rescue 0
-      attribs[:cooktime] = doc.css('#recipe-meta .cookTime').first.content.to_i rescue 0
-      attribs[:servings] = doc.css('#recipe-meta .yield').first.next_element.content.to_i rescue 4
-      attribs[:intro] = doc.css('.body-text .note').first.content rescue ''
-      attribs[:picture_remote_url] = doc.css('a#recipe-image').first['href'] rescue nil
-      attribs[:ingredient_list] = ''
-      
-      group_num = 1
-      body_doc = doc.css(".body-text")
-      body_doc.css('ul').each do |ul|
-        if group_num > 1
-          group_node = ul.previous.previous
-          if %w(h2 h3).include?(group_node.node_name.downcase)
-            group_name = group_node.content
-            attribs[:ingredient_list] << "*#{group_name}*\n"
-          end
-        end
-        ul.css('li.ingredient').each do |li|
-          attribs[:ingredient_list] << li.content + "\n"
-        end
-        group_num += 1
-      end
-      
-      attribs[:cooksteps] = ''
-      doc.css('.instructions').each do |inst_divs|
-        inst_divs.css('p').each do |p|
-          attribs[:cooksteps] << p.content.strip + "\n"
-        end
-      end
+      attribs = process_food_network(url)
+    elsif url.include?('opensourcefood.com')
+      attribs = process_open_source_food(url)
     else
-      attribs[:name] = '(Non-supported website)'
+      return nil
     end
     
     recipe = create(attribs)
     recipe.process_recipe
     return recipe
+  end
+  
+ #-------------------------
+  def self.process_food_network(url)
+    doc = Nokogiri::HTML(open(url))
+    attribs = {}
+    attribs[:source_link] = url
+
+    attribs[:source] = 'Food Network'
+    attribs[:name] = doc.css('#fn-w h1.fn').first.content
+    attribs[:preptime] = doc.css('#recipe-meta .prepTime').first.content.to_i rescue 0
+    attribs[:cooktime] = doc.css('#recipe-meta .cookTime').first.content.to_i rescue 0
+    attribs[:servings] = doc.css('#recipe-meta .yield').first.next_element.content.to_i rescue 4
+    attribs[:intro] = doc.css('.body-text .note').first.content rescue ''
+    attribs[:picture_remote_url] = doc.css('a#recipe-image').first['href'] rescue nil
+    attribs[:ingredient_list] = ''
+
+    group_num = 1
+    body_doc = doc.css(".body-text")
+    body_doc.css('ul').each do |ul|
+      if group_num > 1
+        group_node = ul.previous.previous
+        if %w(h2 h3).include?(group_node.node_name.downcase)
+          group_name = group_node.content
+          attribs[:ingredient_list] << "*#{group_name}*\n"
+        end
+      end
+      ul.css('li.ingredient').each do |li|
+        attribs[:ingredient_list] << li.content + "\n"
+      end
+      group_num += 1
+    end
+
+    attribs[:cooksteps] = ''
+    doc.css('.instructions').each do |inst_divs|
+      inst_divs.css('p').each do |p|
+        attribs[:cooksteps] << p.content.strip + "\n"
+      end
+    end
+    return attribs
+  end
+
+ #-------------------------
+  def self.process_open_source_food(url)
+    doc = Nokogiri::HTML(open(url))
+    doc = doc.css('#recipe_container')
+
+    attribs = {}
+    attribs[:source_link] = url
+    attribs[:source] = 'Open Source Food'
+    attribs[:name] = doc.css('h1.subheading').first.content
+    attribs[:picture_remote_url] = doc.css('.recipe_pic_new img').first['src'] rescue nil
+    attribs[:ingredient_list] = ''
+
+    group_num = 1
+    body_doc = doc.css("#recipe_ingredients")
+    body_doc.css('ul').each do |ul|
+      if group_num > 1
+        group_node = ul.previous.previous
+        if %w(h2 h3).include?(group_node.node_name.downcase)
+          group_name = group_node.content
+          attribs[:ingredient_list] << "*#{group_name}*\n"
+        end
+      end
+      ul.css('li.ingredient').each do |li|
+        attribs[:ingredient_list] << li['a'].content + "\n"
+      end
+      group_num += 1
+    end
+
+    attribs[:cooksteps] = ''
+    doc.css('.instructions').each do |inst_divs|
+      inst_divs.css('p').each do |p|
+        attribs[:cooksteps] << p.content.strip + "\n"
+      end
+    end
+    return attribs
   end
   
 end        
