@@ -199,26 +199,25 @@ class RecipeTest < ActiveSupport::TestCase
   #--------------
   test "parse open source food" do
     Ingredient.delete_all
-    ['Olive oil', 'Salt', 'Pepper', 'Butter', 'Mushroom', 'Shallot', 'Tomato',
-      'Onion', 'Carrot', 'Celery', 'Chicken', 'White wine'].each do |name| 
+    ['Water', 'Sesame oil'].each do |name| 
       Ingredient.create(:name => name)
     end
     Ingredient.reset_cache
     
     url = 'test/fixtures/opensourcefood.com_recipe.html'
     recipe = Recipe.create_from_html(url)
-
+    
     # Main list of ingredients
     assert_equal 'Open Source Food', recipe.source, 'source'
     assert_equal url, recipe.source_link, 'source_link'
     assert_equal 'Fragrant Chinese Beef Stew Recipe', recipe.name
-    assert_equal '1 Cup Water, boiling', recipe.ingredients_recipes[0].name
-    assert_equal '1 Tsp Sesame oil', recipe.ingredients_recipes[17].name_and_description
-    assert_equal 'http://img.foodnetwork.com/FOOD/2007/07/12/EE0909_Chasseur_Chicken_lg.jpg', recipe.picture_remote_url, 'picture remote url'
+    assert_equal '1 cup Water, boiling', recipe.ingredients_recipes[0].name_and_description
+    assert_equal '1 tsp Sesame oil', recipe.ingredients_recipes[16].name_and_description
+    assert_equal 'http://www.opensourcefood.com/public/images/cached/567x/recipe_images/bc6bd62a6865a31dc93ba78eb9813198.jpg', recipe.picture_remote_url, 'picture remote url'
     
     # Other recipe info
-    assert_equal '2 cups dark chicken stock', recipe.cooksteps[0,25], 'cooksteps'
-    assert_equal 'Glazed Carrots.', recipe.cooksteps[-17,15], 'cooksteps'
+    assert_equal 'Soak dried mushrooms', recipe.cooksteps[0,20], 'cooksteps'
+    assert_equal 'rice with sauce', recipe.cooksteps[-17,15], 'cooksteps'
   end
   
   #--------------
