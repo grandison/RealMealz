@@ -70,6 +70,7 @@ RealMealz::Application.routes.draw do
   # Misc
   post "/sort_order/update_order"
   get "/table_list", :controller => "list", :action => "table_list"
+  get "/meals/my_meals"
   
   # authlogic
   get "/user_session/new", :controller=>"user_sessions", :action=>"new"

@@ -25,9 +25,9 @@ class IngredientsController < ApplicationController
   #------------------------- 
   def index
     if current_user.role == 'super_admin'
-      @ingredients = Ingredient.all.sort_by {|i| i.name}
+      @ingredients = Ingredient.includes(:categories_ingredients, :categories).all.sort_by {|i| i.name}
     else
-      @ingredients = Ingredient.where(:kitchen_id => current_user.kitchen_id).sort_by {|i| i.name}
+      @ingredients = Ingredient.includes(:categories_ingredients, :categories).where(:kitchen_id => current_user.kitchen_id).sort_by {|i| i.name}
     end
         
     respond_to do |format|
@@ -48,6 +48,7 @@ class IngredientsController < ApplicationController
     if current_user.role != 'super_admin'
       @ingredient.kitchen_id = current_user.kitchen_id  
     end
+    setup_categories
 
     respond_to do |format|
       format.html #{ render "ingredient_form" }
@@ -58,6 +59,7 @@ class IngredientsController < ApplicationController
   #------------------------- 
   def edit
     @ingredient = recipe_find_by_id_with_user_check(params[:id])
+    setup_categories
   end
 
   #------------------------- 
@@ -78,6 +80,8 @@ class IngredientsController < ApplicationController
     end
 
     if @ingredient.save
+      save_categories
+      
       if params[:render] == 'json'
         render :json => @ingredient #@item_list.to_json(:methods => :ingredient_name)
       elsif params[:render] == 'xml'
@@ -96,12 +100,14 @@ class IngredientsController < ApplicationController
     end
   end
 
-  #------------------------- 
+  #-------------------------
   def update
     @ingredient = recipe_find_by_id_with_user_check(params[:id])
 
     respond_to do |format|
       if @ingredient.update_attributes(params[:ingredient])
+        save_categories
+
         format.html { redirect_to('/ingredients', :notice => 'Ingredient was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -141,5 +147,24 @@ class IngredientsController < ApplicationController
     end
     @ingredient = Ingredient.find_or_create_by_name(name, kitchen_id)
   end   
+  
+  #-------------------------
+  def setup_categories 
+    @categories = Category.all.sort_by {|c| c.name}.map {|c| [c.name, c.id]}
+    @categories_selected = @ingredient.categories.map {|c| c.id}
+  end
+
+  #-------------------------
+  def save_categories
+    return if params[:categories].nil?  #If no categories param, don't change any categories
+    
+    # Usually Rails just sets the key to null. To really delete the record, the following two lines are needed
+    @ingredient.categories_ingredients.each {|c| c.delete}
+    @ingredient.categories_ingredients.reload
+
+    params[:categories].each do |cid|
+      @ingredient.categories_ingredients.create(:category_id => cid)
+    end
+  end 
   
 end

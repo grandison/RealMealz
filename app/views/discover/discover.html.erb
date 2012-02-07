@@ -54,6 +54,14 @@ $("#discover-carousel").delegate('.discover-starred-update', 'click', function()
   return false; 
 });
 
+/* Setup the detail scroll height dynamically since the recipe header size can change */
+function setupDetailScroll($discoverDetailScroll) {
+  var newHeight = $(window).height() - $discoverDetailScroll.offset().top;
+  $discoverDetailScroll.height(newHeight);
+  $discoverDetailScroll.find('.viewport').height(newHeight);
+  setup_scroll($discoverDetailScroll);
+};
+
 /** Change detail size **/
 var showBig = false;
 function change_detail_size(discoverDetail, makeBig) {
@@ -71,7 +79,8 @@ function change_detail_size(discoverDetail, makeBig) {
   $(discoverDetail).effect("scale", { percent: newPercent, direction: 'both', origin: ['bottom', 'left'], scale: 'content' }, 500, function() {
     /* Take out the element sizing, otherwise messes up if size changes and going back */
     $(discoverDetail).css('height','').css('width','').css('font-size','');
-    $(discoverDetail).find('.discover-detail-scroll').tinyscrollbar_update();
+    var $discoverDetailScroll = $(discoverDetail).find('.discover-detail-scroll')
+    setupDetailScroll($discoverDetailScroll);
   });
   if (makeBig) {
     $('.discover-detail-small').addClass('discover-detail-big');
@@ -88,9 +97,6 @@ $("#discover-carousel").delegate(".discover-detail-button", "click", function ()
   showBig = $(this).hasClass('discover-detail-small');
   change_detail_size($(this).parent(), showBig);
 });
-
-/** Setup Recipe scroll **/
-setup_scroll('.discover-detail-scroll');
 
 /*** Ingredients checkbox ***/
 $("#discover-carousel").delegate(".ingredient-checkbox", "click", function() {
@@ -210,9 +216,12 @@ function mycarousel_initCallback(carousel) {
   });
 };
 
- /* Send the recipe-id of the shown recipe */
+/* After scrolled into view, Send the recipe-id of the shown recipe and setup the scroller */
 function mycarousel_itemVisibleInCallbackAfterAnimation(carousel, item, idx, state) {
-  $.post('/discover/recipe_shown', 'recipe_id=' + $('.jcarousel-item-' + carousel.last + ' .discover-recipe').attr('recipe-id'));
+  var $discoverRecipe = $('.jcarousel-item-' + carousel.last + ' .discover-recipe');
+  var $discoverDetailScroll = $discoverRecipe.find('.discover-detail-scroll');
+  setupDetailScroll($discoverDetailScroll);
+  $.post('/discover/recipe_shown', 'recipe_id=' + $discoverRecipe.attr('recipe-id'));
 };
 
 /*** Resize windows ***/

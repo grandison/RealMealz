@@ -28,6 +28,10 @@
       <%= f.label :kitchen_id %><br />
       <%= f.text_field :kitchen_id, :size => 4 %>
     </div>
+  <div class="field">
+    <%= label_tag :categories %><br />
+    <%= select_tag :categories, options_for_select(@categories, @categories_selected), {:multiple => true}%>
+  </div>
   <% end %>
   <div class="actions">
     <%= f.submit %>

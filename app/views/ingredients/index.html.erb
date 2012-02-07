@@ -15,6 +15,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
     <tr>
       <th>From</th>
@@ -23,6 +24,7 @@
       <th>Other names</th>
       <th>Whole unit</th>
       <th>Kitchen Id</th>
+      <th>Categories</th>
     </tr>
 
   <% @ingredients.each do |ingredient| %>
@@ -33,6 +35,7 @@
       <td><%= ingredient.other_names %></td>
       <td><%= ingredient.whole_unit %></td>
       <td><%= ingredient.kitchen_id %></td>
+      <td><%= ingredient.categories.map {|c| c.name}.sort * ', ' %></td>
     </tr>
   <% end %>
   </table>

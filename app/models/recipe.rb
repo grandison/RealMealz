@@ -293,30 +293,22 @@ class Recipe < ActiveRecord::Base
     attribs[:source_link] = url
     attribs[:source] = 'Open Source Food'
     attribs[:name] = doc.css('h1.subheading').first.content
-    attribs[:picture_remote_url] = doc.css('.recipe_pic_new img').first['src'] rescue nil
+    attribs[:picture_remote_url] = "http://www.opensourcefood.com" + doc.css('#recipe_pic_new img').first['src'] rescue nil
     attribs[:ingredient_list] = ''
 
-    group_num = 1
     body_doc = doc.css("#recipe_ingredients")
+    body_doc.css('#tag_container_new').remove
+    body_doc.css('#tastebud_promo').remove
+    
     body_doc.css('ul').each do |ul|
-      if group_num > 1
-        group_node = ul.previous.previous
-        if %w(h2 h3).include?(group_node.node_name.downcase)
-          group_name = group_node.content
-          attribs[:ingredient_list] << "*#{group_name}*\n"
-        end
+      ul.css('li').each do |li|
+        attribs[:ingredient_list] << li.content.strip.delete("\n\r").squeeze(' ') + "\n"
       end
-      ul.css('li.ingredient').each do |li|
-        attribs[:ingredient_list] << li['a'].content + "\n"
-      end
-      group_num += 1
     end
 
     attribs[:cooksteps] = ''
-    doc.css('.instructions').each do |inst_divs|
-      inst_divs.css('p').each do |p|
-        attribs[:cooksteps] << p.content.strip + "\n"
-      end
+    doc.css('#method_inner li').each do |li|
+      attribs[:cooksteps] << li.content.strip.delete("\n\r").squeeze(' ') + "\n"
     end
     return attribs
   end
