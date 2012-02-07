@@ -17,8 +17,10 @@ class Kitchen < ActiveRecord::Base
   
   #-------------------------------------------
   def get_sorted_shopping_items
-    SortOrder.list_sort(id, :shop_order, ingredients_kitchens.includes(:ingredient).where('needed = ?', true)).
-      delete_if {|ik| ik.ingredient.nil?}
+    # Just do alphabetical for now (Feb-2012)
+    ingredients_kitchens.includes(:ingredient).where('needed = ? AND ingredient_id IS NOT NULL', true).sort_by {|ik| ik.ingredient.name}
+    #SortOrder.list_sort(id, :shop_order, ingredients_kitchens.includes(:ingredient).where('needed = ?', true)).
+    #  delete_if {|ik| ik.ingredient.nil?}
   end
 
   #-------------------------------------------
