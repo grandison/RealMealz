@@ -279,6 +279,12 @@ $('#discover-search-input').keyup(function() {
   $('#discover-next-div').text(search);
 });
 
+$('#discover-search-input').keypress(function(e) {
+  if (e.keyCode == 13) {
+    $('#discover-next-arrow').click();
+  }
+});
+
 /*** Have and Avoid ***/
 function setup_have_avoid_dialog(name) {
  
