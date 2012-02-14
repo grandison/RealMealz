@@ -48,6 +48,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'POST/recipes', :redirect_to => true, :flash => 'Recipe was successfully created.'},  
     {:path => 'PUT/recipes/1', :redirect_to => '/recipes', :flash => 'Recipe was successfully updated.'}, 
     {:path => 'DELETE/recipes/1', :redirect_to => '/recipes'},  
+    {:path => 'POST/recipes/create_from_url', :redirect_to => '/recipes', :flash => 'Website not supported'},  
 
     {:path => 'POST/ingredients/new', :redirect_to => '/ingredients/new_recipe'},  
     {:path => 'POST/ingredients', :logged_in_redirect_to => true, :logged_in_flash => 'Ingredient was successfully created.'},  
@@ -183,7 +184,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   #----------
   def check_response(redirect_to, route_name)
     if redirect_to
-      assert_response :redirect, "Expected redirect for #{route_name}"
+      assert_response :redirect
       if redirect_to.is_a?(String)
         assert_equal "http://www.example.com#{redirect_to}", response.redirect_url, "Expected redirect for #{route_name}" 
       end  
@@ -298,7 +299,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       :ingredient_name => 'rice',
     }
       
-#puts route[:name] # For debugging
+puts route[:name] # For debugging
     putc('.')
     case route[:verb]
       when 'POST'
