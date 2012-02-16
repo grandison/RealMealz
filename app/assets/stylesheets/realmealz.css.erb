@@ -61,13 +61,16 @@ ul,ol { margin-top: 0; margin-bottom: 0.5em; }
 }
 
 .gray-background-nopad{
+  background-color: rgb(255,255,255); /* For IE8 */
 	background-color: rgba(255,255,255,0.7);
 }
 .gray-background {
+  background-color: rgb(255,255,255); /* For IE8 */
   background-color: rgba(255,255,255,0.7);
   padding: 20px;
 }
 .gray-background-rounded {
+  background-color: rgb(255,255,255); /* For IE8 */
   background-color: rgba(255,255,255,0.7);
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -586,7 +589,8 @@ body {
   z-index: 20;
   top: 26px;
   width: 200px;
-  background: rgba(255,255,255,0.6);
+  background-color: rgb(255,255,255); /* For IE8 */
+  background-color: rgba(255,255,255,0.6);
 }
 
 #discover-have-scroll,
@@ -816,10 +820,8 @@ body {
 
 #shop-controls-box {
   padding: 10px;
-  background: rgba(255,255,255,0.7);
-/* -moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;*/
+  background-color: rgb(255,255,255); /* For IE8 */
+  background-color: rgba(255,255,255,0.7);
 }
 
 .item-table {
@@ -857,7 +859,8 @@ body {
 
 .shop-items { 
   border: 1px solid #cccccc; 
-  background: rgba(255,255,255,0.7);
+  background-color: rgb(255,255,255); /* For IE8 */
+  background-color: rgba(255,255,255,0.7);
   overflow: hidden;
 }
 
@@ -912,7 +915,8 @@ body {
 
 #recipe-new {
   padding: 10px;
-  background: rgba(255,255,255,0.7);
+  background-color: rgb(255,255,255); /* For IE8 */
+  background-color: rgba(255,255,255,0.7);
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -1064,6 +1068,8 @@ body {
   background-color: rgb(196,189,151);
   opacity: 0.75;
   filter:alpha(opacity=75); 
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
 	padding-top: 0px;
 	padding-left: 0px;
 	font-size: 0.9em;
@@ -1186,10 +1192,8 @@ body {
 
 #cook-recipe-box {
   display: relative;
+  background-color: rgb(255,255,255); /* For IE8 */
   background-color: rgba(255, 255, 255, 0.6);
-/*  -moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;*/
   padding: 20px;
   padding-top: 10px; /*lines up with the "my meals" title*/
 }

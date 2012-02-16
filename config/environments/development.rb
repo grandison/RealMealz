@@ -28,6 +28,9 @@ RealMealz::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   
+  # MD Feb-2012 so application.js with all js files doesn't get included along with individual js files
+  config.serve_static_assets = false 
+
   # MD Jan-2012 Setup development url for email links
   config.action_mailer.default_url_options = { :host => 'local.realmealz.com:3000' }
   
