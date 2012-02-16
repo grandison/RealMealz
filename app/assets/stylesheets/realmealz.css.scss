@@ -430,13 +430,13 @@ body {
 .discover-detail-button.discover-detail-small {
   top: 30px;
   right: 30px;
-  background: url(<%= asset_data_uri 'enlarge.png' %>);
+  background: asset-data-url('enlarge.png');
 }
 
 .discover-detail-button.discover-detail-big {
   top: 45px;
   right: 45px;
-  background: url(<%= asset_data_uri 'shrink.png' %>);
+  background: asset-data-url('shrink.png');
 }
 
 .discover-balance {
@@ -462,7 +462,7 @@ body {
 .discover-meal-update.discover-minus, 
 .discover-meal-update.discover-minus:hover,
 .discover-meal-update.discover-minus:active { 
-  background: url(<%= asset_data_uri 'plus-minus.png' %> ) no-repeat 
+  background: asset-data-url('plus-minus.png') no-repeat 
 }
 
 .discover-meal-update.discover-plus { background-position: -3px -8px; }
@@ -499,13 +499,13 @@ body {
 .discover-starred-on,
 .discover-starred-on:hover,
 .discover-starred-on:active { 
-  background: url(<%= asset_data_uri 'star-on.png' %>) no-repeat; 
+  background: asset-data-url('star-on.png') no-repeat; 
 }  
 
 .discover-starred-off, 
 .discover-starred-off:hover,
 .discover-starred-off:active { 
-  background: url(<%= asset_data_uri 'star-off.png' %>) no-repeat; 
+  background: asset-data-url('star-off.png') no-repeat; 
 }  
 
 .discover-starred-on { background-position: 0px 0px; }
@@ -542,7 +542,7 @@ body {
   padding-left: 30px;
   vertical-align: middle;
   line-height: 26px;
-  background: url(<%= asset_data_uri 'like-bar.png' %>) no-repeat;
+  background: asset-data-url('like-bar.png') no-repeat;
   cursor: pointer;
 }
 
@@ -619,7 +619,7 @@ body {
 
 .discover-list li:hover {
   background: rgba(255,255,255,0.7) no-repeat right center;
-  background-image: url(<%= asset_data_uri 'list_red_x.png' %>);  
+  background-image: asset-data-url('list_red_x.png');  
 }
 
 .discover-ingredient-input-padding {
@@ -645,7 +645,7 @@ body {
   overflow: hidden;
   color: rgb(80, 80, 80);
   cursor: pointer;
-  background: url(<%= asset_data_uri 'discover-next-bar.png' %>) no-repeat;
+  background: asset-data-url('discover-next-bar.png') no-repeat;
 }
 
 #discover-next-arrow {
@@ -669,19 +669,19 @@ body {
 }
 
 .discover-next-arrow {
-  background: url(<%= asset_data_uri 'discover-next-arrow.png' %>) no-repeat;
+  background: asset-data-url('discover-next-arrow.png') no-repeat;
 }
 
 .discover-next-arrow:hover {
-  background: url(<%= asset_data_uri 'discover-next-arrow-hover.png' %>) no-repeat;
+  background: asset-data-url('discover-next-arrow-hover.png') no-repeat;
 }
 
 .discover-next-arrow:active {
-  background: url(<%= asset_data_uri 'discover-next-arrow-pushed.png' %>) no-repeat;
+  background: asset-data-url('discover-next-arrow-pushed.png') no-repeat;
 }
 
 .discover-next-loading {
-  background: url(<%= asset_data_uri 'icons/loading.gif' %>) no-repeat;
+  background: asset-data-url('icons/loading.gif') no-repeat;
 }
 
 #discover-next-flavors,
@@ -717,15 +717,15 @@ body {
 }
 
 .discover-back {
-  background: url(<%= asset_data_uri 'discover-back.png' %>) no-repeat;
+  background: asset-data-url('discover-back.png') no-repeat;
 }
 
 .discover-back:hover {
-  background: url(<%= asset_data_uri 'discover-back-hover.png' %>) no-repeat;
+  background: asset-data-url('discover-back-hover.png') no-repeat;
 }
 
 .discover-back:active {
-  background: url(<%= asset_data_uri 'discover-back-pushed.png' %>) no-repeat;
+  background: asset-data-url('discover-back-pushed.png') no-repeat;
 }
 
 /**** my_meals ***/
