@@ -218,7 +218,7 @@ function setup_background_image(sel) {
 
 $(function() {
   if (!($.cookie('ie-warning-shown') == 'true')) {
-    if ($.browser.msie  && parseInt($.browser.version, 10) < 8) {
+    if ($.browser.msie  && parseInt($.browser.version, 10) <= 8) {
       alert('RealMealz is currently supporting FireFox and Chrome browsers only.  We have noticed that you are using Internet Explorer, which means some of the site will not work as intended.');
       $.cookie('ie-warning-shown', 'true'); 
     }
