@@ -24,7 +24,7 @@ class HomeController < ApplicationController
   
   def sign_up
     sign_out
-    @user = User.new
+    @user = User.new(params[:user])
     @background_recipe = Recipe.random_background_image
   end
 

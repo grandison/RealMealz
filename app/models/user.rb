@@ -9,9 +9,9 @@ class User < ActiveRecord::Base
   end 
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last 
-  
   attr_accessor :invite_code
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last, :invite_code 
+  
 
   belongs_to :kitchen
   has_one :balance
