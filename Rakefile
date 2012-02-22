@@ -5,4 +5,3 @@ require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
 RealMealz::Application.load_tasks
-SingleTest.load_tasks
