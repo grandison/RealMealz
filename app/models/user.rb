@@ -403,10 +403,12 @@ class User < ActiveRecord::Base
     saved = saved.with_indifferent_access
     user = User.new(saved)
     
-    unless invite = InviteCode.check_code(saved.delete(:invite_code))
+    invite = InviteCode.check_code(saved[:invite_code])
+    if invite.nil? 
       user.errors.add(:invite_code, 'invalid')
       return user
     end
+    saved.delete(:invite_code)
     
     if user.save
       user.role = 'kitchen_admin'
