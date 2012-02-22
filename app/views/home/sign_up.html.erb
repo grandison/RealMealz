@@ -7,24 +7,25 @@
   	<%= f.error_messages %>
 	
     <p><%= label_tag 'user[invite_code]', 'Enter your invite code to enable', :id => 'home-signup-invite-text' %><br />
-    <%= f.text_field :invite_code, :size => 30, :id => 'home-signup-invite' %><br>
+    <%= f.text_field :invite_code, :size => 50, :id => 'home-signup-invite' %><br> 
+    <%= link_to '(Need a code?)', 'http://signup.realmealz.com/', :id => 'home-signup-need-code' %><br>
     <div ></div>
     </p>
     
     <p><%= f.label :first, :class => 'disabled' %><br />
-	  <%= f.text_field :first, :disabled => true %></p>
+	  <%= f.text_field :first, :size => 50, :disabled => true %></p>
 	
 	  <p><%= f.label :last, :class => 'disabled' %><br />
-	  <%= f.text_field :last, :disabled => true %></p>
+	  <%= f.text_field :last, :size => 50, :disabled => true %></p>
 	
 	  <p><%= f.label :email,:class => 'disabled' %><br />
-	  <%= f.email_field :email, :disabled => true %></p>
+	  <%= f.email_field :email, :size => 50, :disabled => true %></p>
 	
 	  <p><%= f.label :password, :class => 'disabled' %><br />
-	  <%= f.password_field :password, :disabled => true %></p>
+	  <%= f.password_field :password, :size => 50, :disabled => true %></p>
 	
 	  <p><%= f.label :password_confirmation, :class => 'disabled' %><br />
-	  <%= f.password_field :password_confirmation, :disabled => true %></p>
+	  <%= f.password_field :password_confirmation, :size => 50, :disabled => true %></p>
 	
 	  <p>
 	    <input value="Sign up" type="submit" class="gray-button gray-button-active" disabled="disabled" />
