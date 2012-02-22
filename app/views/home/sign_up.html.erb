@@ -6,23 +6,60 @@
 	<%= form_for(@user, :url => '/home/create_user') do |f| %>
   	<%= f.error_messages %>
 	
-	 <p><%= f.label :first %><br />
-	  <%= f.text_field :first %></p>
+    <p><%= label_tag 'user[invite_code]', 'Enter your invite code to enable', :id => 'home-signup-invite-text' %><br />
+    <%= f.text_field :invite_code, :size => 30, :id => 'home-signup-invite' %><br>
+    <div ></div>
+    </p>
+    
+    <p><%= f.label :first, :class => 'disabled' %><br />
+	  <%= f.text_field :first, :disabled => true %></p>
 	
-	  <p><%= f.label :last %><br />
-	  <%= f.text_field :last %></p>
+	  <p><%= f.label :last, :class => 'disabled' %><br />
+	  <%= f.text_field :last, :disabled => true %></p>
 	
-	  <p><%= f.label :email %><br />
-	  <%= f.email_field :email %></p>
+	  <p><%= f.label :email,:class => 'disabled' %><br />
+	  <%= f.email_field :email, :disabled => true %></p>
 	
-	  <p><%= f.label :password %><br />
-	  <%= f.password_field :password %></p>
+	  <p><%= f.label :password, :class => 'disabled' %><br />
+	  <%= f.password_field :password, :disabled => true %></p>
 	
-	  <p><%= f.label :password_confirmation %><br />
-	  <%= f.password_field :password_confirmation %></p>
+	  <p><%= f.label :password_confirmation, :class => 'disabled' %><br />
+	  <%= f.password_field :password_confirmation, :disabled => true %></p>
 	
 	  <p>
-	    <input value="Sign up" type="submit" class="gray-button" />
+	    <input value="Sign up" type="submit" class="gray-button gray-button-active" disabled="disabled" />
     </p>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+
+function enableControls() {
+  $('#home-signup :disabled').removeAttr('disabled');
+  $('#home-signup .disabled').removeClass('disabled');  
+  $('.gray-button-active').removeClass('gray-button-active');
+  $('#home-signup-invite-text').text('Invite code valid - thank you');
+  $('#home-signup-invite').attr('disabled', 'disabled');
+  $('#user-first').focus();
+};
+
+function checkInvite() {
+    $.ajax({      
+    type: "post",
+    url: "/home/check_invite_code",
+    data: "user[invite_code]=" + $('#home-signup-invite').val(),
+    dataType: 'json',
+    success: function(data) {
+      if (data.found) {
+        enableControls(); 
+      }
+    }
+  });   
+}; 
+
+$('#home-signup-invite').keyup(function() {
+  checkInvite();
+});
+
+
+</script>

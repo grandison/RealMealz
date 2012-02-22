@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120103062700) do
+ActiveRecord::Schema.define(:version => 20120221210936) do
 
   create_table "allergies", :force => true do |t|
     t.string  "name"
@@ -69,6 +70,13 @@ ActiveRecord::Schema.define(:version => 20120103062700) do
     t.integer "ingredient_id"
   end
 
+  create_table "groups", :force => true do |t|
+    t.string "name"
+    t.string "sponsor"
+    t.date   "start"
+    t.date   "stop"
+  end
+
   create_table "ingredients", :force => true do |t|
     t.string  "name"
     t.integer "recipe_id"
@@ -103,6 +111,11 @@ ActiveRecord::Schema.define(:version => 20120103062700) do
     t.boolean "group",         :default => false
     t.string  "description",   :default => ""
     t.integer "line_num"
+  end
+
+  create_table "invite_codes", :force => true do |t|
+    t.string  "invite_code"
+    t.integer "group_id"
   end
 
   create_table "kitchens", :force => true do |t|
@@ -263,6 +276,12 @@ ActiveRecord::Schema.define(:version => 20120103062700) do
     t.integer "level"
     t.integer "user_id"
     t.integer "category_id"
+  end
+
+  create_table "users_groups", :force => true do |t|
+    t.integer "user_id"
+    t.integer "group_id"
+    t.date    "join_date"
   end
 
   create_table "users_ingredients", :force => true do |t|

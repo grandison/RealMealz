@@ -15,17 +15,8 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'GET/home/privacy_policy', :sign_in_required => false},
     {:path => 'GET/home/terms_of_service', :sign_in_required => false},
     {:path => 'GET/home/faq', :sign_in_required => false},
+    {:path => 'POST/home/check_invite_code', :sign_in_required => false},
 
-    {:path => 'GET/users/new', 
-      :sign_in_required => false, 
-      :sign_out_required => true,
-      :flash => 'You must be logged out to access this page',
-      :logged_in_redirect_to => '/users'}, 
-    {:path => 'POST/users/new', 
-      :sign_in_required => false,
-      :sign_out_required => true, 
-      :logged_in_redirect_to => '/users',
-      :logged_in_flash =>'You must be logged out to access this page'}, 
     {:path => 'POST/users/edit', :redirect_to => '/users/my_account', :flash => 'Account updated!'}, 
     {:path => 'PUT/users/edit', :redirect_to => '/home/welcome', :flash => 'Account updated!'}, 
     {:path => 'GET/users/reset_password', 
@@ -44,7 +35,6 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'POST/user_sessions/forgot_password', :sign_in_required => false, :redirect_to => '/', :flash => 'Instructions to reset your password have been emailed to you'}, 
       
     
-    {:path => 'POST/recipes/new', :redirect_to => '/recipes/new_recipe'},  
     {:path => 'POST/recipes', :redirect_to => true, :flash => 'Recipe was successfully created.'},  
     {:path => 'PUT/recipes/1', :redirect_to => '/recipes', :flash => 'Recipe was successfully updated.'}, 
     {:path => 'DELETE/recipes/1', :redirect_to => '/recipes'},  
@@ -120,6 +110,9 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     
     Scategory.create!(:name => 'technique')
     Scategory.create!(:name => 'ingredient')
+    
+    @group = Group.create!(:name => 'Cooking class group')
+    @invite = InviteCode.create!(:invite_code => 'cookingclass', :group_id => @group.id)  
   end
   
   #----------
@@ -282,7 +275,8 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   def do_action(route)
     post_params = {
       :id => 1, 
-      :user => {:first => 'Joe', :last => "Smith", :email => 'joe_smith@foomail.com', :password => 'password', :password_confirmation => 'password'}, 
+      :user => {:first => 'Joe', :last => "Smith", :email => 'joe_smith@foomail.com', :invite_code => 'cookingclass',
+        :password => 'password', :password_confirmation => 'password'}, 
       :user_session => {:email => 'name@gmail.com'}, 
       :record => {:name => 'Name'},
       :ingredient_id => @ingredient.id,
@@ -299,7 +293,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       :ingredient_name => 'rice',
     }
       
-puts route[:name] # For debugging
+    # puts route[:name] # For debugging
     putc('.')
     case route[:verb]
       when 'POST'

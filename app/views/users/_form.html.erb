@@ -1,3 +1,8 @@
+<% if @user.new_record? %>
+  <p><%= form.label :invite_code %><br />
+  <%= form.text_field :invite_code, :size => 30 %></p>
+<% end %>
+
 <p><%= form.label :first %><br />
 <%= form.text_field :first, :size => 30 %></p>
 
