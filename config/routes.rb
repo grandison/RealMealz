@@ -15,6 +15,8 @@ RealMealz::Application.routes.draw do
 	get "/home/privacy_policy"
 	get "/home/about_us"
 	get "/home/faq"
+	
+	get "/reports" => 'reports#reports'
   
   get '/learn' => 'learn#learn'
   

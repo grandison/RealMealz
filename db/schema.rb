@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(:version => 20120103062700) do
     t.integer "allergen3_id"
     t.integer "kitchen_id"
     t.boolean "stock_item",   :default => false
-    t.text    "other_names"
+    t.text    "other_names",  :default => ""
     t.string  "whole_unit",   :default => ""
   end
 
@@ -100,8 +100,8 @@ ActiveRecord::Schema.define(:version => 20120103062700) do
     t.string  "strength"
     t.integer "ingredient_id"
     t.integer "recipe_id"
-    t.boolean "group",         :default => false
-    t.string  "description",   :default => ""
+    t.boolean "group",         :limit => 255, :default => false
+    t.string  "description",                  :default => ""
     t.integer "line_num"
   end
 
@@ -169,7 +169,6 @@ ActiveRecord::Schema.define(:version => 20120103062700) do
     t.string   "source_link"
     t.text     "original_ingredient_list"
     t.boolean  "public",                   :default => true
-    t.datetime "created_at"
   end
 
   create_table "recipes_personalities", :force => true do |t|
