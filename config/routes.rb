@@ -15,6 +15,7 @@ RealMealz::Application.routes.draw do
 	get "/home/privacy_policy"
 	get "/home/about_us"
 	get "/home/faq"
+	get "/home/downloads"
 	post "/home/check_invite_code"
   
   get '/learn' => 'learn#learn'
