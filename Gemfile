@@ -38,7 +38,6 @@ end
 group :test do
   # Pretty printed test output
   #gem 'turn', '~> 0.8.3', :require => false
-  gem 'single_test'
   gem 'sqlite3' # Heroku bombs on this and BUNDLE_WITHOUT doesnt work so put it here under test
 end
 

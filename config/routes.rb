@@ -15,8 +15,13 @@ RealMealz::Application.routes.draw do
 	get "/home/privacy_policy"
 	get "/home/about_us"
 	get "/home/faq"
+
 	
 	get "/reports" => 'reports#reports'
+
+	get "/home/downloads"
+	post "/home/check_invite_code"
+
   
   get '/learn' => 'learn#learn'
   
@@ -83,8 +88,6 @@ RealMealz::Application.routes.draw do
   
   get "/users", :controller=>"users", :action=>"my_account"
   get "/users/my_account"
-  get "/users/new"
-  post "/users/new", :controller=>"users", :action=>"create"
   get "/users/edit"
   put "/users/edit", :controller=>"users", :action=>"update"
   get "/users/reset_password"
