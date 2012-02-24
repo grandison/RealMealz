@@ -99,7 +99,7 @@ function createGraphSmall(myprotein, myveg, mystarch, renderTo, backgroundColor)
   };
   series.data.push( {name: 'Veg/Fruits', y: parseFloat(myveg)});
   series.data.push( {name: 'Grains', y: parseFloat(mystarch)});    						
-  series.data.push(	{name: 'Protein', y: parseFloat(myprotein)});
+  series.data.push(	{name: 'Proteins', y: parseFloat(myprotein)});
 	options.series.push (series);
   return new Highcharts.Chart(options);
 };
@@ -216,4 +216,12 @@ function setup_background_image(sel) {
   };
 };
 
+$(function() {
+  if (!($.cookie('ie-warning-shown') == 'true')) {
+    if ($.browser.msie  && parseInt($.browser.version, 10) <= 8) {
+      alert('RealMealz is currently supporting FireFox and Chrome browsers only.  We have noticed that you are using Internet Explorer, which means some of the site will not work as intended.');
+      $.cookie('ie-warning-shown', 'true'); 
+    }
+  }
+});
 
