@@ -1,13 +1,17 @@
 
+<div class="gray-background">
+Coming Soon...
+A collection of skill-videos you can watch to beef up your kitchen cred.
+You can already access some of the videos directly via active links on the Discover and Cook page.  If you see green text, click on it to view the videos.
+</div>
+
+
+<!-- 
 
 <table id="learn-table">
+
 	<tr>
-		<!--title banners -->
-		<td class="learn-first-column"><img src="images/banner_techniques_left.png"></td>
-		<td><img src="images/banner_ingredients_right.png"></td>
-	</tr>
-	<tr>
-		<!-- Techniques -->
+		<!-- Techniques 
 		<td class="learn-first-column">
 			<% @techniques.each do |technique|%>
 				<% video_link = technique.video_link.to_s + "&amp;" + "showinfo=1"  %>
@@ -15,7 +19,7 @@
 				<br>
 			<% end %>
 		</td>
-		<!-- Ingredients -->
+		<!-- Ingredients 
 		<td>
 			<% @ingredients.each do |ingredient|%>
 				<iframe class="learn-video" src="<%= ingredient.video_link %>" frameborder="0" allowfullscreen></iframe>
@@ -25,7 +29,7 @@
 	</tr>
 	
 </table>
-<!--
+
 
 <br>
 <br>
