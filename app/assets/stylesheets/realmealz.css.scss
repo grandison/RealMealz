@@ -1313,17 +1313,27 @@ body {
 	vertical-align: top;
 }
 
-.track-first-column {
-	text-align: center;
-	width: 25%;
+.track-vpg-column {
+	text-align: left;
+  border-right: #7A530C solid 1px;
+  width: 40%;
 }
-.track-second-column {
-	text-align: center;
-	border-right: #7A530C solid 1px;
-	width: 10%;
+.track-points-column {
+  text-align: left;
+  border-right: none;
 }
-.track-third-column h1 {
-	text-align: center;
+
+#VPG-table {
+  text-align:center; 
+  width: 450px;
+  font-weight: bold;
+}
+
+#track-VPG {
+  width: 70%; 
+}
+#track-mini-VPG {
+  width: 30%;
 }
 
 #food-balance-future-mini{
@@ -1380,8 +1390,8 @@ body {
 	
 #settings-no-show-list {
   padding-top: 20px;
-	padding-left: 10px;
-	width: 40%;
+	padding-left: 20px;
+	width: 60%;
 	border-right: #7A530C solid 1px;
 }
 

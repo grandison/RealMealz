@@ -54,11 +54,6 @@ class SettingsController < ApplicationController
     redirect_to '/settings'
   end
 
-  #---------------------------------
-  def save_food_balance
-    current_user.update_target_food_balance(params[:newveg], params[:newstarch], params[:newprotein])
-    redirect_to '/settings'
-  end
 
   #################
   private

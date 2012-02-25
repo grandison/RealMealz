@@ -99,7 +99,7 @@ function createGraphSmall(myprotein, myveg, mystarch, renderTo, backgroundColor)
   };
   series.data.push( {name: 'Veg/Fruits', y: parseFloat(myveg)});
   series.data.push( {name: 'Grains', y: parseFloat(mystarch)});    						
-  series.data.push(	{name: 'Protein', y: parseFloat(myprotein)});
+  series.data.push(	{name: 'Proteins', y: parseFloat(myprotein)});
 	options.series.push (series);
   return new Highcharts.Chart(options);
 };

@@ -81,18 +81,22 @@ GEM
     mime-types (1.17.2)
     multi_json (1.0.4)
     mysql (2.8.1)
+    mysql (2.8.1-x86-mingw32)
     mysql2 (0.3.11)
+    mysql2 (0.3.11-x86-mingw32)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.3.0)
     newrelic_rpm (3.3.1)
     nokogiri (1.5.0)
-    paperclip (2.5.0)
+    nokogiri (1.5.0-x86-mingw32)
+    paperclip (2.4.5)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
     pg (0.12.2)
+    pg (0.12.2-x86-mingw32)
     polyglot (0.3.3)
     rack (1.3.6)
     rack-cache (1.1)
@@ -139,6 +143,7 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.5)
+    sqlite3 (1.3.5-x86-mingw32)
     thin (1.3.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -161,6 +166,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   admin_data
@@ -176,7 +182,7 @@ DEPENDENCIES
   mysql2
   newrelic_rpm
   nokogiri
-  paperclip
+  paperclip (= 2.4.5)
   pg
   rails (= 3.1.3)
   rails3-jquery-autocomplete

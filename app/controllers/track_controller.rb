@@ -14,7 +14,7 @@ class TrackController < ApplicationController
   #---------------------------------
   def save_food_balance
     current_user.update_target_food_balance(params[:newveg], params[:newstarch], params[:newprotein])
-    redirect_to '/settings'
+    redirect_to '/track'
   end
   
   #################

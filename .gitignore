@@ -11,3 +11,8 @@ tmp/
 realmealz_dev
 realmealz_test
 parsers/*
+db/realmealz_dev
+db/schema.rb
+gemfile
+gmefile.lock
+config/database.yml
