@@ -22,14 +22,24 @@ class HomeController < ApplicationController
     @background_recipe = Recipe.random_background_image
   end
   
-  def sign_up
-    @user = User.new
-    @user.first = params[:save][:first] rescue ''
-    @user.last = params[:save][:last] rescue ''
-    sign_out
+  def downloads
     @background_recipe = Recipe.random_background_image
   end
 
+  def sign_up
+    sign_out
+    @user = User.new(params[:user])
+    @background_recipe = Recipe.random_background_image
+  end
+
+  def check_invite_code
+    if InviteCode.check_code(params[:user][:invite_code])
+      render :json => {:found => true}
+    else
+      render :json => {:found => false}
+    end
+  end
+  
   def create_user
     @user = User.create_with_saved(params[:user]) 
     if @user.errors.empty?

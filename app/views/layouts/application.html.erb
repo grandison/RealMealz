@@ -8,8 +8,13 @@
     <%= csrf_meta_tag %>
     
     <% if @background_recipe %>
+    <% image = @background_recipe.picture.url(:large) %>
      <style type="text/css">
-          body {background-image: url("<%= @background_recipe.picture.url(:large) %>"); }
+          body {
+            background-image: url("<%= image %>"); 
+            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.<%= image %>', sizingMethod='scale');
+            -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<%= image %>', sizingMethod='scale')";
+          }
       </style>
     <% end %>
         

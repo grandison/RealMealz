@@ -1,26 +1,7 @@
 class UsersController < ApplicationController
   
-  skip_before_filter :require_super_admin, :only => [:new, :create, :show, :my_account, :edit, :update, :reset_password, :reset_password_submit]
-  before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :except => [:new, :create, :reset_password, :reset_password_submit]
-
-  #-------------------------
-  def new
-    @user = User.new
-  end
-
-  #-------------------------
-  def create
-    @user = User.new(params[:user])
-    @user.reset_perishable_token
-    if @user.save
-      UserSession.create(@user) if Rails.env.test?# If doing test, we turn off automatic login so do it here
-      flash[:notice] = "Account registered!"
-      redirect_to '/home/welcome'
-    else
-      render '/users/new'
-    end
-  end
+  skip_before_filter :require_super_admin, :only => [:show, :my_account, :edit, :update, :reset_password, :reset_password_submit]
+  before_filter :require_user, :except => [:reset_password, :reset_password_submit]
 
   #-------------------------
   def show

@@ -9,7 +9,9 @@ class User < ActiveRecord::Base
   end 
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last
+  attr_accessor :invite_code
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last, :invite_code 
+  
 
   belongs_to :kitchen
   has_one :balance
@@ -158,6 +160,7 @@ class User < ActiveRecord::Base
     starred_recipe_ids = []
     if filters['star']
       starred_recipe_ids = kitchen.meals.where(:starred => true).map {|m| m.recipe_id}
+      recipe_list.delete_if {|r| !starred_recipe_ids.include?(r[:id])} unless starred_recipe_ids.blank?
     end
     search_for = (filters['search'] || '').downcase
     
@@ -399,11 +402,20 @@ class User < ActiveRecord::Base
   def User.create_with_saved(saved)
     saved = saved.with_indifferent_access
     user = User.new(saved)
+    
+    invite = InviteCode.check_code(saved[:invite_code])
+    if invite.nil? 
+      user.errors.add(:invite_code, 'invalid')
+      return user
+    end
+    saved.delete(:invite_code)
+    
     if user.save
       user.role = 'kitchen_admin'
       user.save!
       user.create_kitchen_if_needed
       user.update_basic_allergy_list(saved[:allergies])
+      UsersGroup.create!(:user_id => user.id, :group_id => invite.group_id, :join_date => Date.today)
     end
     return user
   end
@@ -435,5 +447,5 @@ class User < ActiveRecord::Base
       Recipe.where(conditions).includes('ingredients').select('id, name, picture_file_name').
         map { |r| create_recipe_info_hash(r) }
   end
-
+  
 end

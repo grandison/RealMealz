@@ -31,16 +31,16 @@ class UserTest < ActiveSupport::TestCase
     # Get starred recipes
     r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
     assert_equal r2.id, r_list_ids.first, 'Starred recipe is first'
-    assert_equal 6, r_list_ids.count, 'Number of recipes returned'
+    assert_equal 1, r_list_ids.count, 'Number of recipes returned'
 
     # Not one starred recipes, should get normal list
     m1.update_attributes!(:starred => false)
     r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => true})
-    assert_equal 5, r_list_ids.count, 'None starred: number of recipes'
+    assert_equal 6, r_list_ids.count, 'None starred: number of recipes'
 
     # Get search list
     r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'search' => 'Recipe 2'})
-    assert_equal 5, r_list_ids.count, 'Searched for Recipe 2'
+    assert_equal 6, r_list_ids.count, 'Searched for Recipe 2'
     assert_equal r2.id, r_list_ids.first
     
     # Seen should be last
