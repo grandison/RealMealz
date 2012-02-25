@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PointTest < ActionDispatch::IntegrationTest
+class PointsTest < ActionDispatch::IntegrationTest
   
   POINT_LIST = <<-EOF
     home:create_user, Signup, 15, 1 
@@ -26,6 +26,11 @@ class PointTest < ActionDispatch::IntegrationTest
   EOF
   
   def setup
+    [Allergy, Appliance, Branch, Category, Ingredient, IngredientsKitchen, IngredientsRecipe, Kitchen, Meal, MealType, 
+      Personality, Point, Product, Recipe, SlidingScale, Store, User].each do |klass|
+      klass.delete_all
+    end
+    
     params = {}
     POINT_LIST.each_line do |line|
       params[:name], params[:description], params[:points], params[:max_times] = line.split(',').map {|p| p.strip}
