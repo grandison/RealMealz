@@ -415,7 +415,7 @@ class User < ActiveRecord::Base
       user.save!
       user.create_kitchen_if_needed
       user.update_basic_allergy_list(saved[:allergies])
-      UsersGroup.create!(:user_id => user.id, :group_id => invite.group_id, :join_date => Date.today)
+      UsersGroup.create!(:user_id => user.id, :invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
     end
     return user
   end

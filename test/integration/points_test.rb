@@ -4,7 +4,7 @@ class PointsTest < ActionDispatch::IntegrationTest
   
   POINT_LIST = <<-EOF
     home:create_user, Signup, 15, 1 
-    settings:save_food_balance, Target VPG, 10, 1
+    track:save_food_balance, Target VPG, 10, 1
     settings:add_exclude_item, Add item to Exclude list, 3, 30
     recipes:index, Going into Manage Recipes List, 5, 1
     recipes:create, Adding recipe, 10, 100
@@ -70,11 +70,11 @@ class PointsTest < ActionDispatch::IntegrationTest
     assert_equal 15, user.get_points   
   end
   
-  test 'food balance' do
+  test 'track:food balance' do
     do_sign_in
-    get '/settings' # call this to setup a default balance
+    get '/track' # call this to setup a default balance
     assert_response :success
-    post '/settings/save_food_balance', :newveg => 40, :newstarch => 30, :newprotein => 30
+    post '/track/save_food_balance', :newveg => 40, :newstarch => 30, :newprotein => 30
     assert_equal 10, @user.get_points
   end
   
