@@ -15,6 +15,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'GET/home/privacy_policy', :sign_in_required => false},
     {:path => 'GET/home/terms_of_service', :sign_in_required => false},
     {:path => 'GET/home/faq', :sign_in_required => false},
+    {:path => 'GET/home/downloads', :sign_in_required => false},
     {:path => 'POST/home/check_invite_code', :sign_in_required => false},
 
     {:path => 'POST/users/edit', :redirect_to => '/users/my_account', :flash => 'Account updated!'}, 
