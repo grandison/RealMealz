@@ -47,9 +47,8 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'POST/ingredients/combine_ingredients', :logged_in_redirect_to => '/ingredients', :flash => 'Please select both a From and a To ingredient to combine'},  
 
     {:path => 'POST/cook/done_cooking', :redirect_to => '/cook'}, 
-    {:path => 'POST/settings/save_food_balance', :redirect_to => '/settings'}, 
     {:path => 'POST/settings/save_user', :redirect_to => '/settings'}, 
-    {:path => 'POST/track/save_food_balance', :redirect_to => '/settings'}, 
+    {:path => 'POST/track/save_food_balance', :redirect_to => '/track'}, 
 
     {:path => '/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
     {:path => 'GET/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
