@@ -4,6 +4,7 @@ class HomeController < ApplicationController
   before_filter :require_user, :only => [:welcome]
   
   def index
+    @background_recipe = Recipe.random_background_image
   end
   
   def welcome

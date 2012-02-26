@@ -1,19 +1,15 @@
+
 <% @show_footer = true %>
 
-
 <div id="video-dialog" title="Youtube Video" style="display:none">
-   <object width="560" height="315"> <!--(900x505)-->
-    <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw"></param>
-    <param name="allowFullScreen" value="true"></param>
-    <param name="allowscriptaccess" value="always"></param>
+   <object width="560" height="315">
+    <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw" />
+    <param name="allowFullScreen" value="true" />
+    <param name="allowscriptaccess" value="always" />
     <embed src="http://www.youtube.com/v/00Tkhc_s4iw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
     </embed>
   </object> 
 </div>
-
-<!-- replace below with dynamic background graphic -->
-<% @background_recipe = Recipe.random_background_image %>
-
 
 <table id="frontpage-table">
 	<tr>
@@ -51,7 +47,6 @@
 	  </td>
 	</tr>
 </table>
-</body>
 
 <script type="text/javascript">
 
@@ -71,9 +66,5 @@ $('.frontpage-boxes').click(function() {
   return false;
 });
 
- </script>
-
-
-
-
+</script>
 
