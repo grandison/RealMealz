@@ -30,6 +30,7 @@ class PointsTest < ActionDispatch::IntegrationTest
       Personality, Point, Product, Recipe, SlidingScale, Store, User].each do |klass|
       klass.delete_all
     end
+    Ingredient.reset_cache
     
     params = {}
     POINT_LIST.each_line do |line|

@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessor :invite_code
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last, :invite_code 
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last, :invite_code
+  attr_reader :recipe_list 
   
-
   belongs_to :kitchen
   has_one :balance
   has_many :users_allergies
@@ -137,10 +137,23 @@ class User < ActiveRecord::Base
     start_time = Time.now 
     cache_miss = false
     
-    # Allergies currently not used, so comment out for now
-    # allergy_ingredient_ids = allergies.select('allergies.id').map{|a| a.id}
+    
+    # Get avoid ingredients and all ingredients which have the same category name
+    # This will allow someone to enter "meat" and screen for all types of meats, i.e. beef, chicken, pork, etc.
+    # For this to work, there needs to be an ingredient with the same name as a category
+    avoid_users_ingredients = users_ingredients.where(:avoid => true).select('ingredient_id')
+    
+    avoid_ingredient_ids = [] 
+    avoid_users_ingredients.each do |avoid|
+      avoid_ingredient_ids << avoid.ingredient.id
+      category = Category.find_by_name(avoid.ingredient.name)
+      unless category.nil?
+         avoid_ingredient_ids << category.categories_ingredients.map {|ci| ci.ingredient_id}
+      end
+    end
+    avoid_ingredient_ids.flatten!
+    
     like_ingredient_ids = users_ingredients.where(:like => true).select('ingredient_id').map{|ui| ui.ingredient_id}
-    avoid_ingredient_ids = users_ingredients.where(:avoid => true).select('ingredient_id').map{|ui| ui.ingredient_id}
     kitchen_meals = Meal.where(:kitchen_id => kitchen.id)
    
     public_recipe_list = Rails.cache.fetch("public_recipe_list", :expires_in => 1.hour) do
@@ -151,8 +164,8 @@ class User < ActiveRecord::Base
     private_recipe_list = Rails.cache.fetch("private_recipe_list_id_#{self.id}", :expires_in => 1.hour) do
       create_recipe_list(['kitchen_id = ?', self.kitchen_id])  #Ok to show private recipes without a picture
     end || []
-    recipe_list = public_recipe_list + private_recipe_list
-    
+    @recipe_list = public_recipe_list + private_recipe_list
+
     if filters.nil?
       filters = {}
     end
@@ -160,11 +173,11 @@ class User < ActiveRecord::Base
     starred_recipe_ids = []
     if filters['star']
       starred_recipe_ids = kitchen.meals.where(:starred => true).map {|m| m.recipe_id}
-      recipe_list.delete_if {|r| !starred_recipe_ids.include?(r[:id])} unless starred_recipe_ids.blank?
+      @recipe_list.delete_if {|r| !starred_recipe_ids.include?(r[:id])} unless starred_recipe_ids.blank?
     end
     search_for = (filters['search'] || '').downcase
     
-    recipe_list.each do |rh|
+    @recipe_list.each do |rh|
       next unless starred_recipe_ids.blank? || starred_recipe_ids.include?(rh[:id])
       
       rh[:ingredients].each do |ih|
@@ -175,7 +188,7 @@ class User < ActiveRecord::Base
         rh[:scores][:ingr_have] = 100 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
       
         # Subtract 20 if in avoid
-        rh[:scores][:avoid] = -20 if avoid_ingredient_ids.include?(ih[:id])
+        rh[:scores][:avoid] = -40 if avoid_ingredient_ids.include?(ih[:id])
       
         # Allergies currently not used, so comment out for now
         # Subtract 100 if in allergy
@@ -216,20 +229,20 @@ class User < ActiveRecord::Base
       # Add 300 if search is in title      
       rh[:scores][:title_search] = 300 if rh[:name].downcase.include?(search_for) unless search_for.blank?
     
-      # Add some variability
-      rh[:scores][:random] = rand(30).to_i
+      # Add some variability unless testing
+      rh[:scores][:random] = rand(30).to_i unless Rails.env.test?
       
       # Add up scores
       rh[:sort_score] = 0
       rh[:scores].each {|k, v| rh[:sort_score] += v} 
     end
 
-   recipe_list_ids = recipe_list.sort {|rh1, rh2| rh2[:sort_score] <=> rh1[:sort_score]}.map {|rh| rh[:id]}
-   
+   recipe_list_ids = @recipe_list.sort! {|rh1, rh2| rh2[:sort_score] <=> rh1[:sort_score]}.map {|rh| rh[:id]}
+
     end_time = Time.now
     r = Recipe.find(recipe_list_ids.first)
-    rh = recipe_list.find {|rh| rh[:id] == r.id}
-    Rails.logger.info "===> get_favorite_recipes: Cache miss=#{cache_miss}, Total time =#{end_time - start_time}"
+    rh = @recipe_list.find {|rh| rh[:id] == r.id}
+    Rails.logger.info "===> get_favorite_recipes: Cache hit=#{!cache_miss}, Total time =#{end_time - start_time}"
     Rails.logger.info "     First recipe=#{rh[:name]}, score=#{rh[:sort_score]}"
     Rails.logger.info "     Filters=#{filters.to_json}"
     Rails.logger.info "     Scores=#{rh[:scores].to_json}"
