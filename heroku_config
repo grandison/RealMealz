@@ -1,6 +1,9 @@
+BUNDLE_WITHOUT        => sqlite:bluebox:test:development
 DATABASE_URL          => postgres://jvipbobdoo:Erp7vXair1HBkSaPir7c@ec2-107-22-249-100.compute-1.amazonaws.com/jvipbobdoo
 GEM_PATH              => vendor/bundle/ruby/1.9.1
 LANG                  => en_US.UTF-8
+LOGGLY_URL            => http://herokuapp2291025.loggly.com/heroku/resources/herokuapp2291025
+MYSQL2_DATABASE_URL   => mysql2://realmealz:food4health@maxdunn.com:3300/realmealz_dev
 NEW_RELIC_APP_NAME    => pure-earth-8335
 NEW_RELIC_ID          => 74020
 NEW_RELIC_LICENSE_KEY => 952ca1aaadb5651a38640d6f6a711996276b307e
