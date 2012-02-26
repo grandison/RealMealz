@@ -278,16 +278,20 @@ body {
 }
 
 /** Welcome Page **/
-#welcome-page-video {
+#welcome-page-box1 {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	width: 700px;
-	height: 470px;
+	width: 830px;
+	height: 430px;
 }
 
+#welcome-page-table1{
+  text-align: left;
+}
 #welcome-page-basic-equipment {
 }
+
 
 /*** Discover ***/
 .discover-recipe {
@@ -1020,7 +1024,7 @@ body {
 /** Home **/
 #home-signup {
   margin: 0px auto;
-  width: 300px;
+  width: 350px;
 }
 
 #home-signup .disabled {
