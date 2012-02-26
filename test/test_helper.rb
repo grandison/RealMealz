@@ -13,6 +13,8 @@ class ActiveSupport::TestCase
   # controller to create a UserSession
   def sign_in(user)
     UserSession.create(user)
+    @current_user_session = nil
+    @current_user = nil
   end
   
   def signed_in?

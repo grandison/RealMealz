@@ -24,7 +24,14 @@
     <div id="content" class="content-width">
       <div id="header" class="content-width">
         <div id="realmealz-logo">
-          <a href="<%= current_user.blank? ? '/' : '/home/welcome' %>">
+          <% if current_user.blank? 
+              href = '/'
+            elsif current_user.created_at.to_date == Date.today
+              href = '/home/welcome'
+            else
+              href = '/discover'
+            end %>
+          <a href="<%= href %>">
             <%= image_tag 'realmealz-logo-100px.png', :height => "100px" %>
           </a>
         </div>
@@ -53,8 +60,8 @@
       </div> <!-- main -->
       
       <% if @show_footer == true %>
-            <%= render 'layouts/footer_links' %>
-    <% end %>
+        <%= render 'layouts/footer_links' %>
+      <% end %>
     </div> <!-- content -->
     		
 		<script type="text/javascript">

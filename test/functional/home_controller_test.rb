@@ -49,5 +49,25 @@ class HomeControllerTest < ActionController::TestCase
     assert_equal @group.id, users_group.group_id
     assert_equal @invite_code.id, users_group.invite_code_id
   end
+  
+  test 'logo redirect index' do
+    get :index  
+    assert_select "div#realmealz-logo>a[href=/]"
+  end
+    
+  test 'logo redirect old user' do
+    sign_in(@user)
+    @user.created_at = Date.today - 1.day
+    get :index  
+    assert_select "div#realmealz-logo>a[href=/discover]"
+  end
+
+  test 'logo redirect new user' do
+    @user.created_at = Date.today
+    @user.save!
+    sign_in(@user)
+    get :index  
+    assert_select "div#realmealz-logo>a[href=/home/welcome]"
+  end  
 
 end
