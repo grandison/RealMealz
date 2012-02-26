@@ -18,7 +18,7 @@
   <% if controller.controller_name == "user_sessions" %>
 		<a href="/home/sign_up"><div class="menu-tab">Sign Up</div></a>
 		<a href="/user_session/new"><div class="menu-tab-selected">Login</div></a>
-	<% elsif controller.controller_name == "home" %>
+	<% elsif controller.controller_name == "home" && controller.action_name == "sign_up"%>
 		<a href="/home/sign_up"><div class="menu-tab-selected">Sign Up</div></a>
 		<a href="/user_session/new"><div class="menu-tab">Login</div></a>
 	<% else %>
