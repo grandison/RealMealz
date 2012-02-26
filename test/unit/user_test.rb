@@ -10,7 +10,7 @@ class UserTest < ActiveSupport::TestCase
     @user.save!
   end
 
-  test "get recipes" do
+  test "get favorite recipes" do
     Recipe.delete_all
     Meal.delete_all
     r1 = Recipe.create!(:name => 'Public Recipe 1', :picture_file_name => 'recipe1.jpg')
@@ -48,6 +48,50 @@ class UserTest < ActiveSupport::TestCase
     r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'star' => false})
     assert_equal r1.id, r_list_ids.last, "Seen should be last"
     
+  end
+
+  test "avoid categories" do
+    Recipe.delete_all
+    Ingredient.delete_all
+    Ingredient.reset_cache
+    
+    ingr_bread = Ingredient.create!(:name => 'Bread', :other_names => '|bread|')
+    ingr_beef = Ingredient.create!(:name => 'Beef', :other_names => '|beef|')
+    ingr_chicken = Ingredient.create!(:name => 'Chicken', :other_names => '|chicken|')
+    ingr_meat = Ingredient.create!(:name => 'Meat', :other_names => '|meat|')
+    
+    category = Category.create!(:name => 'meat')
+    category.categories_ingredients << CategoriesIngredient.create!(:ingredient_id => ingr_beef.id)
+    category.categories_ingredients << CategoriesIngredient.create!(:ingredient_id => ingr_chicken.id)
+    
+    recipe_toast = Recipe.create!(:name => 'Toast', :picture_file_name => '1.jpg', :ingredient_list => '1 slice bread')
+    recipe_toast.process_ingredient_list
+    recipe_beef = Recipe.create!(:name => 'Beef', :picture_file_name => '1.jpg', :ingredient_list => '1 lb beef')
+    recipe_beef.process_ingredient_list
+    recipe_chicken = Recipe.create!(:name => 'Chicken', :picture_file_name => '1.jpg', :ingredient_list => '1 lb chicken')
+    recipe_chicken.process_ingredient_list
+    
+    assert_equal 3, Recipe.count
+    assert_equal "Beef", recipe_beef.ingredients[0].name
+    
+    @user.get_favorite_recipes(ids_shown = [], {})
+    assert_equal 3, @user.recipe_list.length
+    @user.recipe_list.each do |rl|
+      assert_equal 0, rl[:sort_score]
+    end
+      
+    @user.update_users_ingredients(ingr_beef.name, :avoid => true)
+    @user.get_favorite_recipes(ids_shown = [], {})
+    assert_equal 0, @user.recipe_list[0][:sort_score]
+    assert_equal 0, @user.recipe_list[1][:sort_score]
+    assert_equal -40, @user.recipe_list[2][:sort_score]
+
+    @user.update_users_ingredients(ingr_beef.name, :avoid => false)
+    @user.update_users_ingredients(ingr_meat.name, :avoid => true)
+    @user.get_favorite_recipes(ids_shown = [], {})
+    assert_equal 0, @user.recipe_list[0][:sort_score]
+    assert_equal -40, @user.recipe_list[1][:sort_score]
+    assert_equal -40, @user.recipe_list[2][:sort_score]
   end
 
   test "update like avoid" do

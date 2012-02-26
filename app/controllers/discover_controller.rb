@@ -54,9 +54,6 @@ class DiscoverController < ApplicationController
     starred = (params[:starred] == 'true') if params[:starred]
     
     current_user.kitchen.update_meals(params[:recipe_id], my_meals, starred) 
-    unless params[:op] == 'add'
-      skip_check_points
-    end
     render :nothing => true
   end
   

@@ -1,46 +1,30 @@
-<%# db = 'postgres' %>
-<% db = 'sqlite3' %>
-<%# db = 'mysql' %>
-<%# db = 'bluebox' %>
-
 login: &login
-  <% if db == 'postgres'  %>
-    adapter: postgresql
-    host: localhost
-    username: postgres
-    password: happyfeet
-    encoding: unicode
-    min_messages: error
-  <% elsif db == 'sqlite3' %>
-    adapter: sqlite3
-  <% elsif db == 'bluebox' %>
-    adapter: mysql2
-    host: maxdunn.com
-    port: 3300
-    username: realmealz
-    password: food4health
-    encoding: utf8 
-  <% else %>  
-    adapter: mysql2
-    host: localhost
-    username: root
-    password: happyfeet
-    encoding: utf8 
-  <% end %>
+  #adapter: postgresql
+  #host: localhost
+  #username: postgres
+  #password: happyfeet
+  #encoding: unicode
+  #min_messages: error
+
+  #adapter: sqlite3
+  
+  adapter: mysql2
+  host: localhost
+  username: root
+  password: happyfeet
+  encoding: utf8 
 
 development:
-  database: db/realmealz_dev
+  database: realmealz_dev
   <<: *login 
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  database: db/realmealz_test
+  database: realmealz_test
   <<: *login
 
 production:
-  database: db/realmealz_dev
+  database: realmealz_dev
   <<: *login 
-
-

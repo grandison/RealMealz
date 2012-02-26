@@ -16,13 +16,11 @@ RealMealz::Application.routes.draw do
 	get "/home/about_us"
 	get "/home/faq"
 
-	
 	get "/reports" => 'reports#reports'
 
 	get "/home/downloads"
 	post "/home/check_invite_code"
 
-  
   get '/learn' => 'learn#learn'
   
   get '/track' => 'track#track'
@@ -55,7 +53,6 @@ RealMealz::Application.routes.draw do
 	post '/settings' => "settings#settings"
   post "/settings/save_user"
   get "/settings/autocomplete_ingredient_name"
-	post "/settings/save_food_balance"
 	post "/settings/add_like_item"
 	post "/settings/remove_like_item"
 	post "/settings/add_avoid_item"

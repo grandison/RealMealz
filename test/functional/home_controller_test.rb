@@ -9,7 +9,7 @@ class HomeControllerTest < ActionController::TestCase
     @user.save!
     
     @group = Group.create!(:name => 'Cooking class group')
-    @invite = InviteCode.create!(:invite_code => 'cookingclass', :group_id => @group.id)  
+    @invite_code = InviteCode.create!(:invite_code => 'cookingclass', :group_id => @group.id)  
 
     @new_user = {:user => {:invite_code => 'cookingclass', :first => 'Betty', :last => 'Baker', :email => 'cook@gmail.com', :password => 'password', :password_confirmation => 'password'}}
   end
@@ -26,7 +26,7 @@ class HomeControllerTest < ActionController::TestCase
     assert_equal true, JSON.parse(response.body)['found']
   end
   
-  test 'signup bad group' do
+  test 'signup bad invite code' do
     params = @new_user
     params[:user][:invite_code] = 'badcode'
     post :create_user, params
@@ -40,7 +40,14 @@ class HomeControllerTest < ActionController::TestCase
     post :create_user, params
     assert_redirected_to '/home/welcome'
     assert assigns(:user).errors.messages.empty?
-    assert User.find_by_email(params[:user][:email]), "User not created"
+    
+    user = User.find_by_email(params[:user][:email])
+    assert !user.nil?, "User not created"
+    
+    users_group = UsersGroup.find_by_user_id(user.id)
+    assert !users_group.nil?, "Users Group not created"
+    assert_equal @group.id, users_group.group_id
+    assert_equal @invite_code.id, users_group.invite_code_id
   end
 
 end
