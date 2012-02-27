@@ -33,8 +33,8 @@
   <%= button_to("Edit", {:controller => "recipes", :action => "edit", :id => @recipe.id}, 
   :method => :get, :id => "cook-recipe-edit", :class => "green-button") %>
 <% end %>
-<%= button_to("I'm done cooking", {:controller => "cook", :action => "done_cooking", :recipe_id => @recipe.id}, 
-:confirm => "Remove this recipe from My Meal and remove all ingredients from the pantry?", 
+<%= button_to("I Just Cooked This!", {:controller => "cook", :action => "done_cooking", :recipe_id => @recipe.id}, 
+:confirm => "Congrats!  You earned 10 points for cooking a meal. We also added this meal to your VPG (Vegetable-Protein-Grain ratio) under the Track page.", 
 :id => "cook-done-cooking", :class => "gray-button") %>
 
 <br />

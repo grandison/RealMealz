@@ -9,7 +9,7 @@ class CookController < ApplicationController
   end
   
   def done_cooking
-    current_user.kitchen.remove_recipe_and_ingredients(params[:recipe_id])
+#    current_user.kitchen.remove_recipe_and_ingredients(params[:recipe_id])
     redirect_to :cook
   end
   
