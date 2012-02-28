@@ -7,18 +7,27 @@
 
 <script type="text/javascript">
 
-/* load the recipe when the user clicks on it */
-$(".recipe-display").click(function() {
-  $.post("/recipes/recipe_setup", "recipe_id=" + $(this).attr('recipe-id'),
+
+function loadRecipe(recipeId) {
+  $.post("/recipes/recipe_setup", "recipe_id=" + recipeId,
   function(data) {
     $('#cook-recipe-box').html(data);
     setup_scroll('#cook-recipe-scroll');
-  });		
+  });   
+};
+
+/* load the recipe when the user clicks on it */
+$(".recipe-display").click(function() {
+  loadRecipe($(this).attr('recipe-id'));
 });
 
-/* auto-load the first recipe, if one */
-if ($(".recipe-display").first() != 'undefined') {
-  $(".recipe-display").first().click();
-};
+/* auto-load the passed or first recipe, if one */
+<% if @recipe_id %>
+  loadRecipe(<%= @recipe_id %>);
+<% else %>
+  if ($(".recipe-display").first() != 'undefined') {
+    loadRecipe($(".recipe-display").first().attr('recipe-id'));
+  };
+<% end %>
   
 </script>

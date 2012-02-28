@@ -85,9 +85,11 @@ function change_detail_size(discoverDetail, makeBig) {
   if (makeBig) {
     $('.discover-detail-small').addClass('discover-detail-big');
     $('.discover-detail-small').removeClass('discover-detail-small');
+    $('.discover-recipe-cook').show();
   } else {
     $('.discover-detail-big').addClass('discover-detail-small');
     $('.discover-detail-big').removeClass('discover-detail-big');
+    $('.discover-recipe-cook').hide();
   }
   $(ingredientTurnOff).attr('style', 'display:none');
   $(ingredientTurnOn).attr('style', 'display:block');

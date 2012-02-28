@@ -57,6 +57,12 @@ class DiscoverController < ApplicationController
     render :nothing => true
   end
   
+  #-------------------------
+  def cook_now
+    current_user.kitchen.update_meals(params[:recipe_id], my_meals = true, starred = nil)
+    redirect_to "/cook?recipe_id=#{params[:recipe_id]}"
+  end
+  
   #------------------------- 
   def new_cooking_skills
   end

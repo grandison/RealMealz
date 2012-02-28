@@ -26,7 +26,7 @@ banner_shopping_pick.png: banner_shopping_pick-61b72f110986651569be0cd75489ba6f.
 banner_target_food_balance.png: banner_target_food_balance-c127a1ca092d4a96d7188066e922f0a5.png
 banner_techniques_left.png: banner_techniques_left-e3cf501022bdff2f38bf76a4e86a1cff.png
 basic_equipment.jpg: basic_equipment-a7ea54c33112ab2c8eff42e4de970c2a.jpg
-basic_pantry_with_soyasauce.jpg: basic_pantry_with_soyasauce-f215f81487d34d9b33ac4bed35193885.jpg
+basic_pantry.jpg: basic_pantry-4f68749caec34b6ad81df815ba5a6307.jpg
 basically_vegan_sm.jpg: basically_vegan_sm-18b3e66dc9c28b73ae4f1466035af007.jpg
 bottom-1040x53.png: bottom-1040x53-7f383545d90ec0570fd434e33bf1c500.png
 button_bg.png: button_bg-2ad069a169c8d093846123cc9554855b.png
@@ -125,7 +125,7 @@ top-bkgnd-1040x174.png: top-bkgnd-1040x174-e7cf308f7223b9a9d5540c3b9d19ad06.png
 track_background.jpg: track_background-6988940a56546b104d22404018822578.jpg
 whole_grain_foodie_sm.jpg: whole_grain_foodie_sm-0aa56ceff849970829af570c15bbef45.jpg
 application.js: application-4e2ae378e5b7f2196d12cd1d9b3b822e.js
-application.css: application-efbc13648687b7911fd97c7877239235.css
+application.css: application-9bedc89d23de221182db8c53579979f4.css
 images/ui-bg_diagonals-thick_18_b81900_40x40.png: images/ui-bg_diagonals-thick_18_b81900_40x40-070728c175bb385436f052a1547cd294.png
 images/ui-bg_diagonals-thick_20_666666_40x40.png: images/ui-bg_diagonals-thick_20_666666_40x40-149f0f1f12779ce76e2c9ccc01d06475.png
 images/ui-bg_flat_10_000000_40x100.png: images/ui-bg_flat_10_000000_40x100-b445178f2c744b1d511ad862497ffc57.png

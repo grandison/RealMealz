@@ -58,6 +58,7 @@ class HomeControllerTest < ActionController::TestCase
   test 'logo redirect old user' do
     sign_in(@user)
     @user.created_at = Date.today - 1.day
+    @user.save!
     get :index  
     assert_select "div#realmealz-logo>a[href=/discover]"
   end
