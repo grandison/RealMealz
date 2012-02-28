@@ -26,10 +26,8 @@
         <div id="realmealz-logo">
           <% if current_user.blank? 
               href = '/'
-            elsif current_user.created_at.to_date == Date.today
-              href = '/home/welcome'
             else
-              href = '/discover'
+              href = '/home/welcome'
             end %>
           <a href="<%= href %>">
             <%= image_tag 'realmealz-logo-100px.png', :height => "100px" %>
