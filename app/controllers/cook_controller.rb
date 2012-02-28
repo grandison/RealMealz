@@ -10,6 +10,11 @@ class CookController < ApplicationController
   end
   
   def done_cooking
+    recipe = Recipe.find(params[:recipe_id])
+    MealHistory.create!(:recipe_id => recipe.id, :kitchen_id => current_user.kitchen.id, :eaten_on => Date.today, 
+      :balance_vegetable => recipe.balance_vegetable,
+      :balance_starch => recipe.balance_starch,
+      :balance_protein => recipe.balance_starch)
     redirect_to :cook
   end
   

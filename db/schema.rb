@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120225204947) do
+ActiveRecord::Schema.define(:version => 20120228195042) do
 
   create_table "allergies", :force => true do |t|
     t.string  "name"
@@ -124,13 +124,21 @@ ActiveRecord::Schema.define(:version => 20120225204947) do
     t.integer "default_servings"
   end
 
+  create_table "meal_histories", :force => true do |t|
+    t.integer "kitchen_id"
+    t.integer "recipe_id"
+    t.integer "balance_protein"
+    t.integer "balance_vegetable"
+    t.integer "balance_starch"
+    t.date    "eaten_on"
+  end
+
   create_table "meal_types", :force => true do |t|
     t.string "name"
   end
 
   create_table "meals", :force => true do |t|
     t.integer "kitchen_id"
-    t.date    "eaten_on"
     t.integer "recipe_id"
     t.float   "servings"
     t.boolean "my_meals",   :default => false

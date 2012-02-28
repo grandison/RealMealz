@@ -2,6 +2,7 @@ class Kitchen < ActiveRecord::Base
   has_many :appliances_kitchens
   has_many :appliances, :through => :appliances_kitchens
   has_many :meals
+  has_many :meal_histories
   has_many :users
   has_many :sort_orders
   has_many :ingredients_kitchens
