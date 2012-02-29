@@ -49,7 +49,8 @@ end
 # For Heroku
 group :heroku do
   gem 'pg'
-  gem 'unicorn'
+  # gem 'unicorn'
+  gem "thin", :platforms => :ruby
   gem 'newrelic_rpm'
 end
 
