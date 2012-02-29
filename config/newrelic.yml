@@ -22,7 +22,7 @@ common: &default_settings
   # completely turn the agent off regardless of the other settings.
   # Valid values are true, false and auto.
   #
-  # agent_enabled: auto
+  agent_enabled: true
   
   # Application Name Set this to be the name of your application as
   # you'd like it show up in New Relic. The service will then auto-map
@@ -54,7 +54,7 @@ common: &default_settings
   # The newrelic agent generates its own log file to keep its logging
   # information separate from that of your application.  Specify its
   # log level here.
-  log_level: info
+  log_level: verbose
 
   # Optionally set the path to the log file This is expanded from the
   # root directory (may be relative or absolute, e.g. 'log/' or
