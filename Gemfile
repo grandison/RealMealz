@@ -50,7 +50,7 @@ end
 group :heroku do
   gem 'pg'
   gem 'unicorn'
-  gem 'newrelic_rpm'
+  #gem 'newrelic_rpm'
 end
 
 # For BlueBox
