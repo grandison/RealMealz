@@ -13,7 +13,7 @@ gem "ruby-units", "= 1.3.2"
 # Other units for RealMealz
 gem "authlogic"
 gem 'dynamic_form'
-gem "paperclip", "= 2.4.5"
+gem "paperclip"
 gem 'fog'
 gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete"
@@ -50,7 +50,7 @@ end
 group :heroku do
   gem 'pg'
   gem 'unicorn'
-  #gem 'newrelic_rpm'
+  gem 'newrelic_rpm'
 end
 
 # For BlueBox
