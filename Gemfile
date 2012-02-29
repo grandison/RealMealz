@@ -14,7 +14,7 @@ gem "ruby-units", "= 1.3.2"
 gem "authlogic"
 gem 'dynamic_form'
 gem "paperclip"
-gem 'fog'
+gem 'fog', '~> 1.1.2'
 gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete"
 gem 'will_paginate'
