@@ -1,14 +1,25 @@
 
 <h1> Employees Report </h1>
+Group Code: 
+<%= form_tag '/reports/get_group_report' do %>
+	<%=  
+	  @users = Groups.find(:all)  
+	  select_tag(:id,  
+	    options_from_collection_for_select(@group_codes, :id, :name))  
+	  
+	%>  
+	<input value="Get Report" type="submit" class="gray-button" />
+<% end %>
+
 <table border="1">
 	<tr>
-		<td><h2> Employee</h2></td>
-		<td><h2> Date signed up</h2></td>
-		<td><h2> Last Logged in</h2></td>
-		<td><h2> Cooking Frequency(Before)</h2></td>
-		<td><h2> Cooking Frequency(After)</h2></td>
-		<td><h2>  VPG (Month 1)</h2></td>
-		<td><h2>  VPG (Month 2)</h2></td>
+		<td><h3> Employee</h3></td>
+		<td><h3> Date signed up</h3></td>
+		<td><h3> Last Logged in</h3></td>
+		<td><h3> Cooking Frequency(Before)</h3></td>
+		<td><h3> Cooking Frequency(After)</h3></td>
+		<td><h3>  VPG (Month 1)</h3></td>
+		<td><h3>  VPG (Month 2)</h3></td>
 	</tr>
 	<tr>
 		<td>Angela, S</td>

@@ -17,6 +17,7 @@ RealMealz::Application.routes.draw do
 	get "/home/faq"
 
 	get "/reports" => 'reports#reports'
+	post "/reports/get_group_report" 
 
 	get "/home/downloads"
 	post "/home/check_invite_code"
