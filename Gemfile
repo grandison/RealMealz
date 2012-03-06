@@ -53,6 +53,8 @@ group :heroku do
   gem 'newrelic_rpm'
 end
 
+gem 'newrelic_rpm'
+
 # For BlueBox
 group :bluebox do
   gem 'mysql'
