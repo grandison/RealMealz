@@ -394,23 +394,34 @@ body {
 
 .discover-detail-title {
   display: block;
-  width: 400px;
+  width: 80%;
   height: auto;
   padding-left: 40px;
   padding-bottom: 10px;
   vertical-align: middle;
 }
 
-.discover-detail-main h2 img {
- vertical-align: bottom; 
+.discover-balance {
+  float: left;
+  width: 80px; 
+  height: 80px;  
+  margin-left: -1px;
+  margin-top: -3px;
 }
 
 .discover-detail-main h2 {
   font-size: 20px;
   font-weight: normal;
+  width: 400px;
 }
 
-.discover-detail-main p {
+.discover-recipe-cook {
+  position: absolute;
+  top: 0px;
+  right: 60px;
+}
+
+.discover-recipe-intro {
   color: rgb(40, 40, 40);
 }
 
@@ -441,14 +452,6 @@ body {
   top: 45px;
   right: 45px;
   background: asset-data-url('shrink.png');
-}
-
-.discover-balance {
-  float: left;
-  width: 80px; 
-  height: 80px;  
-  margin-left: -1px;
-  margin-top: -3px;
 }
 
 .discover-meal-update {
@@ -532,7 +535,6 @@ body {
 .discover-recipe-edit {
   float: right;
 }
-
 
 /*** Discover Like bar ***/
 #discover-like-bar {

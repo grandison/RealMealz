@@ -24,7 +24,11 @@ class UserSessionsController < ApplicationController
       if saved_ok
         @user_session.user.reset_perishable_token!
         flash[:notice] = "Login successful!"
-        redirect_back_or_default("/home/welcome")
+        if current_user.created_at.to_date == Date.today
+          redirect_back_or_default("/home/welcome")
+        else
+          redirect_back_or_default("/discover")
+        end
       else
         render :action => :new
       end

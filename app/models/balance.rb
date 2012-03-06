@@ -3,7 +3,7 @@ class Balance < ActiveRecord::Base
 
   def self.get_kitchen_balance(kitchen)
     balance = {:protein => 0, :vegetable => 0, :starch => 0} 
-    kitchen.meals.each do |meal|
+    kitchen.meal_histories.each do |meal|
       if meal.recipe.nil?
         meal.delete
         next

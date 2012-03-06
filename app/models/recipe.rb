@@ -1,5 +1,6 @@
 class Recipe < ActiveRecord::Base
   has_many :meals
+  has_many :meal_histories
   has_many :ingredients_recipes
   has_many :ingredients, :through => :ingredients_recipes
   has_many :recipes_personalities

@@ -1,6 +1,7 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+// Provide a universal ajax error handler
 $.ajaxSetup({
   error: function(request, status, error) {
     alert("An AJAX error occurred: " + status + "\nError: " + error + "\n" + 
@@ -9,6 +10,14 @@ $.ajaxSetup({
   }
 });
 
+// Log all jQuery AJAX requests to Google Analytics
+$(document).ajaxSend(function(event, xhr, settings){ 
+  if (typeof _gaq !== "undefined" && _gaq !== null) {
+    _gaq.push(['_trackPageview', settings.url]);
+  }
+});
+
+// Process flash messages on ajax calls 
 $(document).ajaxComplete(function(event, request){
   var flash = $.parseJSON(request.getResponseHeader('X-Flash-Messages'));
   if(!flash || $.isEmptyObject(flash)) { return; };

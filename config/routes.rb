@@ -49,6 +49,7 @@ RealMealz::Application.routes.draw do
   post "/discover/next_recipes"
   post "/discover/meal_update"
   post "/discover/recipe_shown"
+  post "/discover/cook_now"
 
   get '/settings' => "settings#settings"
 	post '/settings' => "settings#settings"

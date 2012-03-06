@@ -1,6 +1,7 @@
 class Meal < ActiveRecord::Base
   belongs_to :kitchen
   belongs_to :recipe
+  has_many :meal_histories
   
   #----------------------------------
   def name

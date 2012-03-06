@@ -6,10 +6,15 @@ class CookController < ApplicationController
   def cook
     # Everything will be rendered in cells
     @meals_empty = current_user.kitchen.meals.where(:my_meals => true).empty?
+    @recipe_id = params[:recipe_id]
   end
   
   def done_cooking
-#    current_user.kitchen.remove_recipe_and_ingredients(params[:recipe_id])
+    recipe = Recipe.find(params[:recipe_id])
+    MealHistory.create!(:recipe_id => recipe.id, :kitchen_id => current_user.kitchen.id, :eaten_on => Date.today, 
+      :balance_vegetable => recipe.balance_vegetable,
+      :balance_starch => recipe.balance_starch,
+      :balance_protein => recipe.balance_starch)
     redirect_to :cook
   end
   

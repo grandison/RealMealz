@@ -8,6 +8,7 @@
 .discover-recipe.main-height.content-width{"recipe-id" => recipe.id}
   .discover-recipe-background-box.main-height.content-width
     = image_tag(recipe.picture.url(:large), 'recipe-id' => recipe.id, :class => "discover-recipe-background")
+    
   %div{:class => "discover-detail-main discover-detail-#{size_suffix}"}
     %img.discover-detail-frame{:alt => "", :src => asset_path('discover-detail-frame.png')}/
     -if @starred_ids.include?(recipe.id)
@@ -31,7 +32,13 @@
           .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
           .discover-add-text.discover-plus
             %b My Meals
-      %p= recipe.intro
+      - display = show_big ? 'display:block' : 'display:none'
+      .discover-recipe-cook{'style' => display}
+        = button_to("Let's cook this now...", {:controller => "discover", :action => "cook_now", :recipe_id => recipe.id}, 
+        :method => :post, :class => "gray-button") 
+
+      %p.discover-recipe-intro
+        = recipe.intro
       .discover-ingredient-columns
         = render(:partial => "ingredient_list",
           :locals => {:recipe => recipe, :show_quantities => false, 
@@ -42,7 +49,7 @@
       -if current_user.role == 'super_admin'
         %p 
           .discover-recipe-edit
-            =button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, 
+            = button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, 
             :method => :get, :class => "green-button")
       .discover-recipe-prepsteps
         %h2

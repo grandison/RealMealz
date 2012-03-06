@@ -46,7 +46,8 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'PUT/ingredients/1', :redirect_to => '/ingredients', :flash => 'Ingredient was successfully updated.'},  
     {:path => 'POST/ingredients/combine_ingredients', :logged_in_redirect_to => '/ingredients', :flash => 'Please select both a From and a To ingredient to combine'},  
 
-    {:path => 'POST/cook/done_cooking', :redirect_to => '/cook'}, 
+    {:path => 'POST/cook/done_cooking', :redirect_to => '/cook'},
+    {:path => 'POST/discover/cook_now', :redirect_to => '/cook?recipe_id=1'}, 
     {:path => 'POST/settings/save_user', :redirect_to => '/settings'}, 
     {:path => 'POST/track/save_food_balance', :redirect_to => '/track'}, 
 
