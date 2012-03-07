@@ -35,7 +35,7 @@ RealMealz::Application.configure do
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
-  # config.logger = Logger.new(STDOUT) # MD Mar-2012 add this to get Heroku to log more info
+  config.logger = Logger.new(STDOUT) # MD Jan-2012 so Heroku will log more info
 
   # Use a different cache store in production
   #config.cache_store = :dalli_store #MD Jan 2012 was :mem_cache_store
