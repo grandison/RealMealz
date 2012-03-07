@@ -27,6 +27,10 @@ class HomeController < ApplicationController
     @background_recipe = Recipe.random_background_image
   end
 
+  def ping
+    @num_of_users = UsersPoint.where('date_added >= ?', 5.minutes.ago).count
+  end
+
   def sign_up
     sign_out
     @user = User.new(params[:user])
