@@ -59,11 +59,6 @@ class User < ActiveRecord::Base
   end
 
   #---------------------------------
-  def get_exclude_list
-    kitchen.ingredients_kitchens.where(:exclude => true).delete_if {|ik| ik.ingredient.nil?}.sort_by {|ik| ik.ingredient.name}
-  end
-
-  #---------------------------------
   ## Returns food balance target of the user
   def get_target_food_balance
     bal_id = nil

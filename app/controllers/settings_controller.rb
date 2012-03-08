@@ -12,7 +12,7 @@ class SettingsController < ApplicationController
     @kitchen_user_names = current_user.kitchen.users.map {|u| u.first}
     @food_balance = Balance.get_kitchen_balance(current_user.kitchen)
     @target_food_balance = current_user.get_target_food_balance
-    @exclude_items = current_user.get_exclude_list
+    @exclude_items = current_user.kitchen.get_exclude_list
     @background_recipe = Recipe.random_background_image
   end
 

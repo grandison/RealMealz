@@ -3,11 +3,18 @@ require 'test_helper'
 class KitchenTest < ActiveSupport::TestCase
 
   def setup
-    @kitchen = Kitchen.create!(:name => 'Dunn Family')
+    @kitchen = Kitchen.create_default_kitchen('', 'Dunn')
     @user = User.create!(:first => 'Max', :last => 'Dunn', :email => 'max@mail.com', :password => 'password', :password_confirmation => 'password', 
       :role => 'kitchen_admin', :kitchen_id => @kitchen.id)
   end
 
+  test "default exclude" do
+    ik_exclude_list = @kitchen.get_exclude_list
+    assert_equal 'Pepper', ik_exclude_list[0].ingredient.name
+    assert_equal 'Salt', ik_exclude_list[1].ingredient.name
+    assert_equal 2, ik_exclude_list.length
+  end
+  
   test "find or create" do
     ingredient_name = 'Bread'
     note = 'Soft wheat'
