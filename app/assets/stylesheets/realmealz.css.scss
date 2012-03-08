@@ -751,6 +751,7 @@ body {
 
 #my-meals-list {
   width: 200px;
+  overflow: auto;
 }
 
 #my-meals-banner {
@@ -760,13 +761,13 @@ body {
 
 .my-meals-recipe {
   position: relative;
-  width: 180px;
+  width: 184px;
   height: 150px;
   margin-bottom: 10px;
 }
 
 .my-meals-recipe-img {
-  width: 180px;
+  width: 184px;
 }
 
 .my-meals-recipe-caption {
@@ -1434,4 +1435,3 @@ body {
 dl {
   margin: 2px;
 }
-

@@ -208,8 +208,8 @@ function shoppingDone(){
 
 /** update the shopping list **/
 function updateShopList(data) {
-  $('#shop-list .overview').html(data);
-  $('#shop-list').tinyscrollbar_update();
+  scroll_pane('#shop-list').html(data);
+  update_scroll('#shop-list');
   setupSortableShopList();
 };
 

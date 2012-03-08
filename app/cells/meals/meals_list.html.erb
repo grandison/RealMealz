@@ -8,7 +8,6 @@
   </div>
   
   <div id="my-meals-list">
-    
     <% my_meals.each do |meal| ; recipe = meal.recipe %>
     
       <div class="my-meals-recipe" recipe-pic="<%= recipe.picture.url(:large) %>">
@@ -41,7 +40,7 @@
     $(this).parent().parent().fadeTo('fast', 0.00, function() {
       $(this).slideUp('fast', function() {
         $(this).remove();
-        $('#my-meals-list').tinyscrollbar_update('relative');
+        update_scroll('#my-meals-list');
       });
      });
   });

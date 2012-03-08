@@ -29,6 +29,11 @@ class Kitchen < ActiveRecord::Base
     SortOrder.list_sort(id, :meal_order, filter_meals('my_meals'))
   end
   
+  #---------------------------------
+  def get_exclude_list
+    ingredients_kitchens.where(:exclude => true).delete_if {|ik| ik.ingredient.nil?}.sort_by {|ik| ik.ingredient.name}
+  end
+
   #-------------------------------------------
   def filter_meals(meals_field = nil)
     meals.delete_if {|m| (!meals_field.nil? && !eval("m.#{meals_field}")) ||
@@ -210,7 +215,10 @@ class Kitchen < ActiveRecord::Base
      else
        kitchen_name = last_name
      end
-     Kitchen.create!(:name => kitchen_name, :default_servings => 4)
+     kitchen = Kitchen.create!(:name => kitchen_name, :default_servings => 4)
+     kitchen.update_ingredients_kitchens('salt', :exclude => true)
+     kitchen.update_ingredients_kitchens('pepper', :exclude => true)
+     return kitchen
   end
  
 end

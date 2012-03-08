@@ -50,9 +50,9 @@ end
 group :heroku do
   gem 'pg'
   gem 'unicorn'
-  gem 'newrelic_rpm'
 end
 
+# For some reason, putting this in the Heroku group doesn't load
 gem 'newrelic_rpm'
 
 # For BlueBox
