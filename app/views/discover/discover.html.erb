@@ -122,7 +122,7 @@ $("#discover-carousel").delegate(".ingredient-checkbox", "click", function() {
   } else {
     $('li[ingredient-id="' + $(this).attr('ingredient-id') + '"]').remove();
   };
-  $('#discover-have-scroll').tinyscrollbar_update('relative');
+  update_scroll('#discover-have-scroll');
   return true;
 });
 
@@ -291,14 +291,14 @@ $('#discover-search-input').keypress(function(e) {
 function setup_have_avoid_dialog(name) {
  
   /* Scroll */
-  setup_scroll("#discover-"+name+"-scroll");
+  setup_scroll("#discover-"+name+"-scroll", true);
   
   /* Toggle visible */
   $("#discover-"+name+"-button").click(function() {
     if ($("#discover-"+name+"-form").css("display") == "none") {
       $(this).addClass("discover-button-active");
     	$("#discover-"+name+"-form").slideDown('fast', function () {
-      	$("#discover-"+name+"-scroll").tinyscrollbar_update('relative');
+      	update_scroll("#discover-"+name+"-scroll");
       	// MD Take out for now $("#discover-"+name+"-input").focus();
     	});
   	} else {
@@ -384,7 +384,7 @@ function setup_have_avoid_dialog(name) {
         }
        }); 
     	/* scroll to top of list and insert item */
-  	  $scroll.tinyscrollbar_update();
+  	  scroll_top($scroll);
       $list.prepend("<li class='discover-" + name + "-list-item' id='list-holder'>&nbsp;</li>");
       $moveText.animate( {'top': $list.offset().top + 10, 'left': $list.offset().left + 16}, 400, function(){ 
         $moveText.remove();

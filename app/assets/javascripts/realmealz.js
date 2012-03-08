@@ -163,7 +163,7 @@ function li_item_remove(selector, fadeSpeed, scrollbar) {
     $(this).slideUp("fast", function() {
       $(this).remove();
       if (typeof(scrollbar) != 'undefined') {
-        $(scrollbar).tinyscrollbar_update('relative');
+        update_scroll(scrollbar);
       };
    });
  });
@@ -172,8 +172,9 @@ function li_item_remove(selector, fadeSpeed, scrollbar) {
 /*** Resize scroll ***/
 function resize_scroll_with_window(sel) {
   $(window).resize(function() {  
-    $(sel + ' .viewport').height(full_scroll_height(sel));
-    $(sel).tinyscrollbar_update('relative');
+    $(sel).height(full_scroll_height(sel));
+    $(sel).width($(sel).width() - 2);
+    update_scroll(sel);
   });
 };
 
@@ -181,35 +182,35 @@ function full_scroll_height(sel) {
   return $(window).height() - $(sel).offset().top - 10; //Scroll height - 10 padding
 };
 
+function update_scroll(sel) {
+  $(sel).data('jsp').reinitialise();
+}
+
+function scroll_top(sel) {
+  $(sel).data('jsp').scrollTo(0,0);
+}
+
+function scroll_pane(sel) {
+  return $(sel).data('jsp').getContentPane();
+}
+
 /* "sel" is the div to scroll 
  * if the height of this is set, the scroll will also be that height
  * but if the height is 0, then scroll will be the full window height
  * Also, check if the scroll already setup and if so, just update
  */
-function setup_scroll(sel) {
-  if ($(sel).find(".overview").length) {
-    $(sel).tinyscrollbar_update(); 
-  } else {
-    $(sel).wrapInner('<div class="overview" />').wrapInner('<div class="viewport" />');
-    $(sel).prepend($('<div class="scrollbar"><div class="track"><div class="thumb"> <div class="end"></div></div></div></div>')); 
-
-    var height = $(sel).height();
-    if (height == 0) { 
-      height = full_scroll_height(sel);
-      resize_scroll_with_window(sel);
-    }
-    var width = $(sel).width();
-    if (width == 0) { width = $(sel).parent().width() };
-    var $viewport = $(sel).find('.viewport');
-
-    if ($viewport.width() == 0) {
-      $viewport.width(width - 20);
-    };
-    if ($viewport.height() == 0) {
-      $viewport.height(height);
-    };
-    $(sel).tinyscrollbar();
-  }
+function setup_scroll(sel, useHeight) {
+  if (!useHeight) { 
+    $(sel).height(full_scroll_height(sel));
+    resize_scroll_with_window(sel); 
+  };
+  $(sel).jScrollPane({
+    animateScroll : true,
+    animateDuration : 1000,
+    animateEase : 'swing',
+    verticalGutter : 0,
+    hideFocus : true
+  });
 };
 
 function setup_background_image(sel) {

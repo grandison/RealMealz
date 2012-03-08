@@ -4,19 +4,15 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
-//# require jquery
-//# require jquery_ujs
-//# require_tree .
 //= require 'jquery-1.6.2.min.js' 
 //= require 'jquery-ujs.js' 
 //= require 'jquery-ui-1.8.16.custom.min.js'
 //= require 'jquery.jcarousel.min.js' 
 //= require 'jquery.cookie.js' 
-//= require 'touchable.js' 
 //= require 'jquery.tools.min.js' 
 //= require 'autocomplete-rails.js' 
 //= require 'highcharts.js' 
 //= require 'rm-highchart-theme.js' 
 //= require 'jquery.mousewheel.js' 
-//= require 'jquery.tinyscrollbar.min.js'
+//= require 'jquery.jscrollpane.js'
 //= require 'realmealz.js' 
