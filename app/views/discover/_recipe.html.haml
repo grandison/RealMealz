@@ -39,6 +39,9 @@
 
       %p.discover-recipe-intro
         = recipe.intro
+      .discover-serves 
+        Servings: 
+        = recipe.servings  
       .discover-ingredient-columns
         = render(:partial => "ingredient_list",
           :locals => {:recipe => recipe, :show_quantities => false, 

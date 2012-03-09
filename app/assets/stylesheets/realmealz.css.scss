@@ -522,6 +522,13 @@ body {
 .discover-starred-off:hover { background-position: -35px 0px; }  
 .discover-starred-off:active { background-position: -69px 1px; }  
 
+.discover-serves {
+  clear: both;
+  padding-left: 8px;
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+
 .discover-ingredient-columns {
   clear: both;  
 	-moz-column-count: 3;
