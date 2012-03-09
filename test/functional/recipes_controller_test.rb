@@ -3,6 +3,7 @@ require 'test_helper'
 class RecipesControllerTest < ActionController::TestCase
   setup do
     Ingredient.reset_cache
+    Ingredient.create!(:name => 'Rice', :other_names => "|rice|")
     
     # The first user created will be the logged in user
     @user = User.create!(:first => 'Max', :last => 'Dunn', :email => 'max@mail.com', :password => 'password', :password_confirmation => 'password')
@@ -18,10 +19,21 @@ class RecipesControllerTest < ActionController::TestCase
     Recipe.delete_all
     @super_recipe_attributes = {:name => 'Global recipe', :ingredient_list => "1 cup rice"}
     @super_recipe = Recipe.create!(@super_recipe_attributes)
-    @recipe_attributes = {:name => 'Users recipe', :ingredient_list => "1 cup rice", :kitchen_id => @kitchen.id}
+    @recipe_attributes = {:name => 'Users recipe', :ingredient_list => "1 cup rice", :servings => 4, :kitchen_id => @kitchen.id}
     @recipe = Recipe.create!(@recipe_attributes)
+    @recipe.process_ingredient_list
   end
 
+  test "update servings" do
+    sign_in(@user)
+    
+    post :update_servings, :recipe_id => @recipe.id, :new_servings => 8
+    assert_response :success
+    
+    assert_select 'p', '2 cups Rice'
+    assert_equal 4, @recipe.servings
+  end
+  
   test "should get index" do
     sign_in(@user)
     
