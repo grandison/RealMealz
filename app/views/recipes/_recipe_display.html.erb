@@ -2,10 +2,10 @@
 
 <div id="recipe-info" class="gray-background">
 <table>
-  <% unless @recipe.servings.blank? %>
+  <% unless @recipe.servings.blank? || @recipe.servings == 0 %>
   <tr>
     <td>
-      <b>Servings: </b></td> <td><%= text_field(:recipe, :servings, 
+      <b>Servings: </b></td> <td><%= text_field_tag(:default_servings, @default_servings, 
         :id => "recipe-servings-input", "recipe-id" => @recipe.id, :size => 5) %>
     </td>
   </tr>
@@ -41,8 +41,8 @@
 
 <div id="recipe-ingredients-detailed" class="gray-background">
   <b>Ingredients</b><br />
-  <div id="recipe-ingredients-list">
-    <%= render :partial => 'recipe_ingredient_list', :locals => {:ingredients_recipes => @recipe.ingredients_recipes} %>
+  <div id="recipe-ingredient-list">
+    <%= render :partial => 'recipe_ingredient_list', :locals => {:ingredient_list => @recipe.ingredient_list} %>
   </div>
 </div>
 

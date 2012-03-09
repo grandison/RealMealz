@@ -36,7 +36,7 @@
       			
       			(<%= link_to("Reprocess", "", :id => "recipe-reprocess-ingredients", "recipe-id" => @recipe.id)%>)<br />
 
-      			<%= f.text_area(:ingredient_list, :id => "recipe-ingredients-list", :cols => 58, :rows => 10, :placeholder => "1/3 cup rice") %>
+      			<%= f.text_area(:ingredient_list, :id => "recipe-ingredient-list", :cols => 58, :rows => 10, :placeholder => "1/3 cup rice") %>
     			</p>
     			
     			<p>
@@ -93,10 +93,10 @@
 $("#recipe-reprocess-ingredients").click(function() {
   var postData = {
     "recipe_id": $(this).attr("recipe-id"), 
-    "ingredient_list": $("#recipe-ingredients-list").val()
+    "ingredient_list": $("#recipe-ingredient-list").val()
   }
   $.post("/recipes/reprocess", postData, function(list) {
-    $("#recipe-ingredients-list").val(list);
+    $("#recipe-ingredient-list").val(list);
   });
   return false;
 });

@@ -54,16 +54,22 @@ class Recipe < ActiveRecord::Base
 
   #------------------------- 
   def ingredient_list
-    return @ingredient_list unless @ingredient_list.nil?
-    
-    @ingredient_list = ""
+    list = ""
     ingredients_recipes.each do |ir| 
-      @ingredient_list << "\n" if ir.group?
-      @ingredient_list << ir.name_and_description + "\n"
+      list << "\n" if ir.group?
+      if @new_servings && @new_servings != 0 && servings && servings != 0 && ir.weight && ir.weight != 0
+        ir.weight = ir.weight * @new_servings / servings
+      end
+      list << ir.name_and_description + "\n"
     end
-    return @ingredient_list
+    return list
   end
-
+  
+  #------------------------- 
+  def new_servings(servings)
+    @new_servings = servings
+  end
+  
   #------------------------- 
   # This prepares the recipe for display by setting up the display fields
   # and adjusting the servings
@@ -78,7 +84,7 @@ class Recipe < ActiveRecord::Base
       @cooksteps_list = Skill.add_skill_links(cooksteps).split("\n").map {|line| line.chomp}
     end
     
-    adjust_servings(servings) unless servings.nil?
+    @new_servings = servings
   end
 
   #------------------------- 
@@ -97,17 +103,17 @@ class Recipe < ActiveRecord::Base
   #------------------------- 
   # process the ingredients_list into ingredients_recipes
   def process_ingredient_list
-    return if ingredient_list.blank?
+    return if @ingredient_list.blank?
 
     # if this recipe was just created, save original_ingredient_list
     if original_ingredient_list.blank?
-      self.original_ingredient_list = ingredient_list
+      self.original_ingredient_list = @ingredient_list
     end
     
-    if ingredient_list.is_a?(String)
-      ingr_array = ingredient_list.split(/\n/)
+    if @ingredient_list.is_a?(String)
+      ingr_array = @ingredient_list.split(/\n/)
     else
-      ingr_array = ingredient_list
+      ingr_array = @ingredient_list
     end
 
     # Usually Rails just sets the key to null. To really delete the record, the following two lines are needed
@@ -150,6 +156,7 @@ class Recipe < ActiveRecord::Base
       ingredients_recipes << ingredient_recipe
       Ingredient.standardize_unit(ingredient_recipe)
     end
+    @ingredient_list = nil
   end
 
   #------------------------- 
@@ -193,22 +200,6 @@ class Recipe < ActiveRecord::Base
       save!
     end
     return  {:protein => balance_protein, :vegetable => balance_vegetable, :starch => balance_starch} 
-  end
-  
-  #------------------------- 
-  def adjust_servings(new_servings)
-    default_servings = self.servings
-    return if default_servings.nil? || default_servings == 0 
-    
-    if new_servings != 0 # If new_servings are 0, don't adjust
-      ingredients_recipes.each do |ir|
-        unless ir.weight.nil?
-          ir.weight = ir.weight * new_servings / default_servings
-        end
-      end
-    end
-    self.servings = new_servings
-    save!
   end
   
   ###################

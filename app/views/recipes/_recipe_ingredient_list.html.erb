@@ -1,3 +1,3 @@
-<% ingredients_recipes.each do |ir| %>
-  <p><%= check_and_add_group_html(ir.name_and_description) %></p>
+<% ingredient_list.each_line do |line| %>
+  <p><%= check_and_add_group_html(line.strip) %></p>
 <% end %>

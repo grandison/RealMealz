@@ -135,9 +135,10 @@ class RecipeTest < ActiveSupport::TestCase
     end
     Ingredient.reset_cache
 	  
-	  recipe = Recipe.new({"name"=>"Max's Recipe", "cooksteps"=>"2. Cook", "picture_remote_url"=>"", "intro"=>"Love this recipe", 
-	    "ingredient_list"=>"3 cup rice\r\n1 stalk celery\r\n1/2 lbs chicken", "skills"=>"Bake", "tags"=>"Main", "preptime"=>"10", 
-	    "servings"=>"4", "prepsteps"=>"1. Put together", "source"=>"Max source", "cooktime"=>"10"})
+	  recipe = Recipe.new({:name => "Max's Recipe", "cooksteps"=>"2. Cook", "picture_remote_url"=>"", "intro"=>"Love this recipe", 
+	    :ingredient_list => "3 cup rice\r\n1 stalk celery\r\n1/2 lbs chicken", 
+	    :skills => "Bake", :tags => "Main", :preptime => "10", 
+	    :servings =>"4", :prepsteps => "1. Put together", :source => "Max source", :cooktime => "10"})
     recipe.process_recipe
         
     assert_equal "Max's Recipe", recipe.name
@@ -236,5 +237,18 @@ class RecipeTest < ActiveSupport::TestCase
     balance = recipe.food_balance
     assert_equal({:protein => 1, :starch => 2, :vegetable => 3}, balance)
   end
+  
+  #--------------
+  test "adjust servings" do
+    recipe = Recipe.create(:name => 'Beef Dish', :servings => 4)
+    recipe.ingredients_recipes << IngredientsRecipe.create(:weight => 1, :unit => 'cup', 
+      :ingredient => Ingredient.create(:name => 'Beef'))
+    
+    assert_equal 4, recipe.servings
+    recipe.new_servings(8)
+    assert_equal 4, recipe.servings
+    assert_equal "2 cups Beef\n", recipe.ingredient_list
+  end
+
 
 end

@@ -7,6 +7,8 @@ RealMealz::Application.routes.draw do
   # List these out individually so tests can identify them
   
   get '/home' => "home#index"
+  get "/home/login" => "home#index" # This link was sent out in a flyer
+  get "/login" => "home#index" # This too
   get "/home/sign_up"
   post "/home/sign_up"
   post "/home/create_user"

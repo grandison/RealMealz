@@ -4,8 +4,9 @@ class RecipesController < ApplicationController
   
   #------------------------- 
   def recipe_setup
+    @default_servings = current_user.kitchen.default_servings || 4
     @recipe = Recipe.find(params[:recipe_id])
-    @recipe.setup_recipe(current_user.kitchen.default_servings)
+    @recipe.setup_recipe(@default_servings)
     render :partial => 'recipe_display'
   end
   
@@ -29,8 +30,8 @@ class RecipesController < ApplicationController
   def update_servings
     current_user.kitchen.update_attributes!(:default_servings => params[:new_servings])
     recipe = Recipe.find(params[:recipe_id])
-    recipe.adjust_servings(params[:new_servings].to_i)
-    render :partial => "recipe_ingredient_list", :locals => {:ingredients_recipes => recipe.ingredients_recipes}
+    recipe.new_servings(params[:new_servings].to_i)
+    render :partial => "recipe_ingredient_list", :locals => {:ingredient_list => recipe.ingredient_list}
   end
 
   #------------------------- 
