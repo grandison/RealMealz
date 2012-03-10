@@ -84,11 +84,11 @@ ul,ol { margin-top: 0; margin-bottom: 0.5em; }
   display: none;
   position: fixed;
   z-index: 500;
-  width: 30px;
-  height: 30px;
-  top: 50%;
-  left: 50%;
-  background: asset-data-url('icons/loading.gif') no-repeat;
+  width: 128px;
+  height: 128px;
+  top: 45%;
+  left: 45%;
+  background: asset-data-url('icons/loading_big.gif') no-repeat;
 }
 
 
