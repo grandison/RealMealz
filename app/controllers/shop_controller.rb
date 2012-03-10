@@ -72,6 +72,12 @@ class ShopController < ApplicationController
     end
   end
   
+  def email_shopping_list
+    ShopListMailer.shop_list_email(current_user, current_user.kitchen.get_sorted_shopping_items).deliver!
+    flash.now[:notice] = "Shopping list emailed to #{current_user.email}"
+    render :nothing => true
+  end
+
   def done_shopping
     current_user.kitchen.done_shopping
     render_list(just_shop_list = true)

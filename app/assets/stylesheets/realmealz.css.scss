@@ -80,6 +80,18 @@ ul,ol { margin-top: 0; margin-bottom: 0.5em; }
 
 .clear_both { clear: both; }
 
+#busy-indicator {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  width: 30px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+  background: asset-data-url('icons/loading.gif') no-repeat;
+}
+
+
 /**** Widths and height (indents show structure) *****/
 html { }
   body {  }
@@ -880,6 +892,10 @@ body {
 #shop-add-item {
   padding-top: 20px;
   padding-bottom: 20px;  
+}
+
+#shop-email-list {
+  padding-bottom: 10px;
 }
 
 #shop-done {

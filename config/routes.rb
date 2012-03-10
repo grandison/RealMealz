@@ -36,6 +36,7 @@ RealMealz::Application.routes.draw do
   post "/shop/add_item" 
   post "/shop/remove_from_shopping_list"
   post "/shop/update_item"
+  post "/shop/email_shopping_list"
   post "/shop/done_shopping"
   post "/shop/add_recipe_ingredients"
   post "/shop/clear_shopping_list"
