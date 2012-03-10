@@ -180,7 +180,9 @@ $("#my-meals-list").delegate(".my-meals-add-ingredients", "click", function() {
   $.post('/shop/add_recipe_ingredients', 'recipe_id=' + $(this).attr('recipe-id'),
   function(data) {
     updateShopList(data);
+    $('#busy-indicator').hide();
   });
+  $('#busy-indicator').show();
 });
 
 /** update default servings  **/
@@ -202,8 +204,10 @@ function shopListClear(){
     $.post("/shop/clear_shopping_list", 
       function(data) {
         updateShopList(data);
+        $('#busy-indicator').hide(); 
       }
     );
+    $('#busy-indicator').show();
   }
 };
 
@@ -213,8 +217,10 @@ function shoppingDone(){
     $.post("/shop/done_shopping", 
       function(data) {
         updateShopList(data);
+        $('#busy-indicator').hide(); 
       }
     );
+    $('#busy-indicator').show();
   }
 };
 
