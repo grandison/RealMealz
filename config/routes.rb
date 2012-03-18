@@ -28,6 +28,7 @@ RealMealz::Application.routes.draw do
   
   get '/track' => 'track#track'
 	post "/track/save_food_balance"
+	get "/track/point_tracker"
   
   get '/shop' => "shop#shop_list"
   get "/shop/pantry_list"
