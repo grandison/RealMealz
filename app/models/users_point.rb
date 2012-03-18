@@ -4,7 +4,11 @@ class UsersPoint < ActiveRecord::Base
   
   def self.points_by_group
     UsersPoint.order(:user_id, :date_added).includes(:user, :point).map do |up| 
-      {:name => up.user.name,  :action => up.point.name,  :date => up.date_added}
+      if up.user.nil? || up.point.nil?
+        up.delete
+      else
+        {:name => up.user.name,  :action => up.point.name,  :date => up.date_added}
+      end
     end
   end
   
