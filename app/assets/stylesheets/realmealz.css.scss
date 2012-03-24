@@ -1284,31 +1284,29 @@ body {
 
 /** Learn **/
 #learn-table {
-	width: 100%;
-	padding: 0px;
-	border: 0px;
-	border-spacing: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
-
 #learn-table td{
-	vertical-align: top;
+  vertical-align: top;
+}
+#learn-techniques-column {
+  border-right: #7A530C solid 1px;
+}
+#learn-techniques-table {
+  width: 750px;
+  vertical-align: top;
 }
 
-#learn-table img {
-	border: 0px;
-	padding: 0px;
+#learn-ingredients-table{
+  padding-left: 10px;
 }
 
-.learn-video {
-	width: 490px;
-	height: 308px;
+.learn-underline tr {
+  border-bottom: #7A530C solid 1px;
 }
-
-.learn-first-column {
-	text-align: right;
-	border-right: #7A530C solid 1px;
-}
-
 /** Track **/
 #track-table {
 	width: 100%;

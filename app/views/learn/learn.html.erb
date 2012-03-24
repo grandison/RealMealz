@@ -1,86 +1,147 @@
+<% @show_footer = true %>
+<div id="video-dialog" title="Youtube Video" style="display:none">
+   <object width="560" height="315">
+    <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw" />
+    <param name="allowFullScreen" value="true" />
+    <param name="allowscriptaccess" value="always" />
+    <embed src="http://www.youtube.com/v/00Tkhc_s4iw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
+    </embed>
+  </object> 
+</div>
 
-<table style="width:500px;">
-	<tr>
-		<td class="gray-background">
-		<h1>Coming Soon...</h1>
-		A collection of skill-videos you can watch to beef up your kitchen cred.
-You can already access some of the videos directly via active links on the Discover and Cook page.  If you see green text, click on it to view the videos.
+<table id="learn-table" class="gray-background">
+ 	<tr> 
+		<td id="learn-techniques-column">
+			<table id="learn-techniques-table" class="gray-background"> <!-- Techniques table -->
+				<tr>
+					<td colspan="4"><h1>Techniques</h1>Build your cooking techniques to interact with ingredients in new ways. Level 1 techniques will already help you cook many recipes, in fact, most home cooks flourish with Level 1 and 2 techniques. Most of all, have fun with learning and discovering. <p></td>
+				</tr>
+				<tr>
+					<td class="points-table-title-font">Level 1</td>
+					<td class="points-table-title-font">Level 2</td>
+					<td class="points-table-title-font">Level 3</td>
+					<td class="points-table-title-font">Level 4</td>
+				</tr>
+				<tr>
+					<td>
+						<% @techniques1.each do |technique|%>
+							<% if technique.video_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% else %>
+								<%= technique.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>
+					<td>
+						<% @techniques2.each do |technique|%>
+							<% if technique.video_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% else %>
+								<%= technique.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>
+					<td>
+						<% @techniques3.each do |technique|%>
+							<% if technique.video_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% else %>
+								<%= technique.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>
+					<td>
+						<% @techniques4.each do |technique|%>
+							<% if technique.video_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% else %>
+								<%= technique.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>		
+				</tr>
+			</table>
+		</td>
+		<td id="learn-ingredients-column">
+			<table id="learn-ingredients-table" class="gray-background"> <!-- Ingredients table -->
+				<tr>
+					<td colspan="4"><h1>Ingredients</h1>Pick up quick tips on prepping ingredients. Try prepping on Sunday night for fast cooking in the week to follow. Learn the nature of ingredients to start improvising and playing in the kitchen. <p></td>
+				</tr>
+				<tr>
+					<td class="points-table-title-font">Level 1</td>
+					<td class="points-table-title-font">Level 2</td>
+					<td class="points-table-title-font">Level 3</td>
+					<td class="points-table-title-font">Level 4</td>
+
+				</tr>
+				<tr>
+					<td>
+						<% @ingredients1.each do |ingredient|%>
+							<% if ingredient.video_link != nil %>
+							<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% else %>
+								<%= ingredient.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>
+					<td>
+						<% @ingredients2.each do |ingredient|%>
+							<% if ingredient.video_link != nil %>
+							<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% else %>
+								<%= ingredient.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>
+					<td>
+						<% @ingredients3.each do |ingredient|%>
+							<% if ingredient.video_link != nil %>
+								<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+								<% else %>
+									<%= ingredient.name %>
+								<% end %>
+								<br>
+						<% end %>
+					</td>
+					<td>
+						<% @ingredients4.each do |ingredient|%>
+							<% if ingredient.video_link != nil %>
+							<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% else %>
+								<%= ingredient.name %>
+							<% end %>
+							<br>
+						<% end %>
+					</td>				
+				</tr>
+			</table>			
 		</td>
 	</tr>
-	
-	<tr>
-		<td class="gray-background">
-			<h1>Want locally fresh and sustainable groceries? </h1>
-			<h4>Just enter your zip code below to find a local farmers market </h4>
-		</td>
-	</tr>
-</table>
+</table>							
 
-<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" height="186" width="200"><param value="http://www.eatwellguide.org/downloads/widgets/search/searchbox_keyword_v1.swf" name="movie" /><param value="high" name="quality" /><param value="wmode" name="transparent" /><embed pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" type="application/x-shockwave-flash"  height="186" width="200"  wmode="transparent" src="http://www.eatwellguide.org/downloads/widgets/search/searchbox_keyword_v1.swf"></embed></object>
+<script type="text/javascript">
 
+$('.learnpage-videos').click(function() {
+  var title = $(this).attr('title');
+  var link = $(this).attr('href');
+  var $dialog = $("#video-dialog");
+  $dialog.dialog("destroy");
+  $dialog.attr('title', title);
+  $dialog.find('param[name="movie"]').attr('value', link);
+  $dialog.find("embed").attr("src", link);
+  $( "#video-dialog" ).dialog({
+     width: 600,
+     height: 380,
+     modal: true
+   });;
+  return false;
+});
 
-<!-- 
+</script>
 
-<table id="learn-table">
-
-	<tr>
-		<!-- Techniques 
-		<td class="learn-first-column">
-			<% @techniques.each do |technique|%>
-				<% video_link = technique.video_link.to_s + "&amp;" + "showinfo=1"  %>
-				<iframe class="learn-video" src="<%= video_link %>" frameborder="0" allowfullscreen></iframe>
-				<br>
-			<% end %>
-		</td>
-		<!-- Ingredients 
-		<td>
-			<% @ingredients.each do |ingredient|%>
-				<iframe class="learn-video" src="<%= ingredient.video_link %>" frameborder="0" allowfullscreen></iframe>
-				<br>
-			<% end %>
-		</td>
-	</tr>
-	
-</table>
-
-
-<br>
-<br>
-<iframe width="50%" height="70%" src="http://www.youtube.com/embed/qmY_RCBAxok?hl=en&fs=1" frameborder="0" allowfullscreen></iframe>
-<iframe width="49%" height="70%" src="http://www.youtube.com/embed/DHF5DlLQ9CA?hl=en&fs=1&showinfo=1" 
-frameborder="0" allowfullscreen></iframe>
-<iframe width="50%" height="70%" src="http://www.youtube.com/embed/zX5iFP2zX-0?hl=en&fs=1" frameborder="0" allowfullscreen></iframe>
-<iframe width="49%" height="70%" src="http://www.youtube.com/embed/PXHy3yiIIhs?hl=en&fs=1" frameborder="0" allowfullscreen></iframe>
-
-Cooking is art.  Learn the components and you can make any creation in the kitchen, using recipes only as a guide.  Discover all the new dishes you can make as you earn new cooking skill badges here.
-
-width="95%" height="30%" 
-<br>
-<br>
-
-
-<table style="vertical-align: top; border: 0px;">
-<tr>
-	<td>
-		<div class="rounded-box-title" style="width: 260px; height: 20px;"> Level 1 </div>
-		<div class="rounded-box" style="width: 240px; height: 350px;">
-	
-
-			
-		</div>
-	</td>
-	<td>
-		<div class="rounded-box-title" style="width: 260px; height: 20px;"> Level 2 </div>
-		<div class="rounded-box" style="width: 240px; height: 350px;">
-			
-		</div>
-	</td>
-	<td>
-		<div class="rounded-box-title" style="width: 260px; height: 20px;"> Level 3 </div>
-		<div class="rounded-box" style="width: 240px; height: 350px;">
-			Coming Soon...
-	
-		</div>
-	</td>
-</table>
--->
