@@ -1,0 +1,20 @@
+%h1 Point Track
+
+%table
+  - last_name = ''
+  - @points_by_group.each do |pg|
+    - if last_name != pg[:name]; last_name = pg[:name]
+      %tr
+        %td{:colspan => 3}      
+          %b
+            = pg[:name]
+    %tr
+      %td
+        &nbsp
+      %td 
+        = pg[:date]
+      %td
+        &nbsp
+      %td 
+        = pg[:action]  
+  

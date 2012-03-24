@@ -76,9 +76,9 @@ function change_detail_size(discoverDetail, makeBig) {
     var ingredientTurnOn = '.ingredient-list-without-quantities';
     var ingredientTurnOff = '.ingredient-list-with-quantities';
   }
-  $(discoverDetail).effect("scale", { percent: newPercent, direction: 'both', origin: ['bottom', 'left'], scale: 'content' }, 500, function() {
+  $(discoverDetail).effect("scale", { percent: newPercent, direction: 'both', origin: ['bottom', 'left'], scale: 'box' }, 500, function() {
     /* Take out the element sizing, otherwise messes up if size changes and going back */
-    $(discoverDetail).css('height','').css('width','').css('font-size','');
+    $(discoverDetail).css('height','').css('width','').css('font-size','').css('padding','');
     var $discoverDetailScroll = $(discoverDetail).find('.discover-detail-scroll')
     setupDetailScroll($discoverDetailScroll);
   });

@@ -53,6 +53,8 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'POST/discover/cook_now', :redirect_to => '/cook?recipe_id=1'}, 
     {:path => 'POST/settings/save_user', :redirect_to => '/settings'}, 
     {:path => 'POST/track/save_food_balance', :redirect_to => '/track'}, 
+    {:path => 'POST/shop/email_shopping_list', :flash => 'Shopping list emailed to name@gmail.com'},
+
 
     {:path => '/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
     {:path => 'GET/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},

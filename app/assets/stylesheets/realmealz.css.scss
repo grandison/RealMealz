@@ -78,6 +78,20 @@ ul,ol { margin-top: 0; margin-bottom: 0.5em; }
   padding: 20px;
 }
 
+.clear_both { clear: both; }
+
+#busy-indicator {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  width: 128px;
+  height: 128px;
+  top: 45%;
+  left: 45%;
+  background: asset-data-url('icons/loading_big.gif') no-repeat;
+}
+
+
 /**** Widths and height (indents show structure) *****/
 html { }
   body {  }
@@ -253,7 +267,7 @@ body {
 #welcome {
 	float: right;
   padding-right: 15px;
-  padding-top: 4px;
+  padding-top: 2px;
   color: #E0D6CC;
   font-size: 0.8em;
   line-height: 90%;
@@ -394,11 +408,14 @@ body {
 
 .discover-detail-title {
   display: block;
-  width: 80%;
   height: auto;
   padding-left: 40px;
+  padding-right: 70px;
   padding-bottom: 10px;
   vertical-align: middle;
+}
+
+.discover-detail-title.discover-detail-big {
 }
 
 .discover-balance {
@@ -416,9 +433,7 @@ body {
 }
 
 .discover-recipe-cook {
-  position: absolute;
-  top: 0px;
-  right: 60px;
+  display: table-cell;
 }
 
 .discover-recipe-intro {
@@ -522,6 +537,13 @@ body {
 .discover-starred-off:hover { background-position: -35px 0px; }  
 .discover-starred-off:active { background-position: -69px 1px; }  
 
+.discover-serves {
+  clear: both;
+  padding-left: 8px;
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+
 .discover-ingredient-columns {
   clear: both;  
 	-moz-column-count: 3;
@@ -530,10 +552,6 @@ body {
 	-webkit-column-gap: 10px;
 	column-count: 3;
 	column-gap: 10px;
-}
-
-.discover-recipe-edit {
-  float: right;
 }
 
 /*** Discover Like bar ***/
@@ -749,6 +767,35 @@ body {
   margin: 0px;
 }
 
+#my-meals-balance-container {
+  height: 100px;
+  width: 184px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 16px;
+  padding-bottom: 10px;
+}
+
+#my-meals-balance-box {
+  height: 100px;
+  width: 184px;
+  padding: 0px;
+}
+
+#my-meals-balance {
+  display: table-cell;
+  vertical-align: middle;
+  width: 80px; 
+  height: 100px;
+  padding-left: 5px;
+}
+
+#my-meals-balance-text {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100px;
+}
+
 #my-meals-list {
   width: 200px;
   overflow: auto;
@@ -845,6 +892,10 @@ body {
 #shop-add-item {
   padding-top: 20px;
   padding-bottom: 20px;  
+}
+
+#shop-email-list {
+  padding-bottom: 10px;
 }
 
 #shop-done {
@@ -1231,16 +1282,19 @@ body {
   height: 200px;
 }
 
+#cook-title {
+  display: table-cell;
+  width: 100%;
+}
+
 #cook-recipe-edit {
-  position: absolute;
-  top: 10px;
-  right: 220px;
+  display: table-cell;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 #cook-done-cooking {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  display: table-cell;
 }
 
 #cook-meals-column {
@@ -1413,7 +1467,7 @@ body {
   text-align: center;
 }
 
-/* JQuery autocomplete */
+/** JQuery autocomplete **/
 .ui-widget {
   font: 100% Ebrima, calibri, Verdana, Kalimati, Arial, Helvetica, sans-serif;
 }
@@ -1428,7 +1482,24 @@ body {
   background: rgb(122, 83, 12);
 }
 
-/*** Fixes ***/
+/** Highcharts **/
+  .highcharts-container {
+  overflow: visible !important;
+}
+
+.highcharts-tooltip {
+  position: relative;
+  z-index: 50;
+  color: black;
+  font-size: 11px;
+  border: 2px solid rgb(0, 108, 169);
+  border-radius: 5px;
+  background-color: rgb(255,255,255); /* For IE8 */
+  background-color: rgba(255,255,255,0.8);
+  padding: 2px;
+}​
+
+/** Browser fixes **/
 /* This is needed to fix ActiveScaffold subforms so they don't have too much space between rows on Chrome */
 dl {
   margin: 2px;

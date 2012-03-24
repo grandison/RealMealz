@@ -1,0 +1,41 @@
+#my-meals
+  #my-meals-header.gray-background
+    %h2 My Meals
+    - if show_servings
+      #shop-default-servings
+        Default servings: #{text_field_tag('kitchen[default_servings]', kitchen.default_servings, :id => "shop-servings-input", :size => 1)}
+  #my-meals-list
+    #my-meals-balance-container
+      #my-meals-balance-box.gray-background
+        #my-meals-balance{:protein => meal_balance[:protein], 
+          :starch => meal_balance[:starch], :vegetable => meal_balance[:vegetable]}
+        #my-meals-balance-text My Meals Balance      
+    - my_meals.each do |meal| ; recipe = meal.recipe
+      .my-meals-recipe{"recipe-pic" => recipe.picture.url(:large)}
+        = image_tag(recipe.picture.url(:medium), :class => 'my-meals-recipe-img recipe-display', |
+          'recipe-id' => recipe.id)                                                              |
+        - if show_plus
+          .my-meals-add-ingredients{"recipe-id" => recipe.id}
+            = image_tag('icons/pantry_has.png')
+        .my-meals-recipe-caption
+          .my-meals-delete{"recipe-id" => recipe.id}= image_tag('small_red_x.png')
+          = recipe.name
+
+:javascript
+  setup_background_image('#my-meals .my-meals-recipe');
+  setup_scroll('#my-meals-list');
+  
+  /** Remove meal **/
+  $('.my-meals-delete').click(function() {
+    $.post('/discover/meal_update', 'recipe_id=' + $(this).attr('recipe-id') + '&my_meals=' + false);
+    $(this).parent().parent().fadeTo('fast', 0.00, function() {
+      $(this).slideUp('fast', function() {
+        $(this).remove();
+        update_scroll('#my-meals-list');
+      });
+     });
+  });
+
+  /** Create meal balance graph **/
+  var $bal = $("#my-meals-balance");
+  createGraph($bal.attr("protein"), $bal.attr("vegetable"), $bal.attr("starch"), "my-meals-balance", false);

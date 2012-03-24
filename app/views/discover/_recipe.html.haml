@@ -10,7 +10,7 @@
     = image_tag(recipe.picture.url(:large), 'recipe-id' => recipe.id, :class => "discover-recipe-background")
     
   %div{:class => "discover-detail-main discover-detail-#{size_suffix}"}
-    %img.discover-detail-frame{:alt => "", :src => asset_path('discover-detail-frame.png')}/
+    %img.discover-detail-frame{:alt => "", :src => asset_path('discover-detail-frame.png')}
     -if @starred_ids.include?(recipe.id)
       %div{:class => "discover-starred-update discover-starred-on discover-detail-#{size_suffix}",
        "recipe-id" => recipe.id}
@@ -18,7 +18,7 @@
       %div{:class => "discover-starred-update discover-starred-off discover-detail-#{size_suffix}",
        "recipe-id" => recipe.id}
     %div{:class => "discover-detail-title discover-detail-#{size_suffix}"}
-      = render :partial => 'recipes/recipe_source', :locals => {:recipe => recipe}
+      = render :partial => 'recipes/recipe_title', :locals => {:recipe => recipe, :discover_big => show_big}
     %div{:class => "discover-detail-button discover-detail-#{size_suffix}"}
     %div{:class => "discover-detail-scroll discover-detail-#{size_suffix}"}
       .discover-balance.food-balance{:protein => recipe.food_balance[:protein], 
@@ -32,13 +32,12 @@
           .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
           .discover-add-text.discover-plus
             %b My Meals
-      - display = show_big ? 'display:block' : 'display:none'
-      .discover-recipe-cook{'style' => display}
-        = button_to("Let's cook this now...", {:controller => "discover", :action => "cook_now", :recipe_id => recipe.id}, 
-        :method => :post, :class => "gray-button") 
 
       %p.discover-recipe-intro
         = recipe.intro
+      .discover-serves 
+        Servings: 
+        = recipe.servings  
       .discover-ingredient-columns
         = render(:partial => "ingredient_list",
           :locals => {:recipe => recipe, :show_quantities => false, 
@@ -46,11 +45,7 @@
         = render(:partial => "ingredient_list", 
           :locals => {:recipe => recipe, :show_quantities => true, 
           :visible => ingredient_quantities_visible})
-      -if current_user.role == 'super_admin'
-        %p 
-          .discover-recipe-edit
-            = button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, 
-            :method => :get, :class => "green-button")
+      
       .discover-recipe-prepsteps
         %h2
           %u Prep Instructions

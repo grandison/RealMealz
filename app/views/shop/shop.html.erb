@@ -62,6 +62,10 @@
       <% end %>
     </div>
     
+    <div id="shop-email-list">
+      <%= button_to_function("Email shopping list", "emailShoppingList();", :class => "gray-button") %>
+    </div>
+    
     <div id="shop-done">
       <%= button_to_function("Done shopping", "shoppingDone();", :class => "gray-button") %>
     </div>
@@ -176,7 +180,9 @@ $("#my-meals-list").delegate(".my-meals-add-ingredients", "click", function() {
   $.post('/shop/add_recipe_ingredients', 'recipe_id=' + $(this).attr('recipe-id'),
   function(data) {
     updateShopList(data);
+    $('#busy-indicator').hide();
   });
+  $('#busy-indicator').show();
 });
 
 /** update default servings  **/
@@ -184,14 +190,24 @@ $("#shop-servings-input").blur(function() {
   $.post("/shop/update_default_servings", "kitchen[default_servings]=" + $(this).val());
 });
 
+/** email shopping list **/
+function emailShoppingList(){
+  if(confirm("Email the shopping list to yourself?")) {
+    $.post("/shop/email_shopping_list", function() { $('#busy-indicator').hide() });
+    $('#busy-indicator').show();    
+  }
+};
+
 /** clear the shopping list **/
 function shopListClear(){
   if(confirm("Remove all items from the shopping cart?")) {
     $.post("/shop/clear_shopping_list", 
       function(data) {
         updateShopList(data);
+        $('#busy-indicator').hide(); 
       }
     );
+    $('#busy-indicator').show();
   }
 };
 
@@ -201,8 +217,10 @@ function shoppingDone(){
     $.post("/shop/done_shopping", 
       function(data) {
         updateShopList(data);
+        $('#busy-indicator').hide(); 
       }
     );
+    $('#busy-indicator').show();
   }
 };
 

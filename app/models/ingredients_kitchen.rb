@@ -19,5 +19,24 @@ class IngredientsKitchen < ActiveRecord::Base
   def ingredient_name
     return ingredient.name
   end
+
+  #-------------------
+  def shop_name
+    line = ''
+    if bought
+      line << '[X] '  
+    else
+      line << '[ ] '
+    end
+    line << ingredient.name
+    unless weight.blank? || weight.zero? || unit.nil?
+      line << " (#{weight_and_units}) "
+    else
+      line << ", " unless note.blank?
+    end
+    line << note unless note.blank?
+    return line
+  end
+  
   
 end

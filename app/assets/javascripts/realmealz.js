@@ -83,76 +83,38 @@ function setup_trash(itemTrash, deleteUrl) {
   });
 };
 
-function createGraphSmall(myprotein, myveg, mystarch, renderTo, backgroundColor){
-  var options = {
-    	chart: {
-			    renderTo: renderTo,
-	    		type: 'pie',
-	    		animation: false,
-	    		backgroundColor: backgroundColor
-	     },
-	     title: {
-	        text: null,	
-	        floating: true
-	     },
-	     tooltip: {
-	     	enabled: false,
-			 },
-			 legend: {
-	        enabled: false
-	     },
-	     series: []
-	  };
-  var series = {
-  	data: []
-  };
-  series.data.push( {name: 'Veg/Fruits', y: parseFloat(myveg)});
-  series.data.push( {name: 'Grains', y: parseFloat(mystarch)});    						
-  series.data.push(	{name: 'Proteins', y: parseFloat(myprotein)});
-	options.series.push (series);
-  return new Highcharts.Chart(options);
-};
-
 function createGraph(myprotein, myveg, mystarch, renderTo, legend){
-	if (legend == true) {
-		var options = {
-     chart: { renderTo: renderTo, type: 'pie', backgroundColor: 'none' },
-     title: { text: null,	floating: true },
-     tooltip: {
-			formatter: function() {
-				return '<b>'+ this.point.name +'</b>: '+ parseInt(this.percentage) +' %';
-			}
-		 },
-		 legend: { 
+  if (legend == true) {
+	  var legendHash = { 
       itemStyle: { color: '#7A530C' },
       itemHoverStyle: { color: '#FFF' },
       itemHiddenStyle: { color: '#444' }
-		 },
-     series: []
-   };
-	}
-  else {
-    var options = {
-    	chart: { renderTo: renderTo, type: 'pie', backgroundColor: 'none' },
-	     title: { text: null,	floating: true },
-	     tooltip: {
-				formatter: function() {
-					return '<b>'+ this.point.name +'</b>: '+ parseInt(this.percentage) +' %';
-				}
-			 },
-			 legend: { enabled: false },
-	     series: []
-	  };
-	};
+    }
+  } else {
+    var legendHash = { enabled: false }
+  }
+   
+  var options = {
+    chart: { renderTo: renderTo, type: 'pie', backgroundColor: 'none', inverted: true },
+    title: { text: null },
+    tooltip: {
+      backgroundColor: "rgba(255,255,255,0)",
+      borderWidth: 0,
+      shadow: false,
+      useHTML: true,  
+      formatter: function() {
+    	  return '<div class="highcharts-tooltip"><b>'+ this.point.name +'</b>: '+ parseInt(this.percentage) +' %</div>';
+    	}
+    },
+    legend: legendHash,
+    credits: { enabled: false },
+    plotOptions: { clip: false },
+    series: []
+  };
   var series = { data: [] };
-  series.data.push( {name: 'Veg/Fruits', y: parseFloat(myveg)});
-  series.data.push( {name: 'Grains', y: parseFloat(mystarch)});    						
-  series.data.push(	{
-						name: 'Protein',    
-						y: parseFloat(myprotein),
-						sliced: true,
-						selected: true
-					});
+  series.data.push( { name: 'Veg/Fruits', y: parseFloat(myveg)});
+  series.data.push( { name: 'Grains', y: parseFloat(mystarch)});    						
+  series.data.push(	{ name: 'Protein', y: parseFloat(myprotein), sliced: true, selected: true });
 	options.series.push (series);
   return new Highcharts.Chart(options);
 };

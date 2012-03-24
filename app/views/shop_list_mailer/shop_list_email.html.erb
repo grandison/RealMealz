@@ -1,0 +1,11 @@
+<p><b>RealMealz Shopping List</b></p>
+<p>
+<% if @item_list.empty? %>
+  (Shopping list is empty)
+<% else %>
+  <% @item_list.each do |item| %>  
+    <%= item.shop_name %><br>
+  <% end %>
+<% end %>
+</p>
+

@@ -1,0 +1,9 @@
+RealMealz Shopping List
+=======================
+<% if @item_list.empty? %>
+(Shopping list is empty)
+<% else %>
+<% @item_list.each do |item| %>
+<%= item.shop_name %>
+<% end %>
+<% end %>

@@ -30,6 +30,7 @@ RealMealz::Application.routes.draw do
   
   get '/track' => 'track#track'
 	post "/track/save_food_balance"
+	get "/track/point_tracker"
   
   get '/shop' => "shop#shop_list"
   get "/shop/pantry_list"
@@ -38,6 +39,7 @@ RealMealz::Application.routes.draw do
   post "/shop/add_item" 
   post "/shop/remove_from_shopping_list"
   post "/shop/update_item"
+  post "/shop/email_shopping_list"
   post "/shop/done_shopping"
   post "/shop/add_recipe_ingredients"
   post "/shop/clear_shopping_list"
