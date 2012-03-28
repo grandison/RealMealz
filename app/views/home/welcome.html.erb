@@ -5,29 +5,30 @@
 	 -->
 	
 <div id="welcome-page-box1" class="gray-background">
-	<h1>Hi <%= current_user.first %>! Welcome to the RealMealz Eat Well Challenge. </h1>
+	<h1>Hi <%= current_user.first %>! Welcome to RealMealz. </h1>
 	<table id="welcome-page-table1"> 
 		<tr>
 			<td width="40%"> 	 	<!-- video -->
+				<br>
+				<br>
 				Our 5-minute tutorial video:
 				<object style="display:inline;"><param name="movie" value="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="300" height="200"></object>
 			</td>
 			<td class="gray-background">
-				<h4>Win one of two $50 gift cards from Whole Foods simply by cooking with us.  <br> Here's how it works...</h4>	
+				<br><br>
+				<h4>Here's how it works...</h4>	
 				<ol>
-				 	<li><a href="/discover">Discover</a>-<a href="/shop">Shop</a>-<a href="/cook">Cook</a> using RealMealz to accrue points.</li>
-				 	<li><a href="https://docs.google.com/spreadsheet/embeddedform?formkey=dFNNUTFQQTcySmpQYlowa3M2VTV4NHc6MQ" target="_blank">Write us a story</a> about your experience before March 20th.</li>
-				  <li>Find out by email on March 23rd if you win a prize.</li>
+				 	<li><a href="/discover">Discover</a> 30 minute meals using ingredients you have </li>
+				 	<li><a href="/cook">Cook</a> using RealMealz to accrue points for Eat Well Challenges. We'll let you know when the next one happens.</li>
+				 	<li>User our <a href="/shop">Shop</a> tools to construct shopping lists and build a regular cooking routine</li>
 				</ol>
 				<form method="link" action="/discover" align="right">
-	  <input value="Start Discovering a Meal! >>>>" type="submit" class="orange-button" />
+	  <input value="Find a 30 minute Meal! >>>>" type="submit" class="orange-button" />
   </form>
 					
 			</td>
 		</tr>
 	</table>		
-	<br> 
-	All points accrued on your RealMealz account before March 20th will be considered for the prizes.  There are two prizes, one awarded to the Points Leader and the other to the Best RealMealz User Story.  To be eligible for the latter, <a href="https://docs.google.com/spreadsheet/embeddedform?formkey=dFNNUTFQQTcySmpQYlowa3M2VTV4NHc6MQ" target="_blank">submit a story</a> about how RealMealz affected your cooking before March 20th.  Winners will be notified via email by March 23rd. 
 
 </div>
 <br><br>
@@ -70,7 +71,7 @@
 				<li>Minced shallots</li>
 			</ol>
 			<form method="link" action="/discover" align="right">
-	 		  <input value="Start Discovering Tonight's Meal! >>>>" type="submit" class="orange-button" />
+	 		  <input value="Find a 30 minute Meal! >>>>" type="submit" class="orange-button" />
   		</form>
 		</td>
 	</tr>
