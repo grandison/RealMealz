@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
   end 
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessor :invite_code
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last, :invite_code
+  attr_accessor :invite_code, :team_id # These are for convenience to make it easier to process form input
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first, :last, :invite_code, :team_id
   attr_reader :recipe_list 
   
   belongs_to :kitchen
@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
   has_many :ingredients, :through => :users_ingredients
   has_many :users_points
   has_many :points, :through => :users_points
+  has_many :users_teams
+  has_many :teams, :through => :users_teams
 
   # MD This causes Ruby to use too much memory
   #default_scope :include => [:allergies, :users_recipes, {:recipes => :ingredients}]
@@ -416,14 +418,14 @@ class User < ActiveRecord::Base
       user.errors.add(:invite_code, 'invalid')
       return user
     end
-    saved.delete(:invite_code)
-    
+
     if user.save
       user.role = 'kitchen_admin'
       user.save!
       user.create_kitchen_if_needed
       user.update_basic_allergy_list(saved[:allergies])
       UsersGroup.create!(:user_id => user.id, :invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
+      UsersTeam.create!(:user_id => user.id, :team_id => user.team_id) if user.team_id
     end
     return user
   end

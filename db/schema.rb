@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120228195042) do
+ActiveRecord::Schema.define(:version => 20120311184456) do
 
   create_table "allergies", :force => true do |t|
     t.string  "name"
@@ -243,6 +243,12 @@ ActiveRecord::Schema.define(:version => 20120228195042) do
     t.string "email"
   end
 
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.integer  "group_id"
+    t.datetime "created_on"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "first"
     t.string   "last"
@@ -326,6 +332,11 @@ ActiveRecord::Schema.define(:version => 20120228195042) do
     t.integer "level"
     t.integer "user_id"
     t.integer "sliding_scale_id"
+  end
+
+  create_table "users_teams", :force => true do |t|
+    t.integer "user_id"
+    t.integer "team_id"
   end
 
 end

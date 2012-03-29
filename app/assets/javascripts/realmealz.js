@@ -188,6 +188,7 @@ function setup_background_image(sel) {
   };
 };
 
+/** Give warning once, if IE version is <= 8 **/
 $(function() {
   if (!($.cookie('ie-warning-shown') == 'true')) {
     if ($.browser.msie  && parseInt($.browser.version, 10) <= 8) {
@@ -195,5 +196,20 @@ $(function() {
       $.cookie('ie-warning-shown', 'true'); 
     }
   }
+});
+
+/** Make sure #main is as at least high as the window **/
+function set_main_height() {
+  var fullHeight = full_scroll_height('#main') + 10;
+  $('#main').css('height',''); // Reset to get true height
+  if ($('#main').height() < fullHeight) {
+    $('#main').height(fullHeight);
+  } else {
+    $('#main').height('');
+  }
+};
+
+$(window).resize(function() {  
+  set_main_height();
 });
 

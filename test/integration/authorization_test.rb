@@ -52,7 +52,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'POST/cook/done_cooking', :redirect_to => '/cook'},
     {:path => 'POST/discover/cook_now', :redirect_to => '/cook?recipe_id=1'}, 
     {:path => 'POST/settings/save_user', :redirect_to => '/settings'}, 
-    {:path => 'POST/track/save_food_balance', :redirect_to => '/track'}, 
+    {:path => 'POST/track/save_food_balance', :redirect_to => '/track'},
     {:path => 'POST/shop/email_shopping_list', :flash => 'Shopping list emailed to name@gmail.com'},
 
 
@@ -61,6 +61,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'PUT/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
     {:path => 'POST/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
     {:path => 'DELETE/admin_data*', :role => :super_admin, :skip_signed_in_tests => true},
+    {:path => 'GET/track/point_tracker', :role => :super_admin, :skip_signed_in_tests => true}, 
   ]
   
   @@cached_routes = []

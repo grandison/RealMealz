@@ -1,4 +1,3 @@
-
 <div id="target-VPG" title="Set Target VPG" style="display:none">
 			
 			<div class="food-balance-future-mini" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div>
@@ -14,9 +13,7 @@
 		
 </div>
 		
-		
 <table id="track-table">
-	
 	<tr>
 		<!-- Food balance  -->
 		<td class="track-vpg-column gray-background">
@@ -32,7 +29,8 @@
 				</td>
 				<td id="track-mini-VPG"> 
 					<br><br>Target:
-					<div id="food-balance-future-mini" style="width: 100%; height: 100px;" class="food-balance-future-mini" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div><a class="edit-VPG" href="/track">edit</a>
+					<div id="food-balance-future-mini" style="width: 100%; height: 100px;" class="food-balance-future-mini" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div>
+					<a id="edit-VPG" href="#">edit</a>
 				</td>
 			</tr>
 		</table>
@@ -68,45 +66,53 @@
 					<td class="points-table-title-font"><%= point_grand_total %></td>
 				</tr>
 			</table>
+			<br>
+			<h1>Team Information</h1>
+			<table class="gray-background">
+			  <tr>
+			    <th>Team Name</th>
+			    <th>Group</th>
+			    <th>Points</th>
+			  </tr>
+			  <% @teams.each do |team| %>
+			  <tr>
+			     <td><%= team.name %></td> 
+			     <td><%= team.group.name %></td>
+			     <td><%= 111 %></td>  
+			  </tr>
+			  <% end %>
+			</table>
 		</td>
-		<!-- Points Table end -->
 	</tr>
 </table>
 
 <script type="text/javascript">
-    var protein = $(".food-balance-now").attr("protein");
-  	var vegetable = $(".food-balance-now").attr("vegetable");
-  	var starch = $(".food-balance-now").attr("starch");
-  	var protein_future = $(".food-balance-future-mini").attr("protein");
-  	var vegetable_future = $(".food-balance-future-mini").attr("vegetable");
-  	var starch_future = $(".food-balance-future-mini").attr("starch");
-		var chart1 = createGraph(protein, vegetable, starch,'food-balance-now', true);
-		var chart2 = createGraph(protein_future, vegetable_future, starch_future, 'food-balance-future-mini', false);
+  var protein = $(".food-balance-now").attr("protein");
+	var vegetable = $(".food-balance-now").attr("vegetable");
+	var starch = $(".food-balance-now").attr("starch");
+	var protein_future = $(".food-balance-future-mini").attr("protein");
+	var vegetable_future = $(".food-balance-future-mini").attr("vegetable");
+	var starch_future = $(".food-balance-future-mini").attr("starch");
+	var chart1 = createGraph(protein, vegetable, starch,'food-balance-now', true);
+	var chart2 = createGraph(protein_future, vegetable_future, starch_future, 'food-balance-future-mini', false);
 	
-	// end of function graphOptions
 	function update_graph() {
-//		alert(changedInput);
 		chart2 = createGraph(protein_future.value, vegetable_future.value, starch_future.value, 'food-balance-future-mini', false);
 		chart2.redraw();
 	};
 
-
-
-$('.edit-VPG').click(function() {
-  var title = $(this).attr('title');
-  var $dialog = $("#target-VPG");
-  $dialog.dialog("destroy");
-  $dialog.attr('title', title);
-  $( "#target-VPG" ).dialog({
-     width: 250,
-     height: 230,
-     modal: true
-   });;
-  return false;
-});
-
- </script>
-
+  $('#edit-VPG').click(function() {
+    var title = $(this).attr('title');
+    var $dialog = $("#target-VPG");
+    $dialog.dialog("destroy");
+    $dialog.attr('title', title);
+    $( "#target-VPG" ).dialog({
+       width: 250,
+       height: 230,
+       modal: true
+     });;
+    return false;
+  });
 
 </script>
    

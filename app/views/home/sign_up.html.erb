@@ -1,46 +1,56 @@
 <% @show_footer = true %>
 
-<div id="home-signup" class="gray-background">
-	<h1>Sign up now!</h1>
-	
-	<%= form_for(@user, :url => '/home/create_user') do |f| %>
-  	<%= f.error_messages %>
-	
-    <p><%= label_tag 'user[invite_code]', 'Enter your invite code to enable', :id => 'home-signup-invite-text' %><br />
-    <%= f.text_field :invite_code, :size => 50, :id => 'home-signup-invite' %><br> 
-    <%= link_to '(Need a code?)', 'http://signup.realmealz.com/', :id => 'home-signup-need-code' %><br>
-    <div ></div>
-    </p>
-    
-    <p><%= f.label :first, :class => 'disabled' %><br />
-	  <%= f.text_field :first, :size => 50, :disabled => true %></p>
-	
-	  <p><%= f.label :last, :class => 'disabled' %><br />
-	  <%= f.text_field :last, :size => 50, :disabled => true %></p>
-	
-	  <p><%= f.label :email,:class => 'disabled' %><br />
-	  <%= f.email_field :email, :size => 50, :disabled => true %></p>
-	
-	  <p><%= f.label :password, :class => 'disabled' %><br />
-	  <%= f.password_field :password, :size => 50, :disabled => true %></p>
-	
-	  <p><%= f.label :password_confirmation, :class => 'disabled' %><br />
-	  <%= f.password_field :password_confirmation, :size => 50, :disabled => true %></p>
-	
-	  <p>
-	    <input value="Sign up" type="submit" class="gray-button gray-button-active" disabled="disabled" />
-    </p>
-	<% end %>
+<div id="home-signup-padding">
+  <div id="home-signup" class="gray-background">
+  	<h1>Sign up</h1>
+  	
+  	<%= form_for(@user, :url => '/home/create_user') do |f| %>
+    	<%= f.error_messages %>
+  	
+      <p><%= label_tag 'user[invite_code]', 'Enter your invite code', :id => 'home-signup-invite-text' %><br />
+      <%= f.text_field :invite_code, :size => 50, :id => 'home-signup-invite' %></p>
+      
+      <div id='home-signup-need-code'>
+      <%= link_to '(Need a code?)', 'http://signup.realmealz.com/' %>
+      </div>
+      
+      <%# If teams for this group, dynamically create the list here %>
+      <div id='home-signup-group' style='display: block'>
+      </div>
+      
+      <div id='home-signup-info' style='display: none'>
+        <p><%= f.label :first %><br />
+    	  <%= f.text_field :first %></p>
+    	
+    	  <p><%= f.label :last  %><br />
+    	  <%= f.text_field :last %></p>
+    	
+    	  <p><%= f.label :email %><br />
+    	  <%= f.email_field :email %></p>
+    	
+    	  <p><%= f.label :password %><br />
+    	  <%= f.password_field :password %></p>
+    	
+    	  <p><%= f.label :password_confirmation %><br />
+    	  <%= f.password_field :password_confirmation %></p>
+    	
+    	  <p>
+    	    <input value="Sign up" type="submit" class="gray-button" />
+        </p>
+      </div>
+  	<% end %>
+  </div>
 </div>
 
 <script type="text/javascript">
 
 function enableControls() {
-  $('#home-signup :disabled').removeAttr('disabled');
-  $('#home-signup .disabled').removeClass('disabled');  
-  $('.gray-button-active').removeClass('gray-button-active');
   $('#home-signup-invite-text').text('Invite code valid - thank you');
-  $('#user-first').focus();
+  $('#home-signup-invite').prop('readonly', true);
+  $('#home-signup-need-code').hide();
+  $('#home-signup-info').show();
+  $('#user_first').focus();
+  
 };
 
 function checkInvite() {
@@ -52,6 +62,11 @@ function checkInvite() {
     success: function(data) {
       if (data.found) {
         enableControls(); 
+        if (data.html) {
+          $('#home-signup-group').show().html(data.html);
+          $('#home-signup-group select').focus();
+          set_main_height();
+        }
       }
     }
   });   
