@@ -4,6 +4,7 @@
 <div id="video-dialog" title="Youtube Video" style="display:none">
    <object width="560" height="315">
     <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw" />
+    <param name="action" value="" />
     <param name="allowFullScreen" value="true" />
     <param name="allowscriptaccess" value="always" />
     <embed src="http://www.youtube.com/v/00Tkhc_s4iw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
@@ -11,40 +12,27 @@
   </object> 
 </div>
 
-<table id="frontpage-table">
+<table id="frontpage-table" class="gray-background">
 	<tr>
-		<td>
-			<div class="frontpage-boxes gray-background-nopad" href="http://www.youtube.com/v/00Tkhc_s4iw" title="Discover Tonight's Dinner with RealMealz"><%= image_tag '1discover.png' %>
-			<h1>Discover</h1><h4>new & easy recipes</h4>
-			<br><br>
-			</div>
-		</td>
-		<td class="frontpage-spacer"></td>
-		<td>
-				<div class="frontpage-boxes gray-background-nopad" href="http://www.youtube.com/v/GxcX3EU13c8" title="Cook 30 minute Meals with RealMealz">
-				<br><br><%= image_tag "2cook.png", :class => "frontpage-horizontal-spacer" %>
-				<br><h1>Cook</h1><h4>meals within 30 minutes</h4>
-				<br><br>
+		<td class="gray-background">
+				<div class="frontpage-boxes" href="http://www.youtube.com/v/A1tjgBl9ino" title="Cook 30 minute Meals with RealMealz" action="Sign Up for Beta" action-link="http://signup.realmealz.com">
+				<h1>Cook</h1><h4>Healthy 30 minute Meals</h4>
+				<br><%= image_tag "2cook.png", :class => "frontpage-horizontal-spacer" %>
 				</div>
+				<form method="link" action="http://signup.realmealz.com/" align="center">
+			<input value="Request Beta Access! >>" type="submit" class="orange-button" /></form>
 		</td>
 		<td class="frontpage-spacer"></td>
-		<td>
-			<div class="frontpage-boxes gray-background-nopad" href="http://www.youtube.com/v/36QfEObYj9g" title="Track your Food Wellness and Earn Points">
-			<br><%= image_tag "3track.png", :class => "frontpage-horizontal-spacer" %>
-			<br><br><h1>Track</h1><h4>food wellness & points for prizes</h4>
-			<br><br>
+		<td class="gray-background">
+			<div class="frontpage-boxes" href="http://www.youtube.com/v/36QfEObYj9g" title="Earn Prizes and Track your Food Wellness">
+			<h1>Earn</h1><h4>Prizes from Sponsors</h4>
+			<%= image_tag "3track.png", :class => "frontpage-horizontal-spacer" %>
+			<br>
+			<br>
 			</div>
+			<form method="link" action="/home/sponsor" align="center">
+			<input value="Sponsor a Prize >>" type="submit" class="orange-button" /></form>
 		</td>
-	</tr>
-	<tr>
-		<td></td>
-  	<td class="frontpage-spacer"></td>
-  	<td></td>
-  	<td class="frontpage-spacer"></td>
-  	<td>
-  		<form method="link" action="/home/sign_up" align="right">
-	  <input value="Sign Up! >>" type="submit" class="gray-button" /></form>
-	  </td>
 	</tr>
 </table>
 
@@ -53,10 +41,13 @@
 $('.frontpage-boxes').click(function() {
   var title = $(this).attr('title');
   var link = $(this).attr('href');
+  var action_link = $(this).attr('action-link');
+  var action = $(this).attr('action');
   var $dialog = $("#video-dialog");
   $dialog.dialog("destroy");
   $dialog.attr('title', title);
   $dialog.find('param[name="movie"]').attr('value', link);
+  $dialog.find('param[name="action"]').attr('value', action);
   $dialog.find("embed").attr("src", link);
   $( "#video-dialog" ).dialog({
      width: 600,

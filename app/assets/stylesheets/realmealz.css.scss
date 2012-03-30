@@ -338,11 +338,17 @@ body {
 	margin-right: auto;
 }
 
-.frontpage-boxes{
+.frontpage-boxes-old{
 	width: 310px;
 	height: 480px;
 	text-align: center;
 	display: inline-block;	
+}
+
+.frontpage-boxes{
+  width: 390px;
+  text-align: center;
+  display: inline-block; 
 }
 
 .frontpage-boxes h1{
@@ -361,9 +367,6 @@ body {
 	width: 10px;
 }
 
-.frontpage-horizontal-spacer{
-	padding-bottom: 16px;
-}
 
 /*** Discover details ***/
 .discover-detail-main {
@@ -1086,9 +1089,9 @@ body {
 }
 
 #home-signup-need-code {
-  color: rgb(150, 103, 15);
-  font-weight: normal;
-  font-size: 85%;
+  color: #3C7FA3;
+  font-weight: bold;
+  text-decoration:underline;
 }
 
 #home-downloads {
