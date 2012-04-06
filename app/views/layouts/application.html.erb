@@ -65,26 +65,6 @@
     <div id='busy-indicator'></div>
     		
 		<script type="text/javascript">
-		
-		  /* Make sure #main is as at least high as the window 
-		   * However, only resize if the starting height of #main is not already fullHeight
-		   * This will make sure we don't resize windows that are already being resized
-		  */
-		  function set_main_height() {
-		    if (resizeMain) {
-  		    var fullHeight = full_scroll_height('#main') + 10;
-  		    if (initMainHeight < fullHeight) {
-            $('#main').height(fullHeight);
-          }
-        }
-		  };
-		  $(window).resize(function() {  
-		    set_main_height();
-      });
-      var initMainHeight = $('#main').height();
-	    var initFullHeight = full_scroll_height('#main') + 10;
-	    //Add a 2px fudge factor
-	    var resizeMain = (initMainHeight < initFullHeight - 2) || (initMainHeight > initFullHeight + 2)
       set_main_height();
       
       /* Google Analytics  */

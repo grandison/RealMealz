@@ -10,6 +10,19 @@ body {
   width: auto;
 }
 
+.gray-background-nopad{
+  background: none;
+}
+.gray-background {
+  background: none;
+  padding: 20px;
+}
+.gray-background-rounded {
+  background: none;
+  padding: 20px;
+}
+
+
 /**** Widths and height (indents show structure) *****/
 html { }
   body {  }

@@ -8,7 +8,7 @@ class TrackController < ApplicationController
     @food_balance = Balance.get_kitchen_balance(current_user.kitchen)
     @target_food_balance = current_user.get_target_food_balance
     @points = current_user.points.group_by(&:description)
-    # MD Mar-2012 Shouldn't be checked in yet. # @teams = current_user.teams
+    @teams = current_user.teams
     @background_recipe = Recipe.random_background_image
   end
   

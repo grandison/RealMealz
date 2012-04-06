@@ -38,8 +38,14 @@ class HomeController < ApplicationController
   end
 
   def check_invite_code
-    if InviteCode.check_code(params[:user][:invite_code])
-      render :json => {:found => true}
+    invite_code = InviteCode.check_code(params[:user][:invite_code])
+    unless invite_code.nil?
+      group_teams = Team.where(:group_id => invite_code.group_id)
+      if group_teams.empty?
+        render :json => {:found => true}
+      else
+        render :json => {:found => true, :html => render_to_string(:partial => 'select_team', :locals => {:group_teams => group_teams})}
+      end
     else
       render :json => {:found => false}
     end

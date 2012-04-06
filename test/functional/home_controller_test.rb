@@ -9,9 +9,15 @@ class HomeControllerTest < ActionController::TestCase
     @user.save!
     
     @group = Group.create!(:name => 'Cooking class group')
-    @invite_code = InviteCode.create!(:invite_code => 'cookingclass', :group_id => @group.id)  
+    @no_teams_group = Group.create!(:name => 'RealMealz random users')
+    
+    @team_names = ['Chefs', 'Cooking Kooks', 'Slicing Sizzlers']
+    @teams = @team_names.map {|name| Team.create!(:name => name, :group_id => @group.id)}
+    
+    @invite_code = InviteCode.create!(:invite_code => 'cookingclass', :group_id => @group.id)
+    @invite_code_no_group = InviteCode.create!(:invite_code => 'realmealz', :group_id => @no_teams_group.id)  
 
-    @new_user = {:user => {:invite_code => 'cookingclass', :first => 'Betty', :last => 'Baker', :email => 'cook@gmail.com', :password => 'password', :password_confirmation => 'password'}}
+    @new_user = {:user => {:invite_code => 'cookingclass', :team_id => @teams.first.id, :first => 'Betty', :last => 'Baker', :email => 'cook@gmail.com', :password => 'password', :password_confirmation => 'password'}}
   end
   
   test 'bad check invite code' do
@@ -24,6 +30,16 @@ class HomeControllerTest < ActionController::TestCase
     post :check_invite_code, :user => {:invite_code => 'cookingclass'}
     assert_response :success
     assert_equal true, JSON.parse(response.body)['found']
+    doc = HTML::Document.new(JSON.parse(response.body)['html'])
+    assert_select doc.root, 'option' do |options| 
+      assert_equal [''] + @team_names, options.map {|o| o.children.first.content}
+    end
+  end
+  
+  test 'check invite code no teams' do
+    post :check_invite_code, :user => {:invite_code => 'realmealz'}
+    assert_equal true, JSON.parse(response.body)['found']
+    assert_equal nil, JSON.parse(response.body)['html']
   end
   
   test 'signup bad invite code' do
@@ -45,9 +61,26 @@ class HomeControllerTest < ActionController::TestCase
     assert !user.nil?, "User not created"
     
     users_group = UsersGroup.find_by_user_id(user.id)
-    assert !users_group.nil?, "Users Group not created"
+    assert !users_group.nil?, "UsersGroup not created"
     assert_equal @group.id, users_group.group_id
     assert_equal @invite_code.id, users_group.invite_code_id
+
+    users_team = UsersTeam.find_by_user_id(user.id)
+    assert !users_team.nil?, "UsersTeam not created"
+    assert_equal @teams.first.id, users_team.team_id
+  end
+  
+  test 'signup no team' do
+    UsersTeam.delete_all
+    
+    params = @new_user
+    params[:user][:team_id] = nil
+    post :create_user, params
+    assert_redirected_to '/home/welcome'
+    
+    user = User.find_by_email(params[:user][:email])
+    users_team = UsersTeam.find_by_user_id(user.id)
+    assert users_team.nil?, "UsersTeam created incorrectly"
   end
   
   test 'logo redirect index' do

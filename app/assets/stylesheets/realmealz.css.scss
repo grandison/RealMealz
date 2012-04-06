@@ -1079,9 +1079,19 @@ body {
 }
 
 /** Home **/
+#home-signup-padding {
+  padding-bottom: 20px;
+}
+
 #home-signup {
   margin: 0px auto;
   width: 350px;
+}
+
+#home-signup input[type=text],
+#home-signup input[type=email],
+#home-signup input[type=password] {
+  width: 344px;
 }
 
 #home-signup .disabled {
@@ -1092,6 +1102,8 @@ body {
   color: #3C7FA3;
   font-weight: bold;
   text-decoration:underline;
+  padding: 10px;
+  text-align: center;
 }
 
 #home-downloads {
@@ -1114,6 +1126,11 @@ body {
 	-webkit-border-radius: 20px;
 	border-radius: 20px;  
 }	
+
+#home-button-signup {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
 
 #table-things-you-need td{
 	vertical-align: top;
