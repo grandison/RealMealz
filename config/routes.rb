@@ -6,6 +6,13 @@ RealMealz::Application.routes.draw do
   # Match controllers to index for static pages
   # List these out individually so tests can identify them
   
+  ## Social Media shortlinks
+  match "/gplus" => redirect("http://gplus.to/RealMealz")
+  match "/googleplus" => redirect("http://gplus.to/RealMealz")
+  match "/fb" => redirect("http://www.facebook.com/RealMealz")
+  match "/facebook" => redirect("http://www.facebook.com/RealMealz")  
+  
+  ## RealMealz pages
   get '/home' => "home#index"
   get "/home/login" => "home#index" # This link was sent out in a flyer
   get "/login" => "home#index" # This too
