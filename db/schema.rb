@@ -335,8 +335,9 @@ ActiveRecord::Schema.define(:version => 20120311184456) do
   end
 
   create_table "users_teams", :force => true do |t|
-    t.integer "user_id"
-    t.integer "team_id"
+    t.integer  "user_id"
+    t.integer  "team_id"
+    t.datetime "created_on"
   end
 
 end

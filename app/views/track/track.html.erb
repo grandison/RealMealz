@@ -67,21 +67,23 @@
 				</tr>
 			</table>
 			<br>
-			<h1>Team Information</h1>
-			<table class="gray-background">
-			  <tr>
-			    <th>Team Name</th>
-			    <th>Group</th>
-			    <th>Points</th>
-			  </tr>
-			  <% @teams.each do |team| %>
-			  <tr>
-			     <td><%= team.name %></td> 
-			     <td><%= team.group.name %></td>
-			     <td><%= 111 %></td>  
-			  </tr>
-			  <% end %>
-			</table>
+			<div id="MD_apr-2012_Hide_for_now" style="display: none">
+  			<h1>Team Information</h1>
+  			<table class="gray-background">
+  			  <tr>
+  			    <th>Team Name</th>
+  			    <th>Group</th>
+  			    <th>Points</th>
+  			  </tr>
+  			  <% @teams.each do |team| %>
+  			  <tr>
+  			     <td><%= team.name %></td> 
+  			     <td><%= team.group.name %></td>
+  			     <td><%= 111 %></td>  
+  			  </tr>
+  			  <% end %>
+  			</table>
+  	</div> 		
 		</td>
 	</tr>
 </table>

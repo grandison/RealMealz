@@ -7,18 +7,20 @@
   	<%= form_for(@user, :url => '/home/create_user') do |f| %>
     	<%= f.error_messages %>
   	
-      <p><%= label_tag 'user[invite_code]', 'Enter your invite code', :id => 'home-signup-invite-text' %><br />
-      <%= f.text_field :invite_code, :size => 50, :id => 'home-signup-invite' %></p>
+  	  <div id="temp_hide_invite_code" style="display: none">
+        <p><%= label_tag 'user[invite_code]', 'Enter your invite code', :id => 'home-signup-invite-text' %><br />
+        <%= f.text_field :invite_code, :size => 50, :id => 'home-signup-invite' %></p>
+        
+        <div id='home-signup-need-code'>
+        <%= link_to '(Need a code?)', 'http://signup.realmealz.com/' %>
+        </div>
+        
+        <%# If teams for this group, dynamically create the list here %>
+        <div id='home-signup-group' style='display: block'>
+        </div>
+      </div> <!--- invite code --->  
       
-      <div id='home-signup-need-code'>
-      <%= link_to '(Need a code?)', 'http://signup.realmealz.com/' %>
-      </div>
-      
-      <%# If teams for this group, dynamically create the list here %>
-      <div id='home-signup-group' style='display: block'>
-      </div>
-      
-      <div id='home-signup-info' style='display: none'>
+      <div id='home-signup-info' style='display: block'><%# MD Apr-2012 set back to "none" to enable signup code%>
         <p><%= f.label :first %><br />
     	  <%= f.text_field :first %></p>
     	

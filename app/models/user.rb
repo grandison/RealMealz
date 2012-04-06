@@ -413,19 +413,20 @@ class User < ActiveRecord::Base
     saved = saved.with_indifferent_access
     user = User.new(saved)
     
-    invite = InviteCode.check_code(saved[:invite_code])
-    if invite.nil? 
-      user.errors.add(:invite_code, 'invalid')
-      return user
-    end
+    # MD Apr-2012 Disable invite code for now
+    #invite = InviteCode.check_code(saved[:invite_code])
+    #if invite.nil?  
+    #  user.errors.add(:invite_code, 'invalid')
+    #  return user
+    #end
 
     if user.save
       user.role = 'kitchen_admin'
       user.save!
       user.create_kitchen_if_needed
       user.update_basic_allergy_list(saved[:allergies])
-      UsersGroup.create!(:user_id => user.id, :invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
-      UsersTeam.create!(:user_id => user.id, :team_id => user.team_id) if user.team_id
+      # MD Apr-2012 UsersGroup.create!(:user_id => user.id, :invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
+      # MD Apr-2012 UsersTeam.create!(:user_id => user.id, :team_id => user.team_id) if user.team_id
     end
     return user
   end
