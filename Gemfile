@@ -26,6 +26,7 @@ gem 'admin_data'
 gem 'jquery-rails'
 gem "yaml_db"
 gem "dalli"
+gem "airbrake"
 
 # Gems used only for assets and not required
 # in production environments by default.
