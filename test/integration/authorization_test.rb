@@ -17,6 +17,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'GET/home/faq', :sign_in_required => false},
     {:path => 'GET/home/downloads', :sign_in_required => false},
     {:path => 'POST/home/check_invite_code', :sign_in_required => false},
+    {:path => 'GET/home/sponsor', :sign_in_required => false},
     {:path => 'GET/home/ping', :sign_in_required => false},
     {:path => 'GET/home/login', :sign_in_required => false},
     {:path => 'GET/login', :sign_in_required => false},

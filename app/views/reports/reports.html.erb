@@ -3,7 +3,7 @@
 Group Code: 
 <%= form_tag '/reports/get_group_report' do %>
 	<%=  
-	  @users = Groups.find(:all)  
+	  @users = Group.find(:all)  
 	  select_tag(:id,  
 	    options_from_collection_for_select(@group_codes, :id, :name))  
 	  

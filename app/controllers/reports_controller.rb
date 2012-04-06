@@ -16,6 +16,7 @@ class ReportsController < ApplicationController
       ORDER BY sum_points DESC")  
     
   end
+  
   def get_group_report
     
   end
