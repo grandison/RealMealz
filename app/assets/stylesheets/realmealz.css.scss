@@ -338,17 +338,23 @@ body {
 	margin-right: auto;
 }
 
-.frontpage-boxes-old{
-	width: 310px;
-	height: 480px;
-	text-align: center;
-	display: inline-block;	
-}
-
 .frontpage-boxes{
   width: 390px;
   text-align: center;
   display: inline-block; 
+}
+
+.frontpage-boxes2{
+  width: 390px;
+  text-align: center;
+  display: inline-block; 
+}
+
+.frontpage-boxes2 h1{
+  font-size: 2.8em; 
+  margin: 0px;
+  padding: 0px;
+  -webkit-margin-after: 0em;
 }
 
 .frontpage-boxes h1{
@@ -356,11 +362,6 @@ body {
 	margin: 0px;
 	padding: 0px;
 	-webkit-margin-after: 0em;
-}
-
-.frontpage-boxes h4{
-	margin: 0px;
-	padding: 0px;
 }
 
 .frontpage-spacer{
