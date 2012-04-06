@@ -1,10 +1,9 @@
 
 <% @show_footer = true %>
 
-<div id="video-dialog" title="Youtube Video" style="display:none">
+<div id="video-dialog" title="Youtube Video" style="display:none" content="placeholder">
    <object width="560" height="315">
     <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw" />
-    <param name="action" value="" />
     <param name="allowFullScreen" value="true" />
     <param name="allowscriptaccess" value="always" />
     <embed src="http://www.youtube.com/v/00Tkhc_s4iw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
@@ -12,26 +11,30 @@
   </object> 
 </div>
 
+<div id="video-dialog2">
+	
+</div>
+
 <table id="frontpage-table" class="gray-background">
 	<tr>
-		<td class="gray-background">
-				<div class="frontpage-boxes" href="http://www.youtube.com/v/A1tjgBl9ino" title="Cook 30 minute Meals with RealMealz" action="Sign Up for Beta" action-link="http://signup.realmealz.com">
-				<h1>Cook</h1><h4>Healthy 30 minute Meals</h4>
-				<br><%= image_tag "2cook.png", :class => "frontpage-horizontal-spacer" %>
+		<td class="gray-background-nopad">
+				<div class="frontpage-boxes" href="http://www.youtube.com/v/A1tjgBl9ino" title="Cook 30 minute meals with RealMealz" content="Sign Up for Beta" action-link="http://signup.realmealz.com">
+				<h1>Cook</h1><h2>Healthy 30 minute Meals</h2>
+				<%= image_tag "2cook.png", :class => "frontpage-horizontal-spacer" %>
 				</div>
-				<form method="link" action="http://signup.realmealz.com/" align="center">
-			<input value="Request Beta Access! >>" type="submit" class="orange-button" /></form>
+				<form method="link" action="/home/sign_up" align="center">
+			<input value="Try it Now! >>" type="submit" class="orange-button" /></form>
+			<br>
 		</td>
 		<td class="frontpage-spacer"></td>
-		<td class="gray-background">
-			<div class="frontpage-boxes" href="http://www.youtube.com/v/36QfEObYj9g" title="Earn Prizes and Track your Food Wellness">
-			<h1>Earn</h1><h4>Prizes from Sponsors</h4>
+		<td class="gray-background-nopad">
+			<div class="frontpage-boxes2" href="http://www.youtube.com/v/36QfEObYj9g" title="Earn Prizes and Track your Food Wellness" text="Cooking improves your health. Cook with us to earn prizes from sponsors.  Want to challenge your community to cook more?  Sponsor a prize and host an Eat Well Challenge with us.">
+			<h1>Earn</h1><h2>Prizes from Sponsors</h2>
 			<%= image_tag "3track.png", :class => "frontpage-horizontal-spacer" %>
-			<br>
-			<br>
 			</div>
 			<form method="link" action="/home/sponsor" align="center">
 			<input value="Sponsor a Prize >>" type="submit" class="orange-button" /></form>
+			<br>
 		</td>
 	</tr>
 </table>
@@ -42,20 +45,44 @@ $('.frontpage-boxes').click(function() {
   var title = $(this).attr('title');
   var link = $(this).attr('href');
   var action_link = $(this).attr('action-link');
-  var action = $(this).attr('action');
+  var content = $(this).attr('content');
   var $dialog = $("#video-dialog");
   $dialog.dialog("destroy");
   $dialog.attr('title', title);
   $dialog.find('param[name="movie"]').attr('value', link);
-  $dialog.find('param[name="action"]').attr('value', action);
+ /* $dialog.dialog({ buttons: { "Ok": function() { $(this).dialog("close"); } } });*/
   $dialog.find("embed").attr("src", link);
-  $( "#video-dialog" ).dialog({
+  $dialog.find("embed").attr("content",content);
+  $("#video-dialog" ).dialog({
      width: 600,
      height: 380,
-     modal: true
-   });;
+     modal: true,
+   });
   return false;
 });
 
+$('.frontpage-boxes2').click(function() {
+  var title = $(this).attr('title');
+  var link = $(this).attr('href');
+  var action_link = $(this).attr('action-link');
+  var text = $(this).attr('text');
+  var $dialog = $("#video-dialog2");
+  $dialog.dialog("destroy");
+  $dialog.attr('title', title);
+  $("#video-dialog2" ).text(text).dialog({
+     width: 600,
+     height: 250,
+     modal: true,
+     buttons:
+            [
+              {
+                  text: "Sponsor a Prize >>>",
+                  onclick: "window.location.href = '/home/sponsor'",
+                  'class': 'my-custom-button-class'
+              }
+            ]
+   });
+  return false;
+});
 </script>
 
