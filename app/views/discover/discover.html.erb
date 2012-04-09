@@ -1,18 +1,19 @@
 <div id="discover-like-bar">
-  <span id="discover-want-button" class="discover-button">I want: </span>
-    <input id="discover-search-input" type="text" placeholder="i.e. pizza">
-  <span id="discover-have-button" class="discover-button"> I have </span> |
-  <span id="discover-avoid-button" class="discover-button"> I avoid </span> |
-  <span id="discover-fav-button" class="discover-button"> <%= image_tag('star.png', :size => '25x25', :id => 'discover-like-bar-star') %> Only </span>
+	<img src="<%= asset_path 'likebar-left.png'%>">
+  <span id="discover-have-button" class="discover-button"><img class="tri" src="<%= asset_path 'tri.png'%>"> I have </span>
+  <span id="discover-avoid-button" class="discover-button"><img class="tri" src="<%= asset_path 'tri.png'%>"> I avoid </span>
+  <span id="discover-want-button" class="discover-button"> Filter: &nbsp;
+    <input id="discover-search-input" type="text" placeholder="i.e. salad"></span>
+	<img src="<%= asset_path 'likebar-right.png'%>">
   <%= render :partial => 'have_dialog' %>
   <%= render :partial => 'avoid_dialog' %>
   </div>
 <div id="discover-next-bar">
-  <div id="discover-next-flavors">Similar flavors</div>
+  <div id="discover-next-flavors"></div>
   <div id="discover-next-arrow" class="discover-next-arrow">
     <div id="discover-next-div">next</div>
   </div>
-  <div id="discover-next-ingredients">Similar ingredients</div>
+  <div id="discover-next-ingredients"></div>
 </div>  
 <div id="discover-back" class="discover-back">
 </div>

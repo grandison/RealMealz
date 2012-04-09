@@ -563,15 +563,16 @@ body {
   position: absolute;
   top: 0px;
   left: 360px;
-  width: 515px;
+  width: 390px;
   height: 26px;
   z-index: 10;
   padding-top: 0px;
   padding-left: 30px;
   vertical-align: middle;
   line-height: 26px;
-  background: asset-data-url('like-bar.png') no-repeat;
+  /*background: asset-data-url('like-bar.png') no-repeat;*/
   cursor: pointer;
+  font-size: 0px;  /* removes space between the "I have" "I avoid" etc. elements. */
 }
 
 #discover-like-bar,
@@ -603,7 +604,7 @@ body {
 }
 
 .discover-button:hover {
-  color: rgb(10, 10, 10);
+/*  color: rgb(10, 10, 10);  removed so that "I want" will not look "clikkable" */
 }
 
 .discover-button-active,
@@ -611,14 +612,46 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
+#discover-have-button,
+#discover-avoid-button,
+#discover-want-button{
+  background-color: rgba(255,255,255,0.6);
+  vertical-align: top;
+  font-size: 15px;
+  color: rgb(80, 80, 80);
+
+}
+
+#discover-have-button,
+#discover-avoid-button{
+  border: outset 1px;
+}
+
+#discover-want-button{
+  padding-left: 12px;
+  padding-right: 12px;
+
+}
+
+#discover-have-button:hover,
+#discover-avoid-button:hover{
+  text-decoration: underline;
+}
+
+#discover-have-button:active,
+#discover-avoid-button:active{
+  border: inset 1px;
+}
+
 #discover-have-form,
 #discover-avoid-form {
   position: absolute;
-  z-index: 20;
-  top: 26px;
+  z-index: 0;
+  top: 28px;
   width: 200px;
   background-color: rgb(255,255,255); /* For IE8 */
   background-color: rgba(255,255,255,0.6);
+  font-size: 14px;  
 }
 
 #discover-have-scroll,
@@ -627,11 +660,11 @@ body {
 }
 
 #discover-have-form {
-  left: 110px;
+  left: -82px;
 }
 
 #discover-avoid-form {
-  left: 324px;
+  left: 123px;
 }
 
 .discover-list {
@@ -666,7 +699,7 @@ body {
 #discover-next-bar {
   position: absolute;
   z-index: 20;
-  top: 100px;
+  top: 200px;
   right: 0px;
   width: 75px;
   height: 300px;
@@ -678,7 +711,7 @@ body {
 
 #discover-next-arrow {
   position: absolute;
-  top: 100px;
+  top: 0px;
   right: 4px;
   width: 70px;
   height: 100px;
