@@ -138,7 +138,9 @@ class ApplicationController < ActionController::Base
     
     users_point = current_user.check_add_points(self.controller_name, self.action_name)
     unless users_point.nil? || users_point.point.nil?
-      flash[:notice] = "You got #{users_point.point.points} point#{users_point.point.points == 1 ? '' : 's'}!" 
+      if flash[:error].blank?
+        flash[:notice] = "You got #{users_point.point.points} point#{users_point.point.points == 1 ? '' : 's'}!"
+      end   
       flash[:points] = current_user.get_points
     end
   end
