@@ -62,9 +62,11 @@ RealMealz::Application.routes.draw do
   get '/discover' => "discover#discover"
   post "/discover/update_pantry"
   post "/discover/next_recipes"
+  get '/discover/next_recipe'
   post "/discover/meal_update"
   post "/discover/recipe_shown"
   post "/discover/cook_now"
+  
 
   get '/settings' => "settings#settings"
 	post '/settings' => "settings#settings"

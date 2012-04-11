@@ -202,6 +202,35 @@ class Recipe < ActiveRecord::Base
     return  {:protein => balance_protein, :vegetable => balance_vegetable, :starch => balance_starch} 
   end
   
+  
+  #------------------------- 
+  def meal_hash
+    ingredients = []    
+    ingredients_recipes.each do |ir|
+      next if ir.ingredient_id.nil?
+      ingredients << {:ingredient_name => ir.ingredient.name,
+      :unit => ir.unit, :weight => ir.weight, :description => ir.description,
+      :name_and_unit => ir.name}
+    end
+    
+    meal = {:recipe_id => id, 
+      :recipe_name => name, 
+      :recipe_intro => intro,
+      :recipe_prepsteps => prepsteps, 
+      :recipe_cooksteps => cooksteps,
+      :recipe_source => source, 
+      :recipe_source_link => source_link,
+      :recipe_servings => servings, 
+      :recipe_prep_time => preptime, 
+      :recipe_cook_time => cooktime,  
+      :picture_thumb => picture(:thumb), 
+      :picture_medium =>  picture(:medium),
+      :ingredients => ingredients
+    }
+    return meal
+  end
+
+  
   ###################
   # Class methods
   ###################  

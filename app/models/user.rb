@@ -173,7 +173,7 @@ class User < ActiveRecord::Base
       @recipe_list.delete_if {|r| !starred_recipe_ids.include?(r[:id])} unless starred_recipe_ids.blank?
     end
     search_for = (filters['search'] || '').downcase
-    
+
     @recipe_list.each do |rh|
       next unless starred_recipe_ids.blank? || starred_recipe_ids.include?(rh[:id])
       

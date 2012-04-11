@@ -38,6 +38,24 @@ class DiscoverController < ApplicationController
     render :partial => 'recipes', :locals => {:recipes => @recipes, :show_big => (params[:show_big] == 'true')}
   end
   
+  #------------------------- 
+  # API call for Android version. Just return 1 recipe at a time
+  def next_recipe
+    recipe_id = session[:next_recipe_ids] && session[:next_recipe_ids].shift
+    if recipe_id.present?
+      recipe = Recipe.find(recipe_id)
+    else
+      recipe = get_new_recipes([], {}, num_to_send = 1)[0]
+    end  
+    meal = recipe.meal_hash    
+    
+    if params[:render] == 'xml'
+      render :xml => meal
+    else
+      render :json => meal
+    end
+  end
+
   #-----------
   def update_pantry
     fix_booleans(params)
@@ -66,18 +84,18 @@ class DiscoverController < ApplicationController
   #------------------------- 
   def new_cooking_skills
   end
-
+  
   ##############
   private
   ##############
   
   #------------------------- 
-  def get_new_recipes(recipe_ids_shown, filters)
+  def get_new_recipes(recipe_ids_shown, filters, max_num_to_send = 5)
     # Sort all recipes by standard criteria
     recipe_ids = current_user.get_favorite_recipes(recipe_ids_shown, filters)
     
-    # Only send 5 recipes but save the ids of the rest
-    num_to_send = (recipe_ids.length < 5)? recipe_ids.length : 5
+    # Only send some of the recipes but save the ids of the rest
+    num_to_send = (recipe_ids.length < max_num_to_send)? recipe_ids.length : max_num_to_send
     session[:next_recipe_ids] = recipe_ids[num_to_send..-1]
     show_ids = recipe_ids[0..num_to_send - 1]
     return Recipe.where(:id => show_ids).sort { |r1, r2| show_ids.index(r1.id) <=> show_ids.index(r2.id) } # Get the recipes and sort in correct order
