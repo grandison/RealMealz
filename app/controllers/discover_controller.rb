@@ -5,7 +5,17 @@ class DiscoverController < ApplicationController
   
   #------------------------- 
   def discover
-    @recipes = get_new_recipes([], {})
+    if params[:id] || params[:name]
+      # MD Apr-2012 If present, use ID and ignore name
+      @recipes = current_user.kitchen.find_recipe(params[:id] || params[:name])
+      if @recipes.blank?
+        flash[:error] = "Recipe not found"
+      end  
+    end  
+    
+    if @recipes.blank?
+      @recipes = get_new_recipes([], {})
+    end
     @avoid_items = current_user.get_like_avoid_list(:avoid)
     setup_discover
   end

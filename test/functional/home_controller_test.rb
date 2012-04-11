@@ -61,12 +61,12 @@ class HomeControllerTest < ActionController::TestCase
     assert !user.nil?, "User not created"
     
     users_group = UsersGroup.find_by_user_id(user.id)
-    assert !users_group.nil?, "UsersGroup not created"
+    assert !users_group.nil?, "UsersGroup should be created"
     assert_equal @group.id, users_group.group_id
     assert_equal @invite_code.id, users_group.invite_code_id
 
     users_team = UsersTeam.find_by_user_id(user.id)
-    assert !users_team.nil?, "UsersTeam not created"
+    assert !users_team.nil?, "UsersTeam should be created"
     assert_equal @teams.first.id, users_team.team_id
   end
   

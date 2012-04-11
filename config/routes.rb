@@ -59,7 +59,7 @@ RealMealz::Application.routes.draw do
   get '/cook' => "cook#cook"
   post '/cook/done_cooking'
 
-  get '/discover' => "discover#discover"
+  get '/discover(/:id)(/:name)' => "discover#discover"
   post "/discover/update_pantry"
   post "/discover/next_recipes"
   get '/discover/next_recipe'

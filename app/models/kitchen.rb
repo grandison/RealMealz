@@ -42,7 +42,7 @@ class Kitchen < ActiveRecord::Base
   
   #-------------------------------------------
   def have_ingredients
-    have_ingredient_items.map {|ik| ik.ingredient}
+    have_ingredient_items.map {|ik| ik.ingredient} || []
   end
 
   #-------------------------------------------
@@ -200,6 +200,18 @@ class Kitchen < ActiveRecord::Base
     end
     m.seen_count = m.seen_count + 1
     m.save!
+  end
+  
+  #---------------------------------
+  def find_recipe(recipe_id_or_name)
+    if recipe_id_or_name.to_i > 0
+      id = recipe_id_or_name.to_i
+      recipe = Recipe.where('id = ? AND (public = ? OR kitchen_id = ?)', id, true, self.id)
+    else
+      name = recipe_id_or_name  
+      recipe = Recipe.where('name = ? AND (public = ? OR kitchen_id = ?)', name, true, self.id)
+    end
+    return recipe
   end
   
   #######################
