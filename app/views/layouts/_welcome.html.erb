@@ -1,7 +1,11 @@
 <div id="welcome">
   <% if current_user %>
     Welcome, <a href='/users/edit'><%= "#{current_user.first} #{current_user.last}" %>! </a>| 
-      <span id="logout"><%= link_to("Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?") %></span>
+    <% if current_user.email =~ /temp_(.*)@email.com/i  %>
+			<span id="login"><%= link_to("Login", user_session_path, :method => :delete) %></span>
+		<% else %>
+			<span id="logout"><%= link_to("Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?") %></span>
+    <% end %>
     <br />
     <a href='/track'><span id="points-msg">You have <span id="points"><%= current_user.get_points %></span> points.</span></a> 
   <% else %>
