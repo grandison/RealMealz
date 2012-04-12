@@ -448,9 +448,9 @@ class User < ActiveRecord::Base
   
   #---------------------------------
   def User.create_temporary
+    temp_password = Authlogic::Random.friendly_token
     last_user = User.order('id ASC').last
     temp_num = last_user.id + 1
-    temp_password = Authlogic::Random.friendly_token
     user = User.create!(:first => "Temp", :last => "#{temp_num}", :email => "temp_#{temp_num}@email.com",
     :password => temp_password, :password_confirmation => temp_password)
     user.role = 'temp'
