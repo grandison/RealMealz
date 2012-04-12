@@ -134,7 +134,7 @@ class IngredientsController < ApplicationController
     else
       # Find this manually because the relation between kitchens and unique ingredients is not setup
       # Since ingredients_kitchens is for panty ingredients     
-      @ingredient = Ingredient.where(:kitchen_id => current_user.kitchen_id, :id => id).first
+      @ingredient = Ingredient.where(:kitchen_id => current_user.kitchen_id, :id => id).first || Ingredient.new
     end
   end   
 

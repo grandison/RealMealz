@@ -77,13 +77,8 @@ class DiscoverController < ApplicationController
   
   #------------------------- 
   def meal_update
-    # Pass nil if parameter not passed so it doesn't change
-    my_meals = nil
-    my_meals = (params[:my_meals] == 'true') if params[:my_meals]
-    starred = nil
-    starred = (params[:starred] == 'true') if params[:starred]
-    
-    current_user.kitchen.update_meals(params[:recipe_id], my_meals, starred) 
+    fix_booleans(params)
+    current_user.kitchen.update_meals(params[:recipe_id], params[:my_meals], params[:starred]) 
     render :nothing => true
   end
   
