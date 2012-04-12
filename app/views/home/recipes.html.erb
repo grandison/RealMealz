@@ -12,7 +12,7 @@
   
   <% Recipe.where(:public => true).each do |recipe| %>
     <tr>
-      <td><%= link_to(recipe.name, discover_path(recipe.id, CGI::escape(recipe.name))) %></td>
+      <td><%= link_to(recipe.name, discover_recipe_path(recipe.id, CGI:escape(recipe.name))) %></td>
       <td class="no-wrap">
         <% recipe.ingredients_recipes.each do |ir| %>
           <%= ir.name unless ir.nil? %><br />

@@ -178,7 +178,7 @@ function setup_scroll(sel, useHeight) {
 function setup_background_image(sel) {
   /* When users click on picture, change the background image and url */
   $(sel).click(function() {
-    window.history.replaceState('Object', 'Title', '/discover/' +  $(this).attr('recipe-id') + '/' +  $(this).attr('recipe-name'));
+    window.history.replaceState('Object', 'Title', '/discover/recipe/' +  $(this).attr('recipe-id') + '/' +  $(this).attr('recipe-name'));
     $('body').css('background-image', 'url(' + $(this).attr('recipe-pic') + ')'); 
   });
 
