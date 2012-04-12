@@ -5,7 +5,7 @@
 	 -->
 	
 <div id="welcome-page-box1" class="gray-background">
-	<h1>Hi <%= current_user.first %>! Welcome to RealMealz. </h1>
+	<h1><%= "Hi #{current_user.first} !" if current_user %> Welcome to RealMealz. </h1>
 	<table id="welcome-page-table1"> 
 		<tr>
 			<td width="40%"> 	 	<!-- video -->

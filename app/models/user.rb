@@ -419,7 +419,7 @@ class User < ActiveRecord::Base
           user = nil
         else
           user.update_attributes(saved)
-          user.kitchen.name = user.last
+          user.kitchen.update_attributes(:name => user.last)
         end
       end    
     end
@@ -447,18 +447,25 @@ class User < ActiveRecord::Base
   end
   
   #---------------------------------
+  # MD Apr-2012. Create a temporaray user
+  # A user needs to have a unique email and a password to be created.
+  # We don't want anyone (hackers) logging in with this account so we need to create a password that no-one will guess
+  # Likewise, we want to make sure that the email is unique so the insertion doesn't fail. We also want this to be
+  # different from the password because otherwise, the password will be stored in cleartext
+  # Use the id of this record as the last name so screen will show "Temp 67" for the username
+  # Also, give it some random meals so the Shop and Cook pages look better on first use
   def User.create_temporary
     temp_password = Authlogic::Random.friendly_token
-    last_user = User.order('id ASC').last
-    temp_num = last_user.id + 1
-    user = User.create!(:first => "Temp", :last => "#{temp_num}", :email => "temp_#{temp_num}@email.com",
+    temp_email = Authlogic::Random.friendly_token
+    user = User.create!(:first => "Temp", :last => "(placeholder)", :email => "temp_#{temp_email}@email.com",
     :password => temp_password, :password_confirmation => temp_password)
     user.role = 'temp'
+    user.last = user.id.to_s
     user.save!
     user.create_kitchen_if_needed
     0.upto(5) do
       recipe = Recipe.random_background_image
-      user.kitchen.update_meals(recipe.id) if recipe
+      user.kitchen.update_meals(recipe.id) if recipe # MD Apr-2012. Was sometimes giving a nil recipe, don't know why
     end
     return user
   end

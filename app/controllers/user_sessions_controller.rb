@@ -2,9 +2,9 @@ class UserSessionsController < ApplicationController
   skip_before_filter :require_super_admin
   before_filter :require_user, :only => :destroy
   
-  #-------------------------
+  # MD Apr-2012. Fill email with user's real email if available
   def new
-    @user_session = UserSession.new
+    @user_session = UserSession.new(:email => session[:user_real_account_email])
   end
 
   #-------------------------

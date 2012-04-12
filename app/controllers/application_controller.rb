@@ -61,12 +61,13 @@ class ApplicationController < ActionController::Base
   #-------------------------
   def require_user(role = nil)
     # MD Apr-2012 If not user logged in, see if there is a session cookie for temporary user, otherwise, create one
-    if current_user.nil? && session[:user_has_account].nil?
+    # Find the user in the DB, but don't bomb if DB has been cleaned and user no longer exists
+    # Make sure cookie tampering doesn't give access to someone else's account
+    if current_user.nil? && session[:user_real_account_email].nil?
       if session[:temporary_user_id]
-        user = User.find(session[:temporary_user_id])
-        # MD Apr-2012. Make sure cookie tampering doesn't give access to someone else's account
-        if user.role == 'temp' && user.persistence_token == session[:temporary_user_token] 
-          sign_in(user)
+        user = User.find_by_id(session[:temporary_user_id]) 
+        if user && user.role == 'temp' && user.persistence_token == session[:temporary_user_token] 
+          sign_in_direct(user)
         else
           user = nil
         end  
@@ -76,7 +77,7 @@ class ApplicationController < ActionController::Base
       # and give them a few random recipes  
       if user.nil?
         user = User.create_temporary
-        sign_in(user) 
+        sign_in_direct(user) 
         session[:temporary_user_id] = user.id
         session[:temporary_user_token] = user.persistence_token
       end
@@ -94,8 +95,8 @@ class ApplicationController < ActionController::Base
       else
         redirect_to "/user_session/new"
       end
-    else
-      session[:user_has_account] = true
+    elsif current_user.role.nil? || current_user.role != 'temp'
+      session[:user_real_account_email] = current_user.email
     end
     return false
   end
@@ -129,6 +130,13 @@ class ApplicationController < ActionController::Base
   #-------------------------
   def sign_in(user)
     UserSession.create!(:email => user.email, :password => user.password)
+    @current_user_session = nil
+    @current_user = nil
+  end
+  
+  #-------------------------
+  def sign_in_direct(user)
+    UserSession.create!(user)
     @current_user_session = nil
     @current_user = nil
   end
