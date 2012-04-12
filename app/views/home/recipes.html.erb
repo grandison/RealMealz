@@ -1,0 +1,32 @@
+<% cache('recipes') do %>
+  <div class="gray-background">
+    <h1>Recipes List</h1>
+  <table id='recipe-list-table' class="gray-background">
+    <tr>
+      <th>Name</th>
+      <th>Ingredients</th>
+      <th>Intro</th>
+      <th>Tags</th>
+      <th>Picture</th>
+    </tr>
+  
+  <% Recipe.where(:public => true).each do |recipe| %>
+    <tr>
+      <td><%= link_to(recipe.name, discover_path(recipe.id, CGI::escape(recipe.name))) %></td>
+      <td class="no-wrap">
+        <% recipe.ingredients_recipes.each do |ir| %>
+          <%= ir.name unless ir.nil? %><br />
+        <% end %>
+      </td>
+      <td><%= recipe.intro %></td>
+      <td><%= recipe.tags %></td>
+      <td><%= link_to(image_tag(recipe.picture.url(:thumbnail), :width => "100px", :height => "100px", :alt => recipe.name),
+        recipe.picture.url(:original) ) %></td>
+    </tr>
+  <% end %>
+  </table>
+  <br />
+<% end %>  
+
+<% @background_recipe = Recipe.random_background_image %>
+
