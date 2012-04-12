@@ -11,7 +11,7 @@
           :starch => meal_balance[:starch], :vegetable => meal_balance[:vegetable]}
         #my-meals-balance-text My Meals Balance      
     - my_meals.each do |meal| ; recipe = meal.recipe
-      .my-meals-recipe{"recipe-pic" => recipe.picture.url(:large)}
+      .my-meals-recipe{"recipe-pic" => recipe.picture.url(:large), "recipe-id" => recipe.id, "recipe-name" => CGI.escape(recipe.name)}
         = image_tag(recipe.picture.url(:medium), :class => 'my-meals-recipe-img recipe-display', |
           'recipe-id' => recipe.id)                                                              |
         - if show_plus

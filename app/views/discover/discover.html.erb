@@ -219,12 +219,15 @@ function mycarousel_initCallback(carousel) {
   });
 };
 
-/* After scrolled into view, Send the recipe-id of the shown recipe and setup the scroller */
+/* After scrolled into view, Send the recipe-id of the shown recipe, change the browser URL and setup the scroller */
 function mycarousel_itemVisibleInCallbackAfterAnimation(carousel, item, idx, state) {
   var $discoverRecipe = $('.jcarousel-item-' + carousel.last + ' .discover-recipe');
   var $discoverDetailScroll = $discoverRecipe.find('.discover-detail-scroll');
+  var recipeId = $discoverRecipe.attr('recipe-id')
+  var recipeName = $discoverRecipe.attr('recipe-name')
   setupDetailScroll($discoverDetailScroll);
-  $.post('/discover/recipe_shown', 'recipe_id=' + $discoverRecipe.attr('recipe-id'));
+  window.history.replaceState('Object', 'Title', '/discover/' + recipeId + '/' + recipeName);
+  $.post('/discover/recipe_shown', 'recipe_id=' + recipeId);
 };
 
 /*** Resize windows ***/

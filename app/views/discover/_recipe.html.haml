@@ -5,7 +5,7 @@
   - size_suffix = 'small'
   - ingredient_quantities_visible = false
 
-.discover-recipe.main-height.content-width{"recipe-id" => recipe.id}
+.discover-recipe.main-height.content-width{"recipe-id" => recipe.id, "recipe-name" => CGI.escape(recipe.name)}
   .discover-recipe-background-box.main-height.content-width
     = image_tag(recipe.picture.url(:large), 'recipe-id' => recipe.id, :class => "discover-recipe-background")
     

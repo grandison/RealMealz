@@ -5,9 +5,11 @@ class DiscoverController < ApplicationController
   
   #------------------------- 
   def discover
+    # MD Apr-2012 If present, use ID and ignore name. But ID paramenter could also be the name
     if params[:id] || params[:name]
-      # MD Apr-2012 If present, use ID and ignore name
-      @recipes = current_user.kitchen.find_recipe(params[:id] || params[:name])
+      name = CGI.unescape(params[:name]) if params[:name]
+      id = CGI.unescape(params[:id]) if params[:id]
+      @recipes = current_user.kitchen.find_recipe(id || name)
       if @recipes.blank?
         flash[:error] = "Recipe not found"
       end  
