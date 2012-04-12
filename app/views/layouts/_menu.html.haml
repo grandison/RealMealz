@@ -1,0 +1,30 @@
+- if !current_user || (current_user && current_user.role == 'temp')
+
+  -#---- Sign Up ----
+  #menu-link-signup.menu-link
+    %a{:href => "/home/sign_up"}
+      Sign Up
+  
+  -#---- Login ----
+  #menu-link-login.menu-link 
+    %a{:href => "/user_session/new"}
+      Login
+      
+-#---- Main buttons ----
+- ["discover","shop","cook","learn","track"].each do |button|
+  - if button == controller.controller_name
+    .menu-tab-selected
+      = button.capitalize
+  - else
+    .menu-tab
+      %a{:href => "/#{button}"}= button.capitalize
+  - if button == "cook"
+    .menu-tab-space
+    
+-#---- Settings ----
+- if controller.controller_name == "settings"
+  .menu-tab-customize
+    %a{:href => "/settings"}= image_tag "small_gear_selected.png"
+- else
+  .menu-tab-customize
+    %a{:href => "/settings"}= image_tag "small_gear.png"

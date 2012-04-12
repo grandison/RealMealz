@@ -409,9 +409,24 @@ class User < ActiveRecord::Base
   end
 
   #---------------------------------
-  def User.create_with_saved(saved)
+  def User.create_with_saved(saved, temporary_user_id = nil)
     saved = saved.with_indifferent_access
-    user = User.new(saved)
+    
+    if temporary_user_id.present?
+      user = User.find(temporary_user_id)
+      if user
+        if user.role != 'temp'  # MD Apr-2012. Make sure this really is a temp user
+          user = nil
+        else
+          user.update_attributes(saved)
+          user.kitchen.name = user.last
+        end
+      end    
+    end
+    
+    if user.nil?
+      user = User.new(saved)
+    end  
     
     # MD Apr-2012 Disable invite code for now
     #invite = InviteCode.check_code(saved[:invite_code])
@@ -427,6 +442,23 @@ class User < ActiveRecord::Base
       user.update_basic_allergy_list(saved[:allergies])
       # MD Apr-2012 UsersGroup.create!(:user_id => user.id, :invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
       # MD Apr-2012 UsersTeam.create!(:user_id => user.id, :team_id => user.team_id) if user.team_id
+    end
+    return user
+  end
+  
+  #---------------------------------
+  def User.create_temporary
+    last_user = User.order('id ASC').last
+    temp_num = last_user.id + 1
+    temp_password = Authlogic::Random.friendly_token
+    user = User.create!(:first => "Temp", :last => "#{temp_num}", :email => "temp_#{temp_num}@email.com",
+    :password => temp_password, :password_confirmation => temp_password)
+    user.role = 'temp'
+    user.save!
+    user.create_kitchen_if_needed
+    0.upto(5) do
+      recipe = Recipe.random_background_image
+      user.kitchen.update_meals(recipe.id) if recipe
     end
     return user
   end

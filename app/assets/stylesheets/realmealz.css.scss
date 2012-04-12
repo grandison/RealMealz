@@ -18,6 +18,8 @@ Highlight Colors
   Red: 234, 30, 30
 **/
 
+$brown: rgb(122, 83, 12);
+
 /****** General ******/
 
 body { 
@@ -228,6 +230,23 @@ body {
 	color: #FFF;
 	font-weight: normal;
 }
+
+.menu-link  {
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.menu-link a {
+  font-size: 15px;
+  font-weight: normal;
+  color: $brown;
+}
+
+#menu-link-login {
+}
+#menu-link-signup {
+}
+
 
 /*** Message Bar ***/
 #message-bar {

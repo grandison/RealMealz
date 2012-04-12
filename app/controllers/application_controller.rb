@@ -60,7 +60,29 @@ class ApplicationController < ActionController::Base
   
   #-------------------------
   def require_user(role = nil)
-    if check_user_role(role)
+    # MD Apr-2012 If not user logged in, see if there is a session cookie for temporary user, otherwise, create one
+    if current_user.nil? && session[:user_has_account].nil?
+      if session[:temporary_user_id]
+        user = User.find(session[:temporary_user_id])
+        # MD Apr-2012. Make sure cookie tampering doesn't give access to someone else's account
+        if user.role == 'temp' && user.persistence_token == session[:temporary_user_token] 
+          sign_in(user)
+        else
+          user = nil
+        end  
+      end
+      
+      # MD Apr-2012. If the temporary user was deleted from our DB, create another with temp name and password a
+      # and give them a few random recipes  
+      if user.nil?
+        user = User.create_temporary
+        sign_in(user) 
+        session[:temporary_user_id] = user.id
+        session[:temporary_user_token] = user.persistence_token
+      end
+    end  
+      
+    if check_user_role(role) # Fails if current_user doesn't have this role
       store_location
       if role.nil?
         flash[:notice] = "You must be logged in to access this page"
@@ -72,8 +94,10 @@ class ApplicationController < ActionController::Base
       else
         redirect_to "/user_session/new"
       end
-      return false
+    else
+      session[:user_has_account] = true
     end
+    return false
   end
 
   #-------------------------

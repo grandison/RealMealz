@@ -171,7 +171,7 @@ class Kitchen < ActiveRecord::Base
   end
 
   #---------------------------------
-  def update_meals(recipe_id, my_meals, starred)
+  def update_meals(recipe_id, my_meals = true, starred = true)
     m = meals.find_by_recipe_id(recipe_id)
     if m.nil?
       m = meals.create!(:recipe_id => recipe_id)

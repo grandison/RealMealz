@@ -27,6 +27,7 @@ RealMealz::Application.routes.draw do
 	get "home/login" => "home#index"
 	get "/home/ping"
 	get "/home/sponsor" => "home#sponsor"
+	get "/home/recipes"
 	
 	get "/reports" => 'reports#reports'
 	post "/reports/get_group_report" 
@@ -59,7 +60,7 @@ RealMealz::Application.routes.draw do
   get '/cook' => "cook#cook"
   post '/cook/done_cooking'
 
-  get '/discover(/:id)(/:name)' => "discover#discover"
+  get '/discover(/:id)(/:name)' => "discover#discover", :as => 'discover'
   post "/discover/update_pantry"
   post "/discover/next_recipes"
   get '/discover/next_recipe'

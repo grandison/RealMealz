@@ -21,6 +21,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'GET/home/ping', :sign_in_required => false},
     {:path => 'GET/home/login', :sign_in_required => false},
     {:path => 'GET/login', :sign_in_required => false},
+    {:path => 'GET/discover', :sign_in_required => false},
 
     {:path => 'POST/users/edit', :redirect_to => '/users/my_account', :flash => 'Account updated!'}, 
     {:path => 'PUT/users/edit', :redirect_to => '/home/welcome', :flash => 'Account updated!'}, 
@@ -39,7 +40,6 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     {:path => 'GET/user_sessions/forgot_password', :sign_in_required => false }, 
     {:path => 'POST/user_sessions/forgot_password', :sign_in_required => false, :redirect_to => '/', :flash => 'Instructions to reset your password have been emailed to you'}, 
       
-    
     {:path => 'POST/recipes', :redirect_to => true, :flash => 'Recipe was successfully created.'},  
     {:path => 'PUT/recipes/1', :redirect_to => '/recipes', :flash => 'Recipe was successfully updated.'}, 
     {:path => 'DELETE/recipes/1', :redirect_to => '/recipes'},  
@@ -227,7 +227,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
 
     # Fixup path to take out variable parts, assign the name and add any special path information
     routes.each do |r| 
-      r[:path] = r[:path_template].gsub('(.:format)','').gsub(':id','1').gsub('(/:klass)','/recipe').
+      r[:path] = r[:path_template].gsub(/\(.*\)/,'').gsub(':id','1').gsub('(/:klass)','/recipe').
         gsub(':klasss', 'recipe').gsub(':klass', 'recipe').gsub('*file', 'images/add.png')
       r[:name] = r[:verb] + r[:path]
       special_params = find_special_params(r[:name])

@@ -1,7 +1,6 @@
 class HomeController < ApplicationController
 
   skip_before_filter :require_super_admin
-  before_filter :require_user, :only => [:welcome]
   
   def index
     @background_recipe = Recipe.random_background_image
@@ -52,7 +51,7 @@ class HomeController < ApplicationController
   end
   
   def create_user
-    @user = User.create_with_saved(params[:user]) 
+    @user = User.create_with_saved(params[:user], session[:temporary_user_id]) 
     if @user.errors.empty?
       sign_in(@user)
       redirect_to '/home/welcome'
@@ -61,5 +60,11 @@ class HomeController < ApplicationController
       render :action => :sign_up
     end
   end
+  
+  def recipes
+    # Put the db call in the view so it isn't done when pulling from the cache 
+  end
+  
+
   
 end
