@@ -144,7 +144,14 @@ body {
   top: 5px;
   left: 10px;
 }
-
+#tagline {
+  position: absolute;
+  z-index: 20;
+  top: 13px;
+  left: 90px;
+  font-size: 12px;
+  line-height: 12px; 
+}
 #top2 {
   height: 28px;
   border-spacing: 0px;
@@ -162,7 +169,7 @@ body {
 #top2-not-signed-in a {
   border-spacing: 0px;
   float: right;
-  width: 600px; /**885px; **/
+  width: 1021px; /*600px; /**885px; **/
   height: 44px;
   display: inline;
 
@@ -299,11 +306,12 @@ body {
   font-weight: normal;
 }
 
-#logout {
+#logout,
+#login {
 	font-size: 0.8em;   
   line-height: 100%;
 }
-Ï
+
 #points-msg {
 	font-size: 0.8em; 
 	text-align: right;
@@ -1317,6 +1325,12 @@ body {
 /*** other ***/
 .subtle-links a {
 	color: #7A530C;
+}
+.forgot-password {
+  color: #7A530C;
+  font-weight: normal;
+  text-decoration: underline;
+  font-size: 0.8em;  
 }
 
 	
