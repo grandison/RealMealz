@@ -178,7 +178,7 @@ class Recipe < ActiveRecord::Base
           ## Set the volume variable
           if !ir.weight.nil? and !ir.unit.nil? # Have weight and unit, add it.
             if ir.ingredient.whole_unit == "head" #for "head" of cauliflower, broccoli, lettuce, add 3 cups
-              head_weight = ir.weight*3
+              head_weight = ir.weight*5
               volume = Unit.new("#{head_weight.to_s} cups")
             else
               volume = Unit.new("#{ir.weight.to_s} #{ir.unit}").convert_to_volume
