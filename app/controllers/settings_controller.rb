@@ -70,7 +70,9 @@ class SettingsController < ApplicationController
 
     if params[:render] == 'added'
       render :json => {:item_id => "ui#{ui.id}", :ingredient_name => ui.ingredient.name, :ingredient_id => ui.ingredient.id}
-    else
+    elsif params[:render] == 'json'
+      render :json => current_user.get_like_avoid_list(like_avoid).to_json(:methods => :ingredient_name)
+    else  
       render :nothing => true
     end
   end
@@ -86,11 +88,13 @@ class SettingsController < ApplicationController
 
     if params[:render] == 'added'
       render :json => {:item_id => "ik#{ik.id}", :ingredient_name => ik.ingredient.name, :ingredient_id => ik.ingredient.id}
-    elsif attributes[:exclude]
+    elsif params[:render] == 'json'
+      render :json => current_user.kitchen.get_exclude_list.to_json(:methods => :ingredient_name)
+    elsif params[:render] == 'partial'
       render :partial => 'exclude_item', :locals => {:ingredient => ik.ingredient}
     else
       render :nothing => true
     end
   end
-
-end
+  
+ end

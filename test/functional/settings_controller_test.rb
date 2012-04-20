@@ -10,6 +10,7 @@ class SettingsControllerTest < ActionController::TestCase
     sign_in(@user)
   end
   
+  #-------------
   test "add remove like item" do
     put :add_like_item, :item => {:name => 'Max Bars'}
     assert_response :success
@@ -20,7 +21,25 @@ class SettingsControllerTest < ActionController::TestCase
     ui = UsersIngredient.last
     assert !ui.like, "Removed like flag"
   end
+  
+  #-------------
+  test "add remove like item api" do
+    post :add_like_item, :item => {:name => 'Ice cream'}, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Ice cream', json[0]['users_ingredient']['ingredient_name']
 
+    post :add_like_item, :item => {:name => 'Honey'}, :render => 'added'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Honey', json['ingredient_name']
+    
+    post :remove_like_item, :item => {:name=> 'Honey'}
+    assert_response :success
+    assert_equal '', response.body.strip
+  end
+
+  #-------------
   test "add remove avoid item" do
     put :add_avoid_item, :item => {:name => 'wheat'}
     assert_response :success
@@ -31,9 +50,27 @@ class SettingsControllerTest < ActionController::TestCase
     ui = UsersIngredient.last
     assert !ui.avoid, "Removed avoid flag"
   end
+  
+  #-------------
+  test "add remove avoid item api" do
+    post :add_avoid_item, :item => {:name => 'wheat'}, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Wheat', json[0]['users_ingredient']['ingredient_name']
 
+    post :add_avoid_item, :item => {:name => 'peanuts'}, :render => 'added'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Peanuts', json['ingredient_name']
+    
+    post :remove_avoid_item, :item => {:name=> 'Peanuts'}
+    assert_response :success
+    assert_equal '', response.body.strip
+  end
+
+  #-------------
   test "add exclude item" do
-    put :add_exclude_item, :item => {:name => 'wheat'}
+    put :add_exclude_item, :item => {:name => 'wheat'}, :render => 'partial'
     assert_response :success
     assert response.body.starts_with?('<li ingredient-id'), "Response is a li"
     assert response.body.include?('Wheat'), "Response contains ingredient name"
@@ -43,6 +80,24 @@ class SettingsControllerTest < ActionController::TestCase
     resp = JSON.parse(response.body)
     assert_equal 'Wheat', resp['ingredient_name']
   end
+  
+  #-------------
+  test "add remove exclude item api" do
+    post :add_exclude_item, :item => {:name => 'Salt'}, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Salt', json[0]['ingredients_kitchen']['ingredient_name']
+
+    post :add_like_item, :item => {:name => 'water'}, :render => 'added'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Water', json['ingredient_name']
+    
+    post :remove_like_item, :item => {:name=> 'water'}
+    assert_response :success
+    assert_equal '', response.body.strip
+  end
+
 
   
 end

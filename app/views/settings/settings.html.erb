@@ -40,7 +40,7 @@
    
   // Add exclude ingredient
   $('#add_exclude_item').click(function() {
-    $.post("/settings/add_exclude_item", {"item[name]": $("#settings-exclude-input").val()},
+    $.post("/settings/add_exclude_item", {"item[name]": $("#settings-exclude-input").val(), render: "partial"},
     function(data) {
       $('#settings-exclude-list').append(data);
   		$('#settings-exclude-input').val('');

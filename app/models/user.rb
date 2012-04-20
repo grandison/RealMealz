@@ -56,7 +56,13 @@ class User < ActiveRecord::Base
   end
   
   #---------------------------------
+  # MD Apr-2012. like_avoid here is expected to be the symbols :like or :avoid. However, in the settings_controller,
+  # like_avoid is a hash with {:like => true} or {:like => false}. To be able to support both of these
+  # convert if necessary
   def get_like_avoid_list(like_avoid)
+    if like_avoid.class == Hash
+      like_avoid = like_avoid[:like] ? :like : :avoid
+    end
     users_ingredients.where(like_avoid => true).delete_if {|ui| ui.ingredient.nil?}.sort_by {|ui| ui.ingredient.name}
   end
 
