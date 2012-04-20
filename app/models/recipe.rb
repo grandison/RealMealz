@@ -163,7 +163,9 @@ class Recipe < ActiveRecord::Base
   def food_balance
     self.updated_at = Time.now if self.updated_at.nil?
 
-    unless self.balance_updated_at == self.updated_at
+    # MD Apr 2012. Something strange is happening on Heroku when comparing times and
+    # they return false. However, converting to integers before comparing seems to do the trick
+    unless self.balance_updated_at.to_i == self.updated_at.to_i
       protein = Unit.new("0 cup")
       vegetable = Unit.new("0 cup")
       starch = Unit.new("0 cup")
