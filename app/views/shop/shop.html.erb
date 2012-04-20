@@ -1,6 +1,6 @@
 
 <div class="hide-form" style="display:none">
-  <div id="item-edit-form" title="Edit Pantry Item">
+  <div id="item-edit-form" title="Edit Item">
     <%= form_tag("/shop/update_item", :method => "post", :name => "update_item") do %>
   		<input type="hidden" id="edit-id" name="item[id]" value="" />
   		<p>
@@ -51,7 +51,7 @@
 <div id="shop-controls">
   <div id="shop-controls-box">
     <h2>Let's Go Shopping!</h2>
-    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <%= image_tag "icons/pantry_has.png" %> in your "My Meals" list.  Auto exclude common items like salt and pepper by setting the <a href="/settings">exclude items list</a>.  Going to the store? Visit <a href="http://beta.realmealz.com">beta.realmealz.com</a> on your mobile phone while you shop. Have an Android phone? <a href="/RealMealz.apk">Download Android App</a>.  iPhone App coming soon.   </p>
+    <p>View your "My Meals" list here.  Then, fill your shopping list quickly by clicking on the <%= image_tag "icons/pantry_has.png" %> in your "My Meals" list.  Auto exclude common items like salt and pepper by setting the <a href="/settings">exclude items list</a>.  Going to the store? Log your mobile phone onto RealMealz.com while you shop. If you have an Android phone, you can also <a href="/RealMealz.apk">Download the Android App</a>.    </p>
     
   
     <div id="shop-add-item">
