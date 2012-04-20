@@ -34,6 +34,13 @@ class SettingsControllerTest < ActionController::TestCase
     json = JSON.parse(response.body)
     assert_equal 'Honey', json['ingredient_name']
     
+    get :like_list, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 2, json.count
+    assert_equal 'Honey', json[0]['users_ingredient']['ingredient_name']
+    assert_equal 'Ice cream', json[1]['users_ingredient']['ingredient_name']
+    
     post :remove_like_item, :item => {:name=> 'Honey'}
     assert_response :success
     assert_equal '', response.body.strip
@@ -63,7 +70,40 @@ class SettingsControllerTest < ActionController::TestCase
     json = JSON.parse(response.body)
     assert_equal 'Peanuts', json['ingredient_name']
     
+    get :avoid_list, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 2, json.count
+    assert_equal 'Peanuts', json[0]['users_ingredient']['ingredient_name']
+    assert_equal 'Wheat', json[1]['users_ingredient']['ingredient_name']
+    
     post :remove_avoid_item, :item => {:name=> 'Peanuts'}
+    assert_response :success
+    assert_equal '', response.body.strip
+  end
+
+  #-------------
+  # MD Apr-2012. We only test the "have" api call, because there is a similar call in discover/update_pantry for the
+  # non-API method
+  test "add remove have item api" do
+    post :add_have_item, :item => {:name => 'milk'}, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Milk', json[0]['ingredients_kitchen']['ingredient_name']
+
+    post :add_have_item, :item => {:name => 'eggs'}, :render => 'added'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Eggs', json['ingredient_name']
+    
+    get :have_list, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 2, json.count
+    assert_equal 'Eggs', json[0]['ingredients_kitchen']['ingredient_name']
+    assert_equal 'Milk', json[1]['ingredients_kitchen']['ingredient_name']
+    
+    post :remove_have_item, :item => {:name=> 'Eggs'}
     assert_response :success
     assert_equal '', response.body.strip
   end
@@ -88,10 +128,17 @@ class SettingsControllerTest < ActionController::TestCase
     json = JSON.parse(response.body)
     assert_equal 'Salt', json[0]['ingredients_kitchen']['ingredient_name']
 
-    post :add_like_item, :item => {:name => 'water'}, :render => 'added'
+    post :add_exclude_item, :item => {:name => 'water'}, :render => 'added'
     assert_response :success
     json = JSON.parse(response.body)
     assert_equal 'Water', json['ingredient_name']
+    
+    get :exclude_list, :render => 'json'
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 2, json.count
+    assert_equal 'Salt', json[0]['ingredients_kitchen']['ingredient_name']
+    assert_equal 'Water', json[1]['ingredients_kitchen']['ingredient_name']
     
     post :remove_like_item, :item => {:name=> 'water'}
     assert_response :success

@@ -76,10 +76,17 @@ RealMealz::Application.routes.draw do
   get "/settings/autocomplete_ingredient_name"
 	post "/settings/add_like_item"
 	post "/settings/remove_like_item"
+  post "/settings/add_have_item"
+  post "/settings/remove_have_item"
 	post "/settings/add_avoid_item"
 	post "/settings/remove_avoid_item"
 	post "/settings/add_exclude_item"
 	post "/settings/remove_exclude_item"
+	get "/settings/like_list"
+	get "/settings/avoid_list"
+	get "/settings/have_list"
+	get "/settings/exclude_list"
+	
   
   resources :recipes
   post "/recipes/recipe_setup"
