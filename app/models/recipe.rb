@@ -163,9 +163,7 @@ class Recipe < ActiveRecord::Base
   def food_balance
     self.updated_at = Time.now if self.updated_at.nil?
 
-    # MD Apr 2012. Something strange is happening on Heroku when comparing times and
-    # they return false. However, converting to integers before comparing seems to do the trick
-    unless self.balance_updated_at.to_i == self.updated_at.to_i
+    unless self.balance_updated_at == self.updated_at
       protein = Unit.new("0 cup")
       vegetable = Unit.new("0 cup")
       starch = Unit.new("0 cup")
@@ -203,8 +201,10 @@ class Recipe < ActiveRecord::Base
       self.balance_protein = protein.get_scalar
       self.balance_vegetable = vegetable.get_scalar
       self.balance_starch = starch.get_scalar
-      self.balance_updated_at = updated_at
       save!
+      
+      # MD Apr-2012. update_column doesn't update the updated_at field so this will set the times equal to each other
+      self.update_column(:balance_updated_at, self.updated_at)
     end
     return  {:protein => balance_protein, :vegetable => balance_vegetable, :starch => balance_starch} 
   end
