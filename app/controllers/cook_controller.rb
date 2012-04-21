@@ -15,7 +15,11 @@ class CookController < ApplicationController
       :balance_vegetable => recipe.balance_vegetable,
       :balance_starch => recipe.balance_starch,
       :balance_protein => recipe.balance_starch)
-    redirect_to :cook
+    if params['render'] == 'nothing'
+      render :nothing => true
+    else
+      redirect_to :cook
+    end
   end
   
 end

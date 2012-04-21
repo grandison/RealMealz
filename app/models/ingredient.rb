@@ -124,13 +124,16 @@ class Ingredient < ActiveRecord::Base
   end
   
   #------------------------- 
-  # Get all the ingredients, then sort by length - longest first. Cache this for performance
+  # Get all the ingredients, then sort by length - longest first. Cache this for performance except for test environment
   # Next go through all these ingredients and see if any match the ingredient line
   # If so, then go back to the DB and get the ingredient and then create and link the ingredient_recipe
   # Finally take out the ingredient from the line
   # 
   # Line should be downcased before entering
   def self.find_name_and_create(line)
+    if Rails.env.test?
+      @ingr_hash = nil
+    end
     @ingr_hash ||= Ingredient.create_hash_by_name_length
     ingr_index = @ingr_hash.index {|ingr| line.include?(ingr[:name])}
 

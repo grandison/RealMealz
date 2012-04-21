@@ -36,5 +36,11 @@ class CookControllerTest < ActionController::TestCase
     assert_equal 2, kitchen_balance[:protein], 'Protein'
     assert_equal 3, kitchen_balance[:starch], 'Starch'
   end
+  
+  test 'done cooking api' do
+    post :done_cooking, :recipe_id => @recipe.id, :render => 'nothing'
+    assert_response :success
+    assert_equal '', response.body.strip
+  end
 
 end
