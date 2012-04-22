@@ -30,6 +30,7 @@ RealMealz::Application.routes.draw do
 	get "/home/ping"
 	get "/home/sponsor" => "home#sponsor"
 	get "/home/recipes"
+	get"/home/welcome_practicefusion" 
 	
 	get "/reports" => 'reports#reports'
 	post "/reports/get_group_report" 

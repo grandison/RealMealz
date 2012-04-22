@@ -1,0 +1,79 @@
+<% @show_footer = true %>
+
+<!-- for debugging on connie's computer  
+	<body style="background-color: blue" ></body> -->
+	
+<div id="welcome-page-practice-fusion-box1" class="gray-background">
+	<h1><%= "Hi #{current_user.first} !" if current_user %> Welcome to the Practice Fusion + RealMealz Challenge. </h1>
+	<table id="welcome-page-table1"> 
+		<tr>
+			<td width="35%"> 	 	<!-- video -->
+				Our 5-minute tutorial video:
+				<object style="display:inline;"><param name="movie" value="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/WW7Jr-OeZr0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="300" height="200"></object>
+			</td>
+			<td class="gray-background">
+				<h4>Wellness Teams compete to win a Dinner Extravaganza, featuring Chefs Willard and Kwan. Here's how it works...</h4>	
+				<ol>
+				 	<li>Sign Up and Join a Practice Fusion Wellness Team. </li>
+				 	<li><a href="/discover">Discover</a> and cook 30 minute meals to accrue points for your Wellness Team now through May </li>
+				 	<li>Watch the Leaderboard and find out which team won on May 30th. </li>
+				</ol>
+				<form method="link" action="/discover" align="right">
+	  <input value="Start Cooking! >>>>" type="submit" class="orange-button" />
+  </form>
+			</td>
+		</tr>
+	</table>
+	<br> 
+<div class="fineprint">Ah yes, the fine print: Cooking points accrued anywhere counts.  So start cooking at work, at home, at parties, everywhere!  You may share your account login and password with your household so they can see your shopping lists and meal plans, and log cooking activities performed at home.  All points accrued on your RealMealz account before May 30th will be considered.  Points will be tallied across the entire wellness team. The team with the highest points wins.  Only team points will be shown on the Leaderboard. Chefs Paul Willard and Connie Kwan will plan and cook a delicious team dinner for the winning team.  Winners will be notified via email. </div>
+
+</div>
+<br><br>
+<div id="welcome-page-basic-equipment" class="gray-background">
+  <h2>Basic Kitchen Equipment: </h2>
+  <p>If you are brand new at cooking and your kitchen is not stocked, don't worry!  You don't need to spend a fortune to get started.  With the basic equipment and spices you can cook many recipes that we have.</p>
+
+
+<table id="table-things-you-need" class="gray-background">
+	<tr><td>
+			<h3>Basic Equipment (only 8):</h3><%= image_tag "basic_equipment.jpg", :class => "home-pics2" %> 
+			<br>These 8 pieces of equipment will cook most meals: 
+			<ol>
+				<li>A Good Knife</li>
+				<li>(optional) A Knife Honer</li>
+				<li>A Can Opener</li>
+				<li>A Cutting Board (Two recommended if you cook meat.  Keep one for preparing meat and the other for preparing cooked items and vegetables.)</li>
+				<li>A Basic Pot with Lid (Pot size depends on your family.  The pictured pot is good for 4 people </li>
+				<li>A Basic Saute Pan with Lid (Pan size depends on your family.  The pictured orange saute pan is good for 4 people.</li>
+				<li>A Collander</li>
+				<li>A Large Mixing Bowl</li>
+			</ol>
+		</td>
+		<td style="vertical-align: top;"><h3>Basic Spices (only 7):</h3>
+		  <%= image_tag "basic_pantry.jpg", :class => "home-pics2" %>
+			<br>These basic spices will give you a great start:
+			<ol>
+				<li>Salt</li>
+				<li>Pepper</li>
+				<li>Oregano (and/or leafy spices like Basil, Thyme and Parsley.) </li>
+				<li>Curry Powder</li>
+				<li>Soya Sauce (or Tamari for gluten-free)</li>
+				<li>Balsamic Vinegar (or try other vinegar flavors too.)</li>
+				<li>Olive Oil (use 'virgin' for dressings, and 'light' for cooking)</li>
+			</ol>
+			Optional: Save time by pre-mincing a batch of these common spices. Store them soaked in olive oil to keep them preserved for up to 4 weeks in the fridge:
+			<ol>
+				<li>Minced garlic</li>
+				<li>Minced ginger</li>
+				<li>Minced shallots</li>
+			</ol>
+			<form method="link" action="/discover" align="right">
+	 		  <input value="Start Cooking! >>>>" type="submit" class="orange-button" />
+  		</form>
+		</td>
+	</tr>
+</table>
+</div>
+<br>
+
+

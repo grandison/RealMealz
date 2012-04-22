@@ -319,12 +319,24 @@ body {
 }
 
 /** Welcome Page **/
+.fineprint{
+  font-size: 0.8em;
+  text-align: left;
+  text-decoration: italic;
+}
 #welcome-page-box1 {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	width: 830px;
 	height: 430px;
+}
+#welcome-page-practice-fusion-box1 {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 890px;
+  height: 430px;
 }
 
 #welcome-page-table1{
