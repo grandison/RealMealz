@@ -28,7 +28,7 @@
           <% if current_user.blank? 
               href = '/'
             else
-              href = '/home/welcome'
+              href = current_user.group_welcome_page
             end %>
           <a href="<%= href %>">
             <%= image_tag 'realmealz-logo-100px.png', :height => "100px" %>

@@ -69,7 +69,7 @@ class HomeControllerTest < ActionController::TestCase
     assert_select "#user_team_id option", :count => @teams.count
     
     post :add_team, :team_id => @teams[0].id
-    assert_redirected_to '/home/welcome'
+    assert_redirected_to "/home/welcome?id=#{@group.id}"
     
     users_team = UsersTeam.find_by_user_id(@user.id)
     assert !users_team.nil?, "UsersTeam should be created"

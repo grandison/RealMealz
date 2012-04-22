@@ -422,6 +422,14 @@ class User < ActiveRecord::Base
   def join_team(team_id)
     self.users_teams.create!(:team_id => team_id)
   end  
+  
+  def group_welcome_page
+    if self.groups.count == 0
+      '/home/welcome'
+    else
+      "/home/welcome?id=#{self.groups.last.id}"
+    end
+  end
 
   ##################################
   # Class methods

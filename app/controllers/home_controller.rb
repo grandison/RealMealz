@@ -6,8 +6,19 @@ class HomeController < ApplicationController
     @background_recipe = Recipe.random_background_image
   end
   
+  # MD Apr-2012. If there is an id parameter and that group has a welcome_page, show that otherwise show the default one
   def welcome
     @background_recipe = Recipe.random_background_image
+    welcome_page = nil
+    if params['id'] 
+      group = Group.find(params['id'])
+      if group
+        welcome_page = group.welcome_page
+      end  
+    end  
+    unless welcome_page.blank?
+      render welcome_page
+    end  
   end
 
   def about_us
@@ -57,7 +68,7 @@ class HomeController < ApplicationController
     group = current_user.groups.first
     @group_teams = Team.where(:group_id => group.id)
     if @group_teams.blank?
-      redirect_to '/home/welcome'
+      redirect_to current_user.group_welcome_page
     else
       @background_recipe = Recipe.random_background_image
     end
@@ -65,7 +76,7 @@ class HomeController < ApplicationController
   
   def add_team
     current_user.join_team(params[:team_id])
-    redirect_to '/home/welcome'
+    redirect_to current_user.group_welcome_page
   end
   
   def recipes
