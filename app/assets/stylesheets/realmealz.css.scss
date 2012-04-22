@@ -1141,19 +1141,15 @@ body {
 }
 
 /** Home **/
-#home-signup-padding {
-  padding-bottom: 20px;
-}
-
 #home-signup {
   margin: 0px auto;
-  width: 350px;
+  width: 390px;
 }
 
 #home-signup input[type=text],
 #home-signup input[type=email],
 #home-signup input[type=password] {
-  width: 344px;
+  width: 100%;
 }
 
 #home-signup .disabled {
@@ -1166,6 +1162,11 @@ body {
   text-decoration:underline;
   padding: 10px;
   text-align: center;
+}
+
+#home-select-team {
+  margin: 0px auto;
+  width: 250px;
 }
 
 #home-downloads {

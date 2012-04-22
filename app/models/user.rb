@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
   has_many :ingredients, :through => :users_ingredients
   has_many :users_points
   has_many :points, :through => :users_points
+  has_many :users_groups
+  has_many :groups, :through => :users_groups
   has_many :users_teams
   has_many :teams, :through => :users_teams
 
@@ -39,7 +41,13 @@ class User < ActiveRecord::Base
 
   validates_presence_of :first, :last, :email
   validates_uniqueness_of :email
+  validate :valid_invite_code
 
+  #--------------------------------
+  def valid_invite_code
+    errors.add(:invite_code, "'#{invite_code}' is not valid") unless invite_code.blank? || InviteCode.check_code(invite_code)
+  end
+  
   #--------------------------------
   # Pass ingredient name or id. Will create kitchen ingredient if needed
   # Set like or avoid in the attributes: :like => true, :avoid => false
@@ -399,6 +407,21 @@ class User < ActiveRecord::Base
     reset_perishable_token!
     SiteMailer.password_reset_instructions(self).deliver!
   end
+  
+  #--------------------------------
+  # MD Apr-2012. The invite code was already checked when the user was created, so let it bomb here if not found
+  # However, still use check_code because it downcases before retrieving
+  def join_group(invite_code)
+    invite = InviteCode.check_code(invite_code)
+    self.users_groups.create!(:invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
+  end      
+
+  #--------------------------------
+  # MD Apr-2012. There is no error checking here to make sure that they belong
+  # to the group that this team belongs to since this should have already been done
+  def join_team(team_id)
+    self.users_teams.create!(:team_id => team_id)
+  end  
 
   ##################################
   # Class methods
@@ -435,7 +458,7 @@ class User < ActiveRecord::Base
     end  
     
     # MD Apr-2012 Disable invite code for now
-    #invite = InviteCode.check_code(saved[:invite_code])
+    #
     #if invite.nil?  
     #  user.errors.add(:invite_code, 'invalid')
     #  return user
@@ -446,8 +469,7 @@ class User < ActiveRecord::Base
       user.save!
       user.create_kitchen_if_needed
       user.update_basic_allergy_list(saved[:allergies])
-      # MD Apr-2012 UsersGroup.create!(:user_id => user.id, :invite_code_id => invite.id, :group_id => invite.group_id, :join_date => Date.today)
-      # MD Apr-2012 UsersTeam.create!(:user_id => user.id, :team_id => user.team_id) if user.team_id
+      user.join_group(saved[:invite_code]) if saved[:invite_code]
     end
     return user
   end

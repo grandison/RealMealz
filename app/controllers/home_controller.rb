@@ -36,35 +36,40 @@ class HomeController < ApplicationController
     @background_recipe = Recipe.random_background_image
   end
 
-  def check_invite_code
-    invite_code = InviteCode.check_code(params[:user][:invite_code])
-    unless invite_code.nil?
-      group_teams = Team.where(:group_id => invite_code.group_id)
-      if group_teams.empty?
-        render :json => {:found => true}
-      else
-        render :json => {:found => true, :html => render_to_string(:partial => 'select_team', :locals => {:group_teams => group_teams})}
-      end
-    else
-      render :json => {:found => false}
-    end
-  end
-  
   def create_user
     @user = User.create_with_saved(params[:user], session[:temporary_user_id]) 
     if @user.errors.empty?
       sign_in(@user)
-      redirect_to '/home/welcome'
+      if @user.invite_code.present?
+        redirect_to '/home/select_team'
+      else
+        redirect_to '/home/welcome'
+      end
     else
       @background_recipe = Recipe.random_background_image
       render :action => :sign_up
     end
   end
   
+  # MD Apr-2012. users can belong to more than one group. However, since they just signed up they will only belong
+  # to one group at this point
+  def select_team
+    group = current_user.groups.first
+    @group_teams = Team.where(:group_id => group.id)
+    if @group_teams.blank?
+      redirect_to '/home/welcome'
+    else
+      @background_recipe = Recipe.random_background_image
+    end
+  end
+  
+  def add_team
+    current_user.join_team(params[:team_id])
+    redirect_to '/home/welcome'
+  end
+  
   def recipes
     # Put the db call in the view so it isn't done when pulling from the cache 
   end
-  
-
   
 end

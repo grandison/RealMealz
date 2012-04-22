@@ -50,8 +50,8 @@ class PointsTest < ActionDispatch::IntegrationTest
   end
   
   test 'points table setup' do
-    sum = Point.all.inject(0) {|sum, p| sum + p.points }
-    assert_equal 114, sum
+    point_sum = Point.all.inject(0) {|sum, p| sum + p.points }
+    assert_equal 114, point_sum
   end
   
   test 'max points' do
@@ -66,7 +66,7 @@ class PointsTest < ActionDispatch::IntegrationTest
     group = Group.create!(:name => 'Cooking class group')
     InviteCode.create!(:invite_code => 'cookingclass', :group_id => group.id)  
     post '/home/create_user', :user => {:invite_code => 'cookingclass', :first => 'Betty', :last => 'Baker', :email => 'cook@gmail.com', :password => 'password', :password_confirmation => 'password'}
-    assert_redirected_to '/home/welcome'
+    assert_redirected_to '/home/select_team'
     user = User.find_by_email('cook@gmail.com')
     assert_equal 15, user.get_points   
   end

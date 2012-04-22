@@ -19,6 +19,8 @@ RealMealz::Application.routes.draw do
   get "/home/sign_up"
   post "/home/sign_up"
   post "/home/create_user"
+  get "/home/select_team"
+  post "/home/add_team"
   get "/home/welcome"
   get "/home/terms_of_service"
 	get "/home/privacy_policy"
@@ -34,7 +36,6 @@ RealMealz::Application.routes.draw do
 	get "/leaderboard" => 'reports#leaderboard'
 
 	get "/home/downloads"
-	post "/home/check_invite_code"
 
   get '/learn' => 'learn#learn'
   
