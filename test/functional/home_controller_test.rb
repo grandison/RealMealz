@@ -3,7 +3,8 @@ require 'test_helper'
 class HomeControllerTest < ActionController::TestCase
 
   def setup
-    @user = User.create!(:first => 'Max', :last => 'Dunn', :email => 'max@mail.com', :password => 'password', :password_confirmation => 'password')
+    @user = User.create!(:first => 'Max', :last => 'Dunn', :email => 'max@mail.com', 
+    :password => 'password', :password_confirmation => 'password', :invite_code => '')
     @kitchen = Kitchen.create!(:name => 'Dunn Kitchen', :default_servings => 4)
     @user.kitchen = @kitchen
     @user.save!
@@ -16,7 +17,7 @@ class HomeControllerTest < ActionController::TestCase
     @invite_code = InviteCode.create!(:invite_code => 'cookingclass', :group_id => @group.id)
 
     @new_user_params = {:user => {:first => 'Betty', :last => 'Baker', :email => 'cook@gmail.com', 
-    :password => 'password', :password_confirmation => 'password'}}
+    :password => 'new_password', :password_confirmation => 'new_password', :invite_code => ''}}
   end
   
   test 'signup bad invite code' do
@@ -89,6 +90,66 @@ class HomeControllerTest < ActionController::TestCase
     user = User.find_by_email(params[:user][:email])
     users_team = UsersTeam.find_by_user_id(user.id)
     assert users_team.nil?, "UsersTeam created incorrectly"
+  end
+  
+  test 'edit user' do
+    sign_in(@user)
+    get :edit_user
+    assert_response :success
+    assert_select "#user_first[value='#{@user.first}']"
+    assert_select "#user_last[value='#{@user.last}']"
+    assert_select "#user_email[value='#{@user.email}']"
+  end
+  
+  test 'update user' do
+    sign_in(@user)
+    post :update_user, @new_user_params
+    assert_equal "Account information updated successfully", flash[:notice]
+    assert_redirected_to '/home/welcome'
+    user_params = @new_user_params[:user]
+    assert_equal user_params[:first], current_user.first
+    assert_equal user_params[:last], current_user.last
+    assert_equal user_params[:email], current_user.email
+    
+    # Check that password was changed
+    sign_out
+    user_session = UserSession.create(:email => user_params[:email], :password => user_params[:password])
+    assert_equal user_session.user.email, user_params[:email]
+  end
+
+  test 'update user no password change' do
+    sign_in(@user)
+    user_params = @new_user_params[:user]
+    user_params.delete(:password)
+    user_params.delete(:password_confirmation)
+    post :update_user, :user => user_params
+    assert_redirected_to '/home/welcome'
+    assert_equal user_params[:email], current_user.email
+    
+    # Check that password was not changed
+    sign_out
+    user_session = UserSession.create!(:email => user_params[:email], :password => 'password')
+    assert_equal user_session.user.email, user_params[:email]
+  end
+  
+  test 'update user with invite code' do
+    sign_in(@user)
+    user_params = @new_user_params[:user]
+    user_params.delete(:password)
+    user_params.delete(:password_confirmation)
+    user_params[:invite_code] = @invite_code[:invite_code]
+    post :update_user, :user => user_params 
+    assert_redirected_to '/home/select_team'
+    assert_equal @group[:name], current_user.groups.first.name
+  end
+  
+  test 'update user with bad invite code' do
+    sign_in(@user)
+    user_params = @new_user_params[:user]
+    user_params[:invite_code] = 'bad_invite_code'
+    post :update_user, :user => user_params
+    assert_response :success
+    assert_equal ["'bad_invite_code' is not valid"], assigns[:user].errors[:invite_code]
   end
   
   test 'logo redirect index' do

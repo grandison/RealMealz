@@ -1,0 +1,11 @@
+#track-team-points
+  %h1 
+    = "#{@group.name} Team Information"
+  %table#track-team-table.gray-background
+    %tr
+      %th#track-team-first-column Team Name
+      %th Points
+    - @group.teams.each do |team|
+      %tr
+        %td= team.name
+        %td= team.points

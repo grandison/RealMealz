@@ -2,11 +2,11 @@
 
 <div id="home-select-team" class="gray-background">
   <div class="gray-background">
-    <h1>Select Team</h1>
+    <h1>Select a Team</h1>
 
   <%= form_tag :action => 'add_team' do |f| %>
 
-      <p><%= label :user, :team_id, 'Team' %><br />
+      <p><%= label :user, :team_id, "#{@group.name} Teams" %><br />
       <%= select(:user, :team_id, options_from_collection_for_select(@group_teams, :id, :name), 
         { :include_blank => false, :index => nil }) %></p>
   

@@ -1469,6 +1469,7 @@ body {
 	border: 0px;
 	border-spacing: 0px;
 }
+
 #track-table td {
 	vertical-align: top;
 }
@@ -1513,6 +1514,20 @@ body {
 }
 #points-table-occurences{
 	width: 30%;
+}
+
+#track-team-points {
+}
+
+#track-team-table table {
+  width: 100%;
+  padding: 0px;
+  border: 0px;
+  border-spacing: 0px;
+}
+
+#track-team-first-column {
+  width: 95%
 }
 
 /** Settings **/

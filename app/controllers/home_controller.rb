@@ -1,14 +1,15 @@
 class HomeController < ApplicationController
 
   skip_before_filter :require_super_admin
+  before_filter :require_user, :except => [:index, :welcome, :about_us, :privacy_policy, :terms_of_service, :downloads, 
+  :faq, :sponsor, :ping, :sign_up, :create_user, :recipes]
+  before_filter :background_recipe, :except => :recipes # MD Apr-2012. For performance, don't include :recipes
   
   def index
-    @background_recipe = Recipe.random_background_image
   end
   
   # MD Apr-2012. If there is an id parameter and that group has a welcome_page, show that otherwise show the default one
   def welcome
-    @background_recipe = Recipe.random_background_image
     welcome_page = nil
     if params['id'] 
       group = Group.find(params['id'])
@@ -22,19 +23,21 @@ class HomeController < ApplicationController
   end
 
   def about_us
-    @background_recipe = Recipe.random_background_image
   end
 
   def privacy_policy
-    @background_recipe = Recipe.random_background_image
   end
   
   def terms_of_service
-    @background_recipe = Recipe.random_background_image
   end
   
   def downloads
-    @background_recipe = Recipe.random_background_image
+  end
+
+  def faq
+  end
+
+  def sponsor
   end
 
   def ping
@@ -45,9 +48,8 @@ class HomeController < ApplicationController
     sign_out
     @user = User.new
     @user.invite_code = params[:invite_code]
-    @background_recipe = Recipe.random_background_image
   end
-
+  
   def create_user
     @user = User.create_with_saved(params[:user], session[:temporary_user_id]) 
     if @user.errors.empty?
@@ -58,20 +60,47 @@ class HomeController < ApplicationController
         redirect_to '/home/welcome'
       end
     else
-      @background_recipe = Recipe.random_background_image
       render :action => :sign_up
     end
   end
   
+  def recipes
+    # Put the db call in the view so it isn't done when pulling from the cache 
+  end
+  
+  #############
+  # Below here, users must be logged in
+  #############
+    
+  def edit_user
+    @user = current_user
+  end
+
+  def update_user
+    @user = current_user
+    @user.update_and_join_group(params[:user])
+    
+    if @user.errors.empty?
+      sign_in_direct(@user)
+      flash[:notice] = 'Account information updated successfully'
+      if @user.invite_code.present?
+        redirect_to '/home/select_team'
+      else
+        redirect_to '/home/welcome'
+      end
+    else
+      render :action => :edit_user
+    end
+  end
+  
+
   # MD Apr-2012. users can belong to more than one group. However, since they just signed up they will only belong
   # to one group at this point
   def select_team
-    group = current_user.groups.first
-    @group_teams = Team.where(:group_id => group.id)
+    @group = current_user.groups.first
+    @group_teams = Team.where(:group_id => @group.id)
     if @group_teams.blank?
       redirect_to current_user.group_welcome_page
-    else
-      @background_recipe = Recipe.random_background_image
     end
   end
   
@@ -80,8 +109,12 @@ class HomeController < ApplicationController
     redirect_to current_user.group_welcome_page
   end
   
-  def recipes
-    # Put the db call in the view so it isn't done when pulling from the cache 
+  #########
+  # private
+  #########
+  
+  def background_recipe
+    @background_recipe = Recipe.random_background_image
   end
   
 end

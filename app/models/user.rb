@@ -423,12 +423,24 @@ class User < ActiveRecord::Base
     self.users_teams.create!(:team_id => team_id)
   end  
   
+  #--------------------------------
   def group_welcome_page
     if self.groups.count == 0
       '/home/welcome'
     else
       "/home/welcome?id=#{self.groups.last.id}"
     end
+  end
+  
+  #--------------------------------
+  def update_and_join_group(params)
+    if params[:password].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation)
+    end
+    if self.update_attributes(params)
+      self.join_group(params[:invite_code]) unless params[:invite_code].blank?
+    end  
   end
 
   ##################################
@@ -465,13 +477,6 @@ class User < ActiveRecord::Base
       user = User.new(saved)
     end  
     
-    # MD Apr-2012 Disable invite code for now
-    #
-    #if invite.nil?  
-    #  user.errors.add(:invite_code, 'invalid')
-    #  return user
-    #end
-
     if user.save
       user.role = 'kitchen_admin'
       user.save!

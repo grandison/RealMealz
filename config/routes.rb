@@ -17,8 +17,10 @@ RealMealz::Application.routes.draw do
   get "/home/login" => "home#index" # This link was sent out in a flyer
   get "/login" => "home#index" # This too
   get "/home/sign_up"
-  post "/home/sign_up"
+  post "/home/sign_up" # MD Apr-2012. Not sure why this is here?
   post "/home/create_user"
+  get "/home/edit_user"
+  put "/home/update_user"
   get "/home/select_team"
   post "/home/add_team"
   get "/home/welcome"

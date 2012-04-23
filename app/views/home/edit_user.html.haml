@@ -1,0 +1,35 @@
+-# MD Apr-2012. Similar code in sign_up.html.haml 
+
+- @show_footer = true
+#home-signup.gray-background
+  .gray-background
+    %h1 Edit My Account
+    = form_for(@user, :url => '/home/update_user') do |f|
+      = f.error_messages
+      #home-signup-info{:style => "display: block"}
+        %p
+          = f.label :first
+          %br/
+          = f.text_field :first
+        %p
+          = f.label :last
+          %br/
+          = f.text_field :last
+        %p
+          = f.label :email
+          %br/
+          = f.email_field :email
+        %p
+          = f.label :password, 'Password (Leave blank unless changing)'
+          %br/
+          = f.password_field :password
+        %p
+          = f.label :password_confirmation
+          %br/
+          = f.password_field :password_confirmation
+        %p
+          = f.label :invite_code, '(If you have an invite code, enter it here)'
+          %br/
+          = f.text_field :invite_code, :id => 'home-signup-invite'
+        %p
+          %input.gray-button{:type => "submit", :value => "Update"}
