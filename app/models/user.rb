@@ -477,7 +477,7 @@ class User < ActiveRecord::Base
       user.save!
       user.create_kitchen_if_needed
       user.update_basic_allergy_list(saved[:allergies])
-      user.join_group(saved[:invite_code]) if saved[:invite_code]
+      user.join_group(saved[:invite_code]) unless saved[:invite_code].blank?
     end
     return user
   end
