@@ -43,7 +43,8 @@ class HomeController < ApplicationController
 
   def sign_up
     sign_out
-    @user = User.new(params[:user])
+    @user = User.new
+    @user.invite_code = params[:invite_code]
     @background_recipe = Recipe.random_background_image
   end
 
