@@ -8,7 +8,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
   SPECIAL_PATHS = [
     {:path => 'GET/', :sign_in_required => false}, 
     {:path => 'GET/home', :sign_in_required => false}, 
-    {:path => 'POST/home/create_user', :sign_in_required => false, :redirect_to => '/home/welcome'},
+    {:path => 'POST/home/create_user', :sign_in_required => false, :redirect_to => '/home/select_team'},
     {:path => 'GET/home/sign_up', :sign_in_required => false},
     {:path => 'POST/home/sign_up', :sign_in_required => false, :sign_out_required => true},
     {:path => 'GET/home/about_us', :sign_in_required => false},
@@ -75,6 +75,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
       klass.delete_all
       obj = klass.new
       obj.id = 1
+      obj.crypted_password = 'satisfy not null' if obj.class == User
       obj.save(:validate => false)
       ActiveRecord::Base.connection.reset_pk_sequence!(klass.table_name)  if ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
     end
@@ -222,7 +223,10 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     # Also delete the /assets path
     extra_paths = %W[new_existing edit_associated add_association destroy_existing add_existing update_column render_field]
     extra_paths += %W[jstest klass(/:klass) assets]
-    routes.delete_if {|r| extra_paths.find_index {|s| r[:path_template].include?(s)} } 
+    routes.delete_if {|r| extra_paths.find_index {|s| r[:path_template].include?(s)} }
+    
+    # Delete redirected routes 
+    routes.delete_if {|r| r['controller.nil'].nil? && r['action'].nil? }
 
     # Fixup path to take out variable parts, assign the name and add any special path information
     routes.each do |r| 
@@ -243,6 +247,7 @@ class AuthorizationTest < ActionDispatch::IntegrationTest
     last_name = ''
     index = 0
     while index < routes.length
+    
       this_name = routes[index][:name]
       if last_name == this_name
         routes.delete_at(index)

@@ -28,7 +28,7 @@
           <% if current_user.blank? 
               href = '/'
             else
-              href = '/home/welcome'
+              href = current_user.group_welcome_page
             end %>
           <a href="<%= href %>">
             <%= image_tag 'realmealz-logo-100px.png', :height => "100px" %>
@@ -45,8 +45,8 @@
           
           <div id="flash-div">
             <% msg = nil %>
-            <% if flash[:error] then msg = flash[:error]; name = 'error' end
-               if flash[:notice] then msg = flash[:error]; name = 'notice' end %>
+            <% if flash[:error] then msg = flash[:error]; name = 'error'
+               elsif flash[:notice] then msg = flash[:notice]; name = 'notice' end %>
             <% if msg.present?  %>
               <%= content_tag(:span, msg, {:id => "flash-#{name}", :class => 'flash'}) %>
             <% end %>

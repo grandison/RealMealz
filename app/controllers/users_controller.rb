@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user])
       UserSession.create(@user) if Rails.env.test? # If doing test, we turn off automatic login so do it here
       flash[:notice] = "Account updated!"
-      redirect_to '/home/welcome'
+      redirect_to current_user.group_welcome_page
     else
       render :action => :edit
     end
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user].merge({:active => true}))
       @user.reset_perishable_token!
       flash[:notice] = "Successfully reset password."
-      redirect_to "/home/welcome"
+      redirect_to @user.group_welcome_page
     else
       flash[:error] = "There was a problem resetting your password."
       render :action => :reset_password

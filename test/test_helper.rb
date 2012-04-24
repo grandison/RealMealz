@@ -13,12 +13,18 @@ class ActiveSupport::TestCase
   # controller to create a UserSession
   def sign_in(user)
     UserSession.create(user)
-    @current_user_session = nil
-    @current_user = nil
+  end
+  
+  def sign_out
+    UserSession.find.destroy
   end
   
   def signed_in?
     UserSession.find
+  end
+  
+  def current_user
+    UserSession.find.user
   end
 
 end

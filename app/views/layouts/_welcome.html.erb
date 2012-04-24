@@ -1,6 +1,6 @@
 <div id="welcome">
   <% if current_user %>
-    Welcome, <a href='/users/edit'><%= "#{current_user.first} #{current_user.last}" %>! </a>| 
+    Welcome, <a href='/home/edit_user'><%= "#{current_user.first} #{current_user.last}" %>! </a>| 
     <% if current_user.email =~ /temp_(.*)@email.com/i  %>
 			<span id="login"><%= link_to("Login", user_session_path, :method => :delete) %></span>
 		<% else %>
