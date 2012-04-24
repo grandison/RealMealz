@@ -11,6 +11,7 @@ RealMealz::Application.routes.draw do
   match "/googleplus" => redirect("http://gplus.to/RealMealz")
   match "/fb" => redirect("http://www.facebook.com/RealMealz")
   match "/facebook" => redirect("http://www.facebook.com/RealMealz")  
+  match "/blog" => redirect("http://blog.realmealz.com")
   
   ## RealMealz pages
   get '/home' => "home#index"
