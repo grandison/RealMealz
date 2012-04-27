@@ -31,7 +31,7 @@ RealMealz::Application.routes.draw do
 	get "/home/faq"
 	get "home/login" => "home#index"
 	get "/home/ping"
-	get "/home/sponsor" => "home#sponsor"
+	get "/home/host" => "home#host"
 	get "/home/recipes"
 	
 	get "/reports" => 'reports#reports'
