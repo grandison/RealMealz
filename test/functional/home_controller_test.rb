@@ -69,12 +69,20 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
     assert_select "#user_team_id option", :count => @teams.count
     
-    post :add_team, :team_id => @teams[0].id
+    post :add_team, :user => {:team_id => @teams[0].id}
     assert_redirected_to "/home/welcome?id=#{@group.id}"
     
     users_team = UsersTeam.find_by_user_id(@user.id)
     assert !users_team.nil?, "UsersTeam should be created"
     assert_equal @teams.first.id, users_team.team_id
+    assert_equal @group.name, users_team.group.name
+    
+    # Now change the team and make sure there is only one record
+    post :add_team, :user => {:team_id => @teams[1].id}
+    assert_equal 1, UsersTeam.count
+    users_team = UsersTeam.find_by_user_id(@user.id)
+    assert_equal @teams[1].id, users_team.team_id
+    assert_equal @group.name, users_team.group.name
   end
   
   test 'signup no team' do

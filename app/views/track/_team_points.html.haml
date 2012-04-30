@@ -5,7 +5,11 @@
     %tr
       %th#track-team-first-column Team Name
       %th Points
-    - @group.teams.each do |team|
+    - @group.teams.sort_by{|team| -team.points}.each do |team|
       %tr
-        %td= team.name
+        %td
+          = team.name
+          - if team == @my_team
+            %b
+              (My Team!)  
         %td= team.points

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120422215455) do
+ActiveRecord::Schema.define(:version => 20120430174400) do
 
   create_table "allergies", :force => true do |t|
     t.string  "name"
@@ -339,6 +339,7 @@ ActiveRecord::Schema.define(:version => 20120422215455) do
     t.integer  "user_id"
     t.integer  "team_id"
     t.datetime "created_on"
+    t.integer  "group_id"
   end
 
 end

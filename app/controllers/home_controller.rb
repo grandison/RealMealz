@@ -105,7 +105,7 @@ class HomeController < ApplicationController
   end
   
   def add_team
-    current_user.join_team(params[:team_id])
+    current_user.join_team(params[:user][:team_id])
     redirect_to current_user.group_welcome_page
   end
   

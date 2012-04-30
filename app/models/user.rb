@@ -417,10 +417,19 @@ class User < ActiveRecord::Base
   end      
 
   #--------------------------------
-  # MD Apr-2012. There is no error checking here to make sure that they belong
-  # to the group that this team belongs to since this should have already been done
+  # MD Apr-2012. The user should already belong to this group.
+  # So first, find the group 
+  # Then, check they are already in a team in this group, (or a nil group because of an earlier bug) 
+  # If so, just update the record because they are changing teams
+  # Otherwise, add a new users_teams record
   def join_team(team_id)
-    self.users_teams.create!(:team_id => team_id)
+    group = Team.find(team_id).group
+    users_team = self.users_teams.where('group_id = ? OR group_id IS NULL', group.id).first
+    if users_team
+      users_team.update_attributes!(:team_id => team_id, :group_id => group.id)
+    else
+      self.users_teams.create!(:team_id => team_id, :group_id => group.id)
+    end
   end  
   
   #--------------------------------
@@ -442,7 +451,7 @@ class User < ActiveRecord::Base
       self.join_group(params[:invite_code]) unless params[:invite_code].blank?
     end  
   end
-
+  
   ##################################
   # Class methods
   ##################################

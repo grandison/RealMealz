@@ -8,6 +8,12 @@ class UserTest < ActiveSupport::TestCase
     @user.kitchen_id = @kitchen.id
     @user.role = 'kitchen_admin'
     @user.save!
+    
+    @group1 = Group.create!(:name => "Barbara's Cooking Class")
+    @group2 = Group.create!(:name => "Cisco Employee Challenge")
+    @team10 = Team.create(:name => 'Cooking Clowns', :group_id => @group1.id)
+    @team11 = Team.create(:name => 'Sauteeing Supremes', :group_id => @group1.id)
+    @team20 = Team.create(:name => 'Router Raiders', :group_id => @group2.id)
   end
 
   test "get favorite recipes" do
@@ -136,6 +142,22 @@ class UserTest < ActiveSupport::TestCase
 
     @user.update_basic_allergy_list(['gluten', 'beechnut'])
     assert_equal ['beechnut', 'gluten', 'wheat'], @user.get_allergy_names.sort
+  end
+  
+  test "join team" do
+    sign_in(@user)
+    @user.join_team(@team10.id)
+    assert_equal @team10.name, @user.teams.first.name
+
+    # If joining another team in the same group, should just update the team    
+    @user.join_team(@team11.id)
+    assert_equal @team11.name, @user.teams.first.name
+    assert_equal 1, @user.teams.count
+
+    # If joining a team in another group, should add a new record    
+    @user.join_team(@team20.id)
+    assert_equal @team20.name, @user.teams[1].name
+    assert_equal 2, @user.teams.count
   end
 
 end

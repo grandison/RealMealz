@@ -52,7 +52,7 @@ module RealMealz
     config.colorize_logging = false
     
     # Custom configuration
-    config.action_mailer.default_url_options = { :host => 'beta.realmealz.com' }
+    config.action_mailer.default_url_options = { :host => 'www.realmealz.com' }
     config.action_mailer.smtp_settings = {
       :address => "smtp.gmail.com",
       :port => 587,
