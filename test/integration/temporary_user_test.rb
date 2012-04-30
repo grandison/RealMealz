@@ -40,8 +40,6 @@ class TemporaryUserTest < ActionDispatch::IntegrationTest
     assert_equal 1, User.count
     get '/home/downloads'
     assert_equal 1, User.count
-    get '/home/sponsor'
-    assert_equal 1, User.count
     get '/home/ping'
     assert_equal 1, User.count
     get '/home/login'
