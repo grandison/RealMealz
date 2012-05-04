@@ -196,10 +196,10 @@ class User < ActiveRecord::Base
         rh[:scores][:ingr_like] = 10 if like_ingredient_ids.include?(ih[:id])
       
         # Add 100 if filtering and matches ingredient
-        rh[:scores][:ingr_have] = 100 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
+        rh[:scores][:ingr_have] = 1000 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
       
-        # Subtract 40 if in avoid
-        rh[:scores][:avoid] = -40 if avoid_ingredient_ids.include?(ih[:id])
+        # Subtract 1000 if in avoid
+        rh[:scores][:avoid] = -50000 if avoid_ingredient_ids.include?(ih[:id])
       
         # Allergies currently not used, so comment out for now
         # Subtract 100 if in allergy
@@ -208,7 +208,7 @@ class User < ActiveRecord::Base
         #  allergy_ingredient_ids.include?(ih[:allergen3_id])
         
         # Add 100 if search matches ingredient
-        rh[:scores][:ingr_search] = 100 if rh[:ingredients].index {|i| ih[:other_names].include?(search_for)} unless search_for.blank?
+        rh[:scores][:ingr_search] = 1000 if rh[:ingredients].index {|i| ih[:other_names].include?(search_for)} unless search_for.blank?
       end
       
       meal = kitchen_meals.find {|m| m.recipe_id == rh[:id]}
@@ -238,7 +238,7 @@ class User < ActiveRecord::Base
       rh[:scores][:seen] = -500 if recipe_ids_shown.include?(rh[:id])
       
       # Add 300 if search is in title      
-      rh[:scores][:title_search] = 300 if rh[:name].downcase.include?(search_for) unless search_for.blank?
+      rh[:scores][:title_search] = 5000 if rh[:name].downcase.include?(search_for) unless search_for.blank?
     
       # Add some variability unless testing
       rh[:scores][:random] = rand(30).to_i unless Rails.env.test?
