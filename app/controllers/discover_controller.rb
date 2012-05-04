@@ -39,7 +39,7 @@ class DiscoverController < ApplicationController
     if params[:no_changes]
       @recipes = []
       5.times do 
-        recipe_id = session[:next_recipe_ids].shift
+        recipe_id = session[:next_recipe_ids] && session[:next_recipe_ids].shift
         break if recipe_id.nil?
         @recipes << Recipe.find(recipe_id) #TO-DO deal with no more recipes
       end
