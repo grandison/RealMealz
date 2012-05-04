@@ -193,10 +193,10 @@ class User < ActiveRecord::Base
       
       rh[:ingredients].each do |ih|
         # Add 10 for each like ingredient
-        rh[:scores][:ingr_like] = 10 if like_ingredient_ids.include?(ih[:id])
+        rh[:scores][:ingr_like] = 1000 if like_ingredient_ids.include?(ih[:id])
       
         # Add 100 if filtering and matches ingredient
-        rh[:scores][:ingr_have] = 1000 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
+        rh[:scores][:ingr_have] = 5000 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
       
         # Subtract 1000 if in avoid
         rh[:scores][:avoid] = -50000 if avoid_ingredient_ids.include?(ih[:id])
