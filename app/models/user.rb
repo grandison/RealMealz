@@ -198,7 +198,7 @@ class User < ActiveRecord::Base
         # Add 100 if filtering and matches ingredient
         rh[:scores][:ingr_have] = 100 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
       
-        # Subtract 20 if in avoid
+        # Subtract 40 if in avoid
         rh[:scores][:avoid] = -40 if avoid_ingredient_ids.include?(ih[:id])
       
         # Allergies currently not used, so comment out for now
