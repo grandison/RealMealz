@@ -175,10 +175,16 @@ function setup_scroll(sel, useHeight) {
   });
 };
 
+function replaceHistory(url) {
+  if(window.history && history.pushState) {
+    window.history.replaceState('Object', 'Title', url);
+  }
+}
+
 function setup_background_image(sel) {
   /* When users click on picture, change the background image and url */
   $(sel).click(function() {
-    window.history.replaceState('Object', 'Title', '/discover/recipe/' +  $(this).attr('recipe-id') + '/' +  $(this).attr('recipe-name'));
+    replaceHistory('/discover/recipe/' +  $(this).attr('recipe-id') + '/' +  $(this).attr('recipe-name'));
     $('body').css('background-image', 'url(' + $(this).attr('recipe-pic') + ')'); 
   });
 

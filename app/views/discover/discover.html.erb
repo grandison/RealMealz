@@ -226,7 +226,7 @@ function mycarousel_itemVisibleInCallbackAfterAnimation(carousel, item, idx, sta
   var recipeId = $discoverRecipe.attr('recipe-id')
   var recipeName = $discoverRecipe.attr('recipe-name')
   setupDetailScroll($discoverDetailScroll);
-  window.history.replaceState('Object', 'Title', '/discover/recipe/' + recipeId + '/' + recipeName);
+  replaceHistory('/discover/recipe/' + recipeId + '/' + recipeName);
   $.post('/discover/recipe_shown', 'recipe_id=' + recipeId);
 };
 
