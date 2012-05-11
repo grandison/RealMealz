@@ -1,0 +1,106 @@
+<div id="target-VPG" title="Set Target VPG" style="display:none">
+			
+			<div class="food-balance-future-mini" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div>
+			<%= form_tag("/track/save_food_balance", :method => "post", :name => "food-balance-future-form") do %>	
+				<p><label>Vegetables and Fruits: </label><input id="food-balance-future-vegetable" name="newveg" type="text" style="width: 20px;" value="<%= @target_food_balance[:vegetable]%>" /></p>
+				
+				<p><label>Proteins: </label><input id="food-balance-future-protein" name="newprotein" type="text" style="width: 20px;" value="<%= @target_food_balance[:protein]%>" /></p>
+				
+				<p><label>Grains: </label><input id="food-balance-future-starch" name="newstarch" type="text" style="width: 20px;" value="<%= @target_food_balance[:starch]%>" /></p>
+				<p><input value="Save" type="submit" class="gray-button" /></p>
+			<% end %>
+		</td>
+		
+</div>
+		
+<table id="track-table">
+	<tr>
+		<!-- Food balance  -->
+		<td class="track-vpg-column gray-background">
+		<h1>VPG (Vegetable-Protein-Grain Balance)</h1>	
+		A balanced meal is very important. Set your balance target here and compare it with what you cook. Proteins includes all meats, cheeses, tofu and beans. Grains include all carbohydrates and starch foods. 
+		<br><br>
+
+		<table id="VPG-table">
+			<tr>
+				<td id="track-VPG">
+				Summary of Current Month:
+				<div id="food-balance-now" style="width: 100%; height: 280px" class="food-balance-now" protein="<%= @food_balance[:protein] %>" vegetable="<%= @food_balance[:vegetable] %>" starch="<%= @food_balance[:starch] %>"></div> 
+				</td>
+				<td id="track-mini-VPG"> 
+					<br><br>Target:
+					<div id="food-balance-future-mini" style="width: 100%; height: 100px;" class="food-balance-future-mini" protein="<%= @target_food_balance[:protein]%>" vegetable="<%= @target_food_balance[:vegetable] %>" starch="<%= @target_food_balance[:starch]%>"></div>
+					<a id="edit-VPG" href="#">edit</a>
+				</td>
+			</tr>
+		</table>
+		
+		</td>
+		<!-- Points Table -->
+		<td class="track-points-column gray-background">
+			<h1>Points Summary</h1>	
+			The more you cook, the more points you earn.  Become a point leader to win challenge prizes from your employer or health plan.
+			<br><br>
+			<table id="points-table" class="gray-background">
+				<tr class="points-table-title-font">
+					<td id="points-table-activities">Activities</td>
+					<td id="points-table-occurences">Occurrences</td>
+					<td>Points</td>
+				</tr>
+				<% point_grand_total = 0 %>
+				<% @points.each do |description, records|%>
+					<% point_total = 0 %>
+					<tr>
+						<td><%= description %></td>
+						<td><%= records.count %></td>
+						<% records.each do |record| %>
+							<% point_total += record.points %>
+						<% end %>
+						<td><%= point_total %></td>
+					</tr>
+						<% point_grand_total += point_total %>
+					<% end %>
+				<tr>
+					<td></td>
+					<td class="points-table-title-font">Grand Total:</td>
+					<td class="points-table-title-font"><%= point_grand_total %></td>
+				</tr>
+			</table>
+			<br>
+			<% if @group %>
+			  <%= render "team_points" %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+  var protein = $(".food-balance-now").attr("protein");
+	var vegetable = $(".food-balance-now").attr("vegetable");
+	var starch = $(".food-balance-now").attr("starch");
+	var protein_future = $(".food-balance-future-mini").attr("protein");
+	var vegetable_future = $(".food-balance-future-mini").attr("vegetable");
+	var starch_future = $(".food-balance-future-mini").attr("starch");
+	var chart1 = createGraph(protein, vegetable, starch,'food-balance-now', true);
+	var chart2 = createGraph(protein_future, vegetable_future, starch_future, 'food-balance-future-mini', false);
+	
+	function update_graph() {
+		chart2 = createGraph(protein_future.value, vegetable_future.value, starch_future.value, 'food-balance-future-mini', false);
+		chart2.redraw();
+	};
+
+  $('#edit-VPG').click(function() {
+    var title = $(this).attr('title');
+    var $dialog = $("#target-VPG");
+    $dialog.dialog("destroy");
+    $dialog.attr('title', title);
+    $( "#target-VPG" ).dialog({
+       width: 250,
+       height: 230,
+       modal: true
+     });;
+    return false;
+  });
+
+</script>
+   

@@ -1,9 +1,9 @@
 #track-team-points
   %h1 
-    = "#{@group.name} Team Information"
+    = "#{@group.name} Leaderboard"
   %table#track-team-table.gray-background
     %tr
-      %th#track-team-first-column Team Name
+      %th#track-team-first-column Name
       %th Points
     - @group.teams.sort_by{|team| -team.points}.each do |team|
       %tr
