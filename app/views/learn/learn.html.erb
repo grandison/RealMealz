@@ -1,12 +1,6 @@
 <% @show_footer = true %>
 <div id="video-dialog" title="Youtube Video" style="display:none">
-   <object width="560" height="315">
-    <param name="movie" value="http://www.youtube.com/v/00Tkhc_s4iw" />
-    <param name="allowFullScreen" value="true" />
-    <param name="allowscriptaccess" value="always" />
-    <embed src="http://www.youtube.com/v/00Tkhc_s4iw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
-    </embed>
-  </object> 
+  <iframe id='youtube-video' width="560" height="315" src="http://www.youtube.com/v/00Tkhc_s4iw?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <table id="learn-table" class="gray-background">
@@ -25,8 +19,8 @@
 				<tr>
 					<td>
 						<% @techniques1.each do |technique|%>
-							<% if technique.video_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% if technique.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
 							<% else %>
 								<%= technique.name %>
 							<% end %>
@@ -35,8 +29,8 @@
 					</td>
 					<td>
 						<% @techniques2.each do |technique|%>
-							<% if technique.video_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% if technique.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
 							<% else %>
 								<%= technique.name %>
 							<% end %>
@@ -45,8 +39,8 @@
 					</td>
 					<td>
 						<% @techniques3.each do |technique|%>
-							<% if technique.video_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% if technique.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
 							<% else %>
 								<%= technique.name %>
 							<% end %>
@@ -55,8 +49,8 @@
 					</td>
 					<td>
 						<% @techniques4.each do |technique|%>
-							<% if technique.video_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.video_link %> title= <%= technique.name %> /><%= technique.name %></a>
+							<% if technique.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
 							<% else %>
 								<%= technique.name %>
 							<% end %>
@@ -81,8 +75,8 @@
 				<tr>
 					<td>
 						<% @ingredients1.each do |ingredient|%>
-							<% if ingredient.video_link != nil %>
-							<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% if ingredient.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
 							<% else %>
 								<%= ingredient.name %>
 							<% end %>
@@ -91,8 +85,8 @@
 					</td>
 					<td>
 						<% @ingredients2.each do |ingredient|%>
-							<% if ingredient.video_link != nil %>
-							<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% if ingredient.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
 							<% else %>
 								<%= ingredient.name %>
 							<% end %>
@@ -101,8 +95,8 @@
 					</td>
 					<td>
 						<% @ingredients3.each do |ingredient|%>
-							<% if ingredient.video_link != nil %>
-								<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% if ingredient.youtube_link != nil %>
+								<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
 								<% else %>
 									<%= ingredient.name %>
 								<% end %>
@@ -111,8 +105,8 @@
 					</td>
 					<td>
 						<% @ingredients4.each do |ingredient|%>
-							<% if ingredient.video_link != nil %>
-							<a class="learnpage-videos" href=<%= ingredient.video_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
+							<% if ingredient.youtube_link != nil %>
+							<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
 							<% else %>
 								<%= ingredient.name %>
 							<% end %>
@@ -134,11 +128,12 @@ $('.learnpage-videos').click(function() {
   $dialog.dialog("destroy");
   $dialog.attr('title', title);
   $dialog.find('param[name="movie"]').attr('value', link);
-  $dialog.find("embed").attr("src", link);
-  $( "#video-dialog" ).dialog({
+  $dialog.find("iframe").attr("src", link);
+  $dialog.dialog({
      width: 600,
      height: 380,
-     modal: true
+     modal: true,
+     close: function(event, ui) { $('#youtube-video').attr('src', '') }
    });;
   return false;
 });

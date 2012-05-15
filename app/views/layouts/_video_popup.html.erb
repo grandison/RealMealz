@@ -1,13 +1,5 @@
 <div id="video-dialog" title="Youtube Video" style="display:none">
-  <%# <iframe width="560" height="315" src="http://www.youtube.com/embed/LaEz_3od0Aw" frameborder="0" allowfullscreen></iframe> %>
-  
-   <object width="560" height="315">
-    <param name="movie" value="http://www.youtube.com/v/LaEz_3od0Aw"></param>
-    <param name="allowFullScreen" value="true"></param>
-    <param name="allowscriptaccess" value="always"></param>
-    <embed src="http://www.youtube.com/v/LaEz_3od0Aw" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">
-    </embed>
-  </object> 
+  <iframe id='youtube-video' width="560" height="315" src="http://www.youtube.com/v/LaEz_3od0Aw?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <script type="text/javascript">
@@ -23,13 +15,13 @@ $delegate.delegate('.video-link', 'click', function() {
   var $dialog = $("#video-dialog");
   $dialog.dialog("destroy");
   $dialog.attr('title', title);
-  $dialog.find('param[name="movie"]').attr('value', link);
-  $dialog.find("embed").attr("src", link);
-  $( "#video-dialog" ).dialog({
+  $dialog.find("iframe").attr("src", link);
+  $dialog.dialog({
      width: 600,
      height: 380,
-     modal: true
-   });;
+     modal: true,
+     close: function(event, ui) { $('#youtube-video').attr('src', '') }
+   });
   return false;
 });
 
