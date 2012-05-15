@@ -1,15 +1,24 @@
 #track-team-points
   %h1 
-    = "#{@group.name} Team Information"
+    = "#{@group.name} Leaderboard"
   %table#track-team-table.gray-background
     %tr
-      %th#track-team-first-column Team Name
+      %th#track-team-first-column Name
       %th Points
-    - @group.teams.sort_by{|team| -team.points}.each do |team|
-      %tr
-        %td
-          = team.name
-          - if team == @my_team
-            %b
-              (My Team!)  
-        %td= team.points
+    - if @group.teams.empty? 
+      - @group.users.sort_by{|user| -user.get_points}.each do |user|
+        %tr
+          %td
+            = user.first
+            = user.last
+          %td= user.get_points
+    - else
+      - @group.teams.sort_by{|team| -team.points}.each do |team|
+        %tr
+          %td
+            = team.name
+            - if team == @my_team
+              %b
+                (My Team!)  
+          %td= team.points
+ 

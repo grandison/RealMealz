@@ -8,8 +8,8 @@ class TrackController < ApplicationController
     @food_balance = Balance.get_kitchen_balance(current_user.kitchen)
     @target_food_balance = current_user.get_target_food_balance
     @points = current_user.points.group_by(&:description)
-    @group = current_user.groups.last if current_user.groups
-    @my_team = current_user.teams.find_by_group_id(@group.id) if @group && current_user.teams
+    @group = current_user.groups.last if current_user.groups 
+    @my_team = current_user.teams.find_by_group_id(@group.id) if @group && current_user.teams #ideally need to screen for group_id > 9 so that betalist and similar early groups don't see leaderboard.
     @background_recipe = Recipe.random_background_image
   end
   
