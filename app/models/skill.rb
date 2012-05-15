@@ -10,6 +10,7 @@ class Skill < ActiveRecord::Base
   end
   
   def youtube_link
+    return video_link if video_link.blank?
     if video_link.ends_with?('?rel=0')
       return video_link
     else 
