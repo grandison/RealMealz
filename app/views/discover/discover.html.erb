@@ -131,8 +131,6 @@ $("#discover-carousel").delegate(".ingredient-checkbox", "click", function() {
 function turnOffNextButtons(){
   $('#discover-next-arrow').addClass('discover-next-arrow');
   $('#discover-next-arrow').removeClass('discover-next-loading');
-  $('#discover-next-flavors').removeClass("discover-button-active");
-  $('#discover-next-ingredients').removeClass("discover-button-active");
 };
 var haveIngredientsChanged = false;
 var lastSearch = "";
@@ -142,12 +140,8 @@ function mycarousel_initCallback(carousel) {
     // Get the data we need to send 
     var search = $('#"discover-like-bar:input').val();
     var star = $("#discover-fav-button").hasClass("discover-button-active");
-    var flavors = $("#discover-next-flavors").hasClass("discover-button-active");
     var ingredients = $("#discover-next-ingredients").hasClass("discover-button-active");
     var showBig = $(".discover-detail-main").hasClass("discover-detail-big");
-    var ingredient_ids =  $('#discover-carousel>li:last').find('input').map(function() { // TO-DO keep track of this on server
-      return $(this).attr('ingredient-id');
-    }).get().join(',');
     
     // Check if anything has changed
     var filtersChanged = haveIngredientsChanged || (lastSearch != search) || (lastStar != star)
@@ -185,10 +179,7 @@ function mycarousel_initCallback(carousel) {
       var postData = "recipe_ids=" + ids + 
         '&show_big=' + showBig + 
         '&filters[search]=' + search + 
-        '&filters[star]=' +  star +
-        '&filters[flavors]=' +  flavors +
-        '&filters[ingredients]=' +  ingredients +
-        '&filters[ingredient_ids]=' +  ingredient_ids;
+        '&filters[star]=' +  star
     } else {
       postData = "no_changes=true&show_big=" + showBig;
     };
@@ -410,19 +401,6 @@ $("#discover-fav-button").click(function() {
     $('#discover-next-div').html('<img alt="" src="<%= asset_path 'star.png' %>" />');
 	}
 });
-
-/** Flavors button **/
-$("#discover-next-flavors").click(function() {
-  $('#discover-next-flavors').addClass("discover-button-active");
-  $('#discover-next-arrow').click();
-});
-
-/** Ingredients button **/
-$("#discover-next-ingredients").click(function() {
-  $('#discover-next-ingredients').addClass("discover-button-active");
-  $('#discover-next-arrow').click();
-});
-
 
 /** Pie Charts **/
 makePieCharts();

@@ -72,9 +72,9 @@ class UserTest < ActiveSupport::TestCase
     
     recipe_toast = Recipe.create!(:name => 'Toast', :picture_file_name => '1.jpg', :ingredient_list => '1 slice bread')
     recipe_toast.process_ingredient_list
-    recipe_beef = Recipe.create!(:name => 'Beef', :picture_file_name => '1.jpg', :ingredient_list => '1 lb beef')
+    recipe_beef = Recipe.create!(:name => 'Big old BBQ', :picture_file_name => '1.jpg', :ingredient_list => '1 lb beef')
     recipe_beef.process_ingredient_list
-    recipe_chicken = Recipe.create!(:name => 'Chicken', :picture_file_name => '1.jpg', :ingredient_list => '1 lb chicken')
+    recipe_chicken = Recipe.create!(:name => 'Stirfry', :picture_file_name => '1.jpg', :ingredient_list => '1 lb chicken')
     recipe_chicken.process_ingredient_list
     
     assert_equal 3, Recipe.count
@@ -86,18 +86,19 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 0, rl[:sort_score]
     end
       
+    # Should delete recipe "beef"  
     @user.update_users_ingredients(ingr_beef.name, :avoid => true)
     @user.get_favorite_recipes(ids_shown = [], {})
+    assert_equal 2, @user.recipe_list.size
     assert_equal 0, @user.recipe_list[0][:sort_score]
     assert_equal 0, @user.recipe_list[1][:sort_score]
-    assert_equal -40, @user.recipe_list[2][:sort_score]
 
+    # Meat should delete chicken and beef
     @user.update_users_ingredients(ingr_beef.name, :avoid => false)
     @user.update_users_ingredients(ingr_meat.name, :avoid => true)
     @user.get_favorite_recipes(ids_shown = [], {})
+    assert_equal 1, @user.recipe_list.size
     assert_equal 0, @user.recipe_list[0][:sort_score]
-    assert_equal -40, @user.recipe_list[1][:sort_score]
-    assert_equal -40, @user.recipe_list[2][:sort_score]
   end
 
   test "update like avoid" do

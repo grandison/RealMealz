@@ -145,9 +145,9 @@ class User < ActiveRecord::Base
 
   #---------------------------------
   def get_favorite_recipes(recipe_ids_shown, filters)
+  
     start_time = Time.now 
     cache_miss = false
-    
     
     # Get avoid ingredients and all ingredients which have the same category name
     # This will allow someone to enter "meat" and screen for all types of meats, i.e. beef, chicken, pork, etc.
@@ -163,8 +163,9 @@ class User < ActiveRecord::Base
       end
     end
     avoid_ingredient_ids.flatten!
-    
+
     like_ingredient_ids = users_ingredients.where(:like => true).select('ingredient_id').map{|ui| ui.ingredient_id}
+    have_ingredients = self.kitchen.have_ingredients
     kitchen_meals = Meal.where(:kitchen_id => kitchen.id)
    
     public_recipe_list = Rails.cache.fetch("public_recipe_list", :expires_in => 1.hour) do
@@ -188,71 +189,38 @@ class User < ActiveRecord::Base
     end
     search_for = (filters['search'] || '').downcase
 
-    @recipe_list.each do |rh|
-      next unless starred_recipe_ids.blank? || starred_recipe_ids.include?(rh[:id])
+    @recipe_list.each do |rh| # rh = recipe hash
+      @rh = rh
+
+      next unless starred_recipe_ids.blank? || starred_recipe_ids.include?(@rh[:id])
       
-      rh[:ingredients].each do |ih|
-        # Add 10 for each like ingredient
-        rh[:scores][:ingr_like] = 1000 if like_ingredient_ids.include?(ih[:id])
+      # Set @has_have_ingredient to true if no have_ingredients
+      @has_have_ingredient = have_ingredients.blank?
+      @has_avoid_ingredient =  false
       
-        # Add 100 if filtering and matches ingredient
-        rh[:scores][:ingr_have] = 5000 if filters['ingredients'] && filters['ingredient_ids'].include?(ih[:id].to_s)
+      # Check the meal
+      check_meal(kitchen_meals, search_for)
       
-        # Subtract 1000 if in avoid
-        rh[:scores][:avoid] = -50000 if avoid_ingredient_ids.include?(ih[:id])
-      
-        # Allergies currently not used, so comment out for now
-        # Subtract 100 if in allergy
-        #rh[:scores][:allergy] -= 100 if allergy_ingredient_ids.include?(ih[:allergen1_id]) ||
-        #  allergy_ingredient_ids.include?(ih[:allergen2_id]) ||
-        #  allergy_ingredient_ids.include?(ih[:allergen3_id])
-        
-        # Add 100 if search matches ingredient
-        rh[:scores][:ingr_search] = 1000 if rh[:ingredients].index {|i| ih[:other_names].include?(search_for)} unless search_for.blank?
+      # Check ingredients
+      check_ingredients(like_ingredient_ids, avoid_ingredient_ids, have_ingredients, search_for, filters)
+      if @has_avoid_ingredient
+        @rh[:delete] = true        
+        next
       end
-      
-      meal = kitchen_meals.find {|m| m.recipe_id == rh[:id]}
-      unless meal.nil? 
-      
-        # Subtract 100 for each time seen, except if searching
-        if search_for.blank?
-          rh[:scores][:seen] = -100 * meal.seen_count 
-        end
-      
-        # Subtract 75 if in my meals, else if searching add 50
-        if search_for.blank?    
-          rh[:scores][:my_meals] = -75 if meal.my_meals?
-        else
-         rh[:scores][:my_meals] = 50 if meal.my_meals?
-        end
-      
-        # Subtract 50 if starred, else if searching add 50
-        if search_for.blank?    
-          rh[:scores][:star] = -50 if meal.starred?
-        else
-          rh[:scores][:star] = 50 if meal.starred?
-        end
+
+      # Check other criteria and add up points      
+      check_other(recipe_ids_shown, search_for)
+      if !@has_have_ingredient || @has_avoid_ingredient
+        @rh[:delete] = true        
       end
-      
-      # Take off 500 if it is already in the user's browsers queue
-      rh[:scores][:seen] = -500 if recipe_ids_shown.include?(rh[:id])
-      
-      # Add 300 if search is in title      
-      rh[:scores][:title_search] = 5000 if rh[:name].downcase.include?(search_for) unless search_for.blank?
-    
-      # Add some variability unless testing
-      rh[:scores][:random] = rand(30).to_i unless Rails.env.test?
-      
-      # Add up scores
-      rh[:sort_score] = 0
-      rh[:scores].each {|k, v| rh[:sort_score] += v} 
     end
 
-   recipe_list_ids = @recipe_list.sort! {|rh1, rh2| rh2[:sort_score] <=> rh1[:sort_score]}.map {|rh| rh[:id]}
+    @recipe_list = @recipe_list.delete_if {|rh| rh[:delete]}
+    recipe_list_ids = @recipe_list.sort! {|rh1, rh2| rh2[:sort_score] <=> rh1[:sort_score]}.map {|h| h[:id]}
 
     end_time = Time.now
     r = Recipe.find(recipe_list_ids.first)
-    rh = @recipe_list.find {|rh| rh[:id] == r.id}
+    rh = @recipe_list.find {|h| h[:id] == r.id}
     Rails.logger.info "===> get_favorite_recipes: Cache hit=#{!cache_miss}, Total time =#{end_time - start_time}"
     Rails.logger.info "     First recipe=#{rh[:name]}, score=#{rh[:sort_score]}"
     Rails.logger.info "     Filters=#{filters.to_json}"
@@ -260,6 +228,88 @@ class User < ActiveRecord::Base
     
     return recipe_list_ids
   end
+
+  # Helper methods for get_favorite_recipes to reduce complexity
+  #######
+  private
+  #######  
+  
+  def check_meal(kitchen_meals, search_for)
+    meal = kitchen_meals.find {|m| m.recipe_id == @rh[:id]}
+    unless meal.nil? 
+    
+      # Subtract 100 for each time seen, except if searching
+      if search_for.blank?
+        @rh[:scores][:seen] = -100 * meal.seen_count 
+      end
+    
+      # Subtract 75 if in my meals, else if searching add 50
+      if search_for.blank?    
+        @rh[:scores][:my_meals] = -75 if meal.my_meals?
+      else
+        @rh[:scores][:my_meals] = 50 if meal.my_meals?
+      end
+    
+      # Subtract 50 if starred, else if searching add 50
+      if search_for.blank?    
+        @rh[:scores][:star] = -50 if meal.starred?
+      else
+        @rh[:scores][:star] = 50 if meal.starred?
+      end
+    end
+  end
+  
+  def check_ingredients(like_ingredient_ids, avoid_ingredient_ids, have_ingredients, search_for, filters)
+    @rh[:ingredients].each do |ih|
+
+      # Like ingredient
+      if like_ingredient_ids.include?(ih[:id])
+        @rh[:scores][:ingr_like] = 1000
+      end   
+
+      # Ingredient in the have list?
+      if have_ingredients.index {|i| i.id == ih[:id]}
+        @has_have_ingredient = true
+        @rh[:scores][:ingr_have] = 100
+      end
+
+      # Contains an avoid ingredient?
+      if avoid_ingredient_ids.include?(ih[:id])
+        @has_avoid_ingredient = true
+        break
+      end
+
+      # Search matches ingredient names
+      if search_for.present? && @rh[:ingredients].index {|i| ih[:other_names].include?(search_for)}
+        @rh[:scores][:ingr_search] = 1000
+      end 
+    end
+  end
+
+  def check_other(recipe_ids_shown, search_for)
+    # Recipe already in the user's browsers queue?
+    @rh[:scores][:seen] = -500 if recipe_ids_shown.include?(@rh[:id])
+    
+    # Search phrase in recipe title?
+    if search_for.present? && @rh[:name].downcase.include?(search_for)    
+      @rh[:scores][:title_search] = 5000 
+      @has_have_ingredient = true
+    end
+
+   # MD TODO See if Have ingredient name is in recipe title
+
+    # Add some variability unless testing
+    @rh[:scores][:random] = rand(30).to_i unless Rails.env.test?
+    
+    # Add up scores
+    @rh[:sort_score] = 0
+    @rh[:scores].each {|k, v| @rh[:sort_score] += v}
+  end   
+    
+  #######
+  public
+  #######  
+  
 
   #---------------------------------
   def get_next_recipe(recipe_ids_shown, filters = nil)
