@@ -152,12 +152,13 @@ class User < ActiveRecord::Base
     # Get avoid ingredients and all ingredients which have the same category name
     # This will allow someone to enter "meat" and screen for all types of meats, i.e. beef, chicken, pork, etc.
     # For this to work, there needs to be an ingredient with the same name as a category
+    # However, Usually the ingredient name is capitalized and the category name isn't, so on a case-senstive
+    # DB like postgres, we will need to search for both
     avoid_users_ingredients = users_ingredients.where(:avoid => true).select('ingredient_id')
-    
     avoid_ingredient_ids = [] 
     avoid_users_ingredients.each do |avoid|
       avoid_ingredient_ids << avoid.ingredient.id
-      category = Category.find_by_name(avoid.ingredient.name)
+      category = Category.find_by_name(avoid.ingredient.name) || Category.find_by_name(avoid.ingredient.name.capitalize)
       unless category.nil?
          avoid_ingredient_ids << category.categories_ingredients.map {|ci| ci.ingredient_id}
       end

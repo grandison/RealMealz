@@ -93,7 +93,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 0, @user.recipe_list[0][:sort_score]
     assert_equal 0, @user.recipe_list[1][:sort_score]
 
-    # Meat should delete chicken and beef
+    # Avoid meat should delete chicken and beef
     @user.update_users_ingredients(ingr_beef.name, :avoid => false)
     @user.update_users_ingredients(ingr_meat.name, :avoid => true)
     @user.get_favorite_recipes(ids_shown = [], {})
