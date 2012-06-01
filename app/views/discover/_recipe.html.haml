@@ -11,12 +11,6 @@
     
   %div{:class => "discover-detail-main discover-detail-#{size_suffix}"}
     %img.discover-detail-frame{:alt => "", :src => asset_path('discover-detail-frame.png')}
-    -if @starred_ids.include?(recipe.id)
-      %div{:class => "discover-starred-update discover-starred-on discover-detail-#{size_suffix}",
-       "recipe-id" => recipe.id}
-    -else
-      %div{:class => "discover-starred-update discover-starred-off discover-detail-#{size_suffix}",
-       "recipe-id" => recipe.id}
     %div{:class => "discover-detail-title discover-detail-#{size_suffix}"}
       = render :partial => 'recipes/recipe_title', :locals => {:recipe => recipe, :discover_big => show_big}
     %div{:class => "discover-detail-button discover-detail-#{size_suffix}"}

@@ -40,21 +40,6 @@ $("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
   return false; 
 });
 
-/** Update Starred **/
-$("#discover-carousel").delegate('.discover-starred-update', 'click', function() {
-  var add = $(this).hasClass('discover-starred-off');
-  $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&starred=" + add, 
-  function(data) {
-    /** placeholder **/
-  });
-  if (add) {
-    $(this).removeClass('discover-starred-off').addClass('discover-starred-on');
-  } else {
-    $(this).removeClass('discover-starred-on').addClass('discover-starred-off');
-  };
-  return false; 
-});
-
 /* Setup the detail scroll height dynamically since the recipe header size can change */
 function setupDetailScroll($discoverDetailScroll) {
   var newHeight = $(window).height() - $discoverDetailScroll.offset().top;
@@ -135,21 +120,18 @@ function turnOffNextButtons(){
 var haveIngredientsChanged = false;
 var avoidIngredientsChanged = false;
 var lastSearch = "";
-var lastStar = false;
 function mycarousel_initCallback(carousel) {
   $('#discover-next-arrow').bind('click', function() {
     // Get the data we need to send 
     var search = $('#"discover-like-bar:input').val();
-    var star = $("#discover-fav-button").hasClass("discover-button-active");
     var ingredients = $("#discover-next-ingredients").hasClass("discover-button-active");
     var showBig = $(".discover-detail-main").hasClass("discover-detail-big");
     
     // Check if anything has changed
-    var filtersChanged = haveIngredientsChanged || avoidIngredientsChanged || (lastSearch != search) || (lastStar != star)
+    var filtersChanged = haveIngredientsChanged || avoidIngredientsChanged || (lastSearch != search)
     haveIngredientsChanged = false
     avoidIngredientsChanged = false
     lastSearch = search;
-    lastStar = star;
 
     // If we are at the end of the recipes or the user has changed the search parameters,
     // don't scroll until we get the next recipes
@@ -180,8 +162,7 @@ function mycarousel_initCallback(carousel) {
       }).get().join(',');
       var postData = "recipe_ids=" + ids + 
         '&show_big=' + showBig + 
-        '&filters[search]=' + search + 
-        '&filters[star]=' +  star
+        '&filters[search]=' + search 
     } else {
       postData = "no_changes=true&show_big=" + showBig;
     };
@@ -396,17 +377,6 @@ function setup_have_avoid_dialog(name) {
 };
 setup_have_avoid_dialog('have');
 setup_have_avoid_dialog('avoid');
-
-/** Favs button **/
-$("#discover-fav-button").click(function() {
-  if ($(this).hasClass("discover-button-active")) {
-    $(this).removeClass("discover-button-active");
-    $('#discover-next-div').text('next');
-	} else {
-    $(this).addClass("discover-button-active");
-    $('#discover-next-div').html('<img alt="" src="<%= asset_path 'star.png' %>" />');
-	}
-});
 
 /** Pie Charts **/
 makePieCharts();
