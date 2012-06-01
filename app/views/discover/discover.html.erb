@@ -133,6 +133,7 @@ function turnOffNextButtons(){
   $('#discover-next-arrow').removeClass('discover-next-loading');
 };
 var haveIngredientsChanged = false;
+var avoidIngredientsChanged = false;
 var lastSearch = "";
 var lastStar = false;
 function mycarousel_initCallback(carousel) {
@@ -144,8 +145,9 @@ function mycarousel_initCallback(carousel) {
     var showBig = $(".discover-detail-main").hasClass("discover-detail-big");
     
     // Check if anything has changed
-    var filtersChanged = haveIngredientsChanged || (lastSearch != search) || (lastStar != star)
+    var filtersChanged = haveIngredientsChanged || avoidIngredientsChanged || (lastSearch != search) || (lastStar != star)
     haveIngredientsChanged = false
+    avoidIngredientsChanged = false
     lastSearch = search;
     lastStar = star;
 
@@ -313,8 +315,10 @@ function setup_have_avoid_dialog(name) {
       
       if (name == 'have') { 
         postUrl = '/shop/update_item';
+        haveIngredientsChanged = true
       } else {
         postUrl = '/settings/remove_avoid_item';
+        avoidIngredientsChanged = true
       }        
       
       $.ajax({		  
@@ -350,8 +354,10 @@ function setup_have_avoid_dialog(name) {
         .css('zIndex', 1000);
       if (name == 'have') { 
         postUrl = '/shop/add_item';
+        haveIngredientsChanged = true
       } else {
         postUrl = '/settings/add_avoid_item';
+        avoidIngredientsChanged = true
       }        
       postData = 'item[name]=' + encodeURIComponent(text) + '&render=added';
       $.ajax({		  

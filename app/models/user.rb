@@ -165,8 +165,18 @@ class User < ActiveRecord::Base
     end
     avoid_ingredient_ids.flatten!
 
-    like_ingredient_ids = users_ingredients.where(:like => true).select('ingredient_id').map{|ui| ui.ingredient_id}
+    # Get the have ingredients and the corresponding category ingredients
+    # So if they check "chicken", it will also find recipes for "chicken thighs"
     have_ingredients = self.kitchen.have_ingredients
+    category_have_ingredients = [] 
+    have_ingredients.each do |have|
+      category = Category.find_by_name(have.name) || Category.find_by_name(have.name.downcase)
+      unless category.nil?
+         category_have_ingredients << category.categories_ingredients.map {|ci| ci.ingredient}
+      end
+    end
+    have_ingredients = (have_ingredients + category_have_ingredients).flatten
+    
     kitchen_meals = Meal.where(:kitchen_id => kitchen.id)
    
     public_recipe_list = Rails.cache.fetch("public_recipe_list", :expires_in => 1.hour) do
@@ -203,7 +213,7 @@ class User < ActiveRecord::Base
       check_meal(kitchen_meals, search_for)
       
       # Check ingredients
-      check_ingredients(like_ingredient_ids, avoid_ingredient_ids, have_ingredients, search_for, filters)
+      check_ingredients(avoid_ingredient_ids, have_ingredients, search_for, filters)
       if @has_avoid_ingredient
         @rh[:delete] = true        
         next
@@ -220,12 +230,17 @@ class User < ActiveRecord::Base
     recipe_list_ids = @recipe_list.sort! {|rh1, rh2| rh2[:sort_score] <=> rh1[:sort_score]}.map {|h| h[:id]}
 
     end_time = Time.now
-    r = Recipe.find(recipe_list_ids.first)
-    rh = @recipe_list.find {|h| h[:id] == r.id}
-    Rails.logger.info "===> get_favorite_recipes: Cache hit=#{!cache_miss}, Total time =#{end_time - start_time}"
-    Rails.logger.info "     First recipe=#{rh[:name]}, score=#{rh[:sort_score]}"
-    Rails.logger.info "     Filters=#{filters.to_json}"
-    Rails.logger.info "     Scores=#{rh[:scores].to_json}"
+    if recipe_list_ids.blank?
+      Rails.logger.info "====> No recipes found!"
+      recipe_list_ids = [Recipe.first.id] # Give it at least 1 so to show
+    else
+      r = Recipe.find(recipe_list_ids.first)
+      rh = @recipe_list.find {|h| h[:id] == r.id}
+      Rails.logger.info "===> get_favorite_recipes: Cache hit=#{!cache_miss}, Total time =#{end_time - start_time}"
+      Rails.logger.info "     First recipe=#{rh[:name]}, score=#{rh[:sort_score]}"
+      Rails.logger.info "     Filters=#{filters.to_json}"
+      Rails.logger.info "     Scores=#{rh[:scores].to_json}"
+    end  
     
     return recipe_list_ids
   end
@@ -260,13 +275,8 @@ class User < ActiveRecord::Base
     end
   end
   
-  def check_ingredients(like_ingredient_ids, avoid_ingredient_ids, have_ingredients, search_for, filters)
+  def check_ingredients(avoid_ingredient_ids, have_ingredients, search_for, filters)
     @rh[:ingredients].each do |ih|
-
-      # Like ingredient
-      if like_ingredient_ids.include?(ih[:id])
-        @rh[:scores][:ingr_like] = 1000
-      end   
 
       # Ingredient in the have list?
       if have_ingredients.index {|i| i.id == ih[:id]}

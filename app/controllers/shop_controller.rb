@@ -18,7 +18,7 @@ class ShopController < ApplicationController
   def add_item
     name = params[:item][:name]
     params[:item].delete(:name)
-    ik = current_user.kitchen.add_new_pantry_item(name, params[:item] || {})
+    ik = current_user.kitchen.add_new_pantry_item(name, params[:item].merge(:have => true))
     if params[:render] == 'added'
       render :json => {:item_id => ik.id, :ingredient_name => ik.ingredient.name, :ingredient_id => ik.ingredient.id}
     else
