@@ -158,7 +158,7 @@ class User < ActiveRecord::Base
     avoid_ingredient_ids = [] 
     avoid_users_ingredients.each do |avoid|
       avoid_ingredient_ids << avoid.ingredient.id
-      category = Category.find_by_name(avoid.ingredient.name) || Category.find_by_name(avoid.ingredient.name.capitalize)
+      category = Category.find_by_name(avoid.ingredient.name) || Category.find_by_name(avoid.ingredient.name.downcase)
       unless category.nil?
          avoid_ingredient_ids << category.categories_ingredients.map {|ci| ci.ingredient_id}
       end
