@@ -44,7 +44,7 @@ class DiscoverControllerTest < ActionController::TestCase
   test "discover meals" do
     sign_in(@user)
     
-    get :next_recipes, :render => 'json'
+    post :next_recipes, :render => 'json'
     assert_response :success
     meals = JSON.parse(response.body)
     
