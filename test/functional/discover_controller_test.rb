@@ -41,6 +41,16 @@ class DiscoverControllerTest < ActionController::TestCase
     assert @recipes_ids.include?(recipe3['recipe_id']), "Recipe 3 in list"    
   end
   
+  test "discover meals" do
+    sign_in(@user)
+    
+    get :next_recipes, :render => 'json'
+    assert_response :success
+    meals = JSON.parse(response.body)
+    
+    assert_equal 3, meals.count
+  end
+
   test "discover link" do
     sign_in(@user)
     

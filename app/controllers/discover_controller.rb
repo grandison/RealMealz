@@ -47,7 +47,14 @@ class DiscoverController < ApplicationController
       @recipes = get_new_recipes(recipe_ids_shown, fix_booleans(params[:filters]))
     end
     setup_discover
-    render :partial => 'recipes', :locals => {:recipes => @recipes, :show_big => (params[:show_big] == 'true')}
+    
+    if params[:render] == 'xml'
+      render :xml => @recipes.map {|recipe| recipe.meal_hash}
+    elsif params[:render] == 'json'
+      render :json => @recipes.map {|recipe| recipe.meal_hash}
+    else
+      render :partial => 'recipes', :locals => {:recipes => @recipes, :show_big => (params[:show_big] == 'true')}
+    end  
   end
   
   #------------------------- 
