@@ -8,6 +8,48 @@ class HomeController < ApplicationController
   def index
   end
   
+  def survey_blueshield  #for Blue Shield pilot only
+    @answers = ''
+  end
+  def save_survey_blueshield #for Blue Shield pilot only
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "Do you consider yourself a healthy eater?"
+    s.answer = params[:answer1]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "What do you think is your current VPG (vegetable, protein, grain) balance?"
+    s.answer = "veg: " + params[:answer21] + ", protein: " + params[:answer22] + ", grains: " + params[:answer23]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "On average, how many homemade lunches and dinners do you cook per week? Include homemade leftover meals. For example, I cook three dinners per week and bring leftovers for lunch the next day.  My answer is 6."
+    s.answer = params[:answer3]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "Where do you shop for most of your groceries?"
+    s.answer = params[:answer4]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "On average, how many times do you grocery shop per week?" 
+    s.answer = params[:answer5]
+    s.save! 
+    
+    flash[:notice] = "Survey Saved. Thank you!"
+    redirect_to "/home/welcome?id=13"  #go to Blue Shield welcome page
+  end
   # MD Apr-2012. If there is an id parameter and that group has a welcome_page, show that otherwise show the default one
   def welcome
     welcome_page = nil

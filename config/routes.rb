@@ -14,6 +14,8 @@ RealMealz::Application.routes.draw do
   match "/blog" => redirect("http://blog.realmealz.com")
   
   ## RealMealz pages
+  get '/home/survey_blueshield' #temp routing for Blue Shield survey
+  post '/home/survey_blueshield' => "home#save_survey_blueshield" #for Blue Shield Pilot only
   get '/home' => "home#index"
   get "/home/login" => "home#index" # This link was sent out in a flyer
   get "/login" => "home#index" # This too
