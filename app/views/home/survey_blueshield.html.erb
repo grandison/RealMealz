@@ -1,4 +1,4 @@
-<div id="questionnaire" class="gray-background">
+<div id="survey" class="gray-background">
   <%= form_for(@answers, :action => 'new', :html => { :multipart => true })  do |f| %>
   	<h1>RealMealz / BlueShield Assessment Survey</h1>
   	Thanks for signing up!  Please complete this one-time survey to get started. Thank you!
@@ -19,7 +19,7 @@
 			<%= select_tag "answer4", "<option>Farmers Markets</option><option>Supermarkets</option><option>Small Grocer</option><option>Convenience Store</option><option>Online</option><option>N/A</option>".html_safe %>
 			
 			<li>On average, how many times do you grocery shop per week?</li>	
-			<%= select_tag "answer5", "<option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>".html_safe %>
+			<%= select_tag "answer5", "<option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>".html_safe %>  
 		</ol>
  	<%= f.submit 'Submit >>', :class => 'orange-button' %>
 	<% end %>
