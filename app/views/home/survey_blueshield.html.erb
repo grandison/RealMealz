@@ -1,0 +1,27 @@
+<div id="survey" class="gray-background">
+  <%= form_for(@answers, :action => 'new', :html => { :multipart => true })  do |f| %>
+  	<h1>RealMealz / BlueShield Assessment Survey</h1>
+  	Thanks for signing up!  Please complete this one-time survey to get started. Thank you!
+		<ol>
+			<li>Do you consider yourself a healthy eater?</li>
+				<%= radio_button_tag ('answer1', "yes") %> Yes
+				<%= radio_button_tag ('answer1', "no") %> No
+
+			<li>What do you think is your current VPG (vegetable, protein, grain) balance?</li>
+				Vegetables / Fruits: <%= number_field_tag ('answer21', nil, :in => 0..100) %>% <br>
+				Proteins (include dairy, meats and beans): <%= number_field_tag ('answer22', nil, :in => 0..100) %>%  <br>
+				Grains and Starch: <%= number_field_tag ('answer23', nil, :in => 0..100) %>%
+				
+			<li>On average, how many homemade lunches and dinners do you cook per week? Include homemade leftover meals. For example, I cook three dinners per week and bring leftovers for lunch the next day.  My answer is 6. </li>
+				<%= select_tag "answer3", "<option>1-2</option><option>3-4</option><option>5-6</option><option>7-8</option><option>9-10</option><option>11+</option>".html_safe %>
+
+			<li>Where do you shop for most of your groceries? </li>
+			<%= select_tag "answer4", "<option>Farmers Markets</option><option>Supermarkets</option><option>Small Grocer</option><option>Convenience Store</option><option>Online</option><option>N/A</option>".html_safe %>
+			
+			<li>On average, how many times do you grocery shop per week?</li>	
+			<%= select_tag "answer5", "<option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>".html_safe %>  
+		</ol>
+ 	<%= f.submit 'Submit >>', :class => 'orange-button' %>
+	<% end %>
+</div>
+

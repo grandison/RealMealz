@@ -1,0 +1,27 @@
+<div id="questionnaire" class="gray-background">
+  <%= form_for(@answers, :action => 'new', :html => { :multipart => true })  do |f| %>
+  	<h1>RealMealz / BlueShield Assessment Survey</h1>
+  	Thanks for signing up!  Please complete this one-time survey to get started. Thank you!
+		<ol>
+			<li>Do you consider yourself a healthy eater? </li>
+				<%= f.radio_button :answer, "yes" %> Yes
+				<%= f.radio_button :answer, "no" %> No
+	<% end %>
+
+		<% end % >
+			<li>What do you think is your current VPG (vegetable, protein, grain) balance?</li>
+				Vegetables / Fruits: <%= f.number_field :veg, :min => 0, :max => 100 %> % <br>
+				Proteins (include dairy, meats and beans): <%= f.number_field :proteins, :min => 0, :max => 100 %>%  <br>
+				Grains and Starch: <%= f.number_field :grains, :min => 0, :max => 100 %>%
+				
+			<li>On average, how many homemade lunches and dinners do you cook per week? Include homemade leftover meals. For example, I cook three dinners per week and bring leftovers for lunch the next day.  My answer is 6. </li>
+				<%= f.select :meals_per_week, [['1-2','1-2'],['3-4','3-4'],['5-6','5-6'],['7-8','7-8'],['9-10','9-10'],['11+','11+']] %>	
+
+			<li>Where do you shop for most of your groceries? </li>
+			<%= f.select :shop_location, [['Farmers Markets','farmers markets'],['Supermarkets','supermarkets'],['Locally Owned Market','locally owned market'],['Convenience Store','convenience store'],['Online','online'],['N/A','n/a']] %>	
+      <li>On average, how many times do you grocery shop per week?</li>	
+			<%= f.select :shop_frequency, [['0','0'],['1','1'],['2','2'],['3','3'],['4','4'],['5+','5+']] %>			      			
+		</ol>
+ 	<%= f.submit 'Submit >>', :class => 'orange-button'%>
+</div>
+
