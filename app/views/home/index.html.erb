@@ -23,8 +23,7 @@
 		<td class="gray-background-nopad">
 			<div class="frontpage-boxes2" href="http://www.youtube.com/v/36QfEObYj9g?rel=0" title="Earn Prizes and Track your Food Wellness" text="Cooking improves your health. Cook with us to earn prizes from sponsors.  Want to challenge your community to cook more?  Sponsor a prize and host an Eat Well Challenge with us.">
 			<h1>Win</h1><h2>Challenges from Your Employer</h2>
-
-			<div class="frontpage-boxes2" href="http://www.youtube.com/v/36QfEObYj9g" title="Earn Prizes and Track your Food Wellness" text="Cooking improves your health. Cook with us to earn prizes from sponsors.  Want to challenge your community to cook more?  Sponsor a prize and host an Eat Well Challenge with us.">
+			
 			<%= image_tag "3track.png", :class => "frontpage-horizontal-spacer" %>
 			</div>
 			<form method="link" action="/home/host" align="center">
@@ -61,24 +60,22 @@ $('.frontpage-boxes2').click(function() {
   var title = $(this).attr('title');
   var link = $(this).attr('href');
   var action_link = $(this).attr('action-link');
-  var text = $(this).attr('text');
-  var $dialog = $("#video-dialog2");
+  var content = $(this).attr('content');
+  var $dialog = $("#video-dialog");
   $dialog.dialog("destroy");
   $dialog.attr('title', title);
-  $("#video-dialog2" ).text(text).dialog({
+  $dialog.find('param[name="movie"]').attr('value', link);
+ /* $dialog.dialog({ buttons: { "Ok": function() { $(this).dialog("close"); } } });*/
+  $dialog.find("iframe").attr("src", link);
+  $dialog.find("iframe").attr("content",content);
+  $("#video-dialog" ).dialog({
      width: 600,
-     height: 250,
+     height: 380,
      modal: true,
-     buttons:
-            [
-              {
-                  text: "Sponsor a Prize >>>",
-                  onclick: "window.location.href = '/home/sponsor'",
-                  'class': 'my-custom-button-class'
-              }
-            ]
+     close: function(event, ui) { $('#youtube-video').attr('src', '') }
    });
   return false;
 });
+
 </script>
 
