@@ -195,11 +195,11 @@ function setup_background_image(sel) {
   };
 };
 
-/** Give warning once, if IE version is <= 8 **/
+/** Give warning once, if IE version is < 8 **/
 $(function() {
   if (!($.cookie('ie-warning-shown') == 'true')) {
-    if ($.browser.msie  && parseInt($.browser.version, 10) <= 8) {
-      alert('RealMealz is currently supporting FireFox and Chrome browsers only.  We have noticed that you are using Internet Explorer, which means some of the site will not work as intended.');
+    if ($.browser.msie  && parseInt($.browser.version, 10) < 8) {
+      alert('RealMealz supports Internet Explorer 8.0 and above.  We have noticed that you are using an older version of Internet Explorer, which means some of the site will not work as intended.  Please download the latest version of Internet Explorer for the best experience. Thank you!');
       $.cookie('ie-warning-shown', 'true'); 
     }
   }
