@@ -8,56 +8,15 @@ class HomeController < ApplicationController
   def index
   end
   
-  def survey_blueshield  #for Blue Shield pilot only
-    @answers = ''
-  end
-  def save_survey_blueshield #for Blue Shield pilot only
-    s = Survey.new 
-    s.user_id = current_user
-    s.date_added = Date.today
-    s.question = "Do you consider yourself a healthy eater?"
-    s.answer = params[:answer1]
-    s.save! 
-    
-    s = Survey.new 
-    s.user_id = current_user
-    s.date_added = Date.today
-    s.question = "What do you think is your current VPG (vegetable, protein, grain) balance?"
-    s.answer = "veg: " + params[:answer21] + ", protein: " + params[:answer22] + ", grains: " + params[:answer23]
-    s.save! 
-    
-    s = Survey.new 
-    s.user_id = current_user
-    s.date_added = Date.today
-    s.question = "On average, how many homemade lunches and dinners do you cook per week? Include homemade leftover meals. For example, I cook three dinners per week and bring leftovers for lunch the next day.  My answer is 6."
-    s.answer = params[:answer3]
-    s.save! 
-    
-    s = Survey.new 
-    s.user_id = current_user
-    s.date_added = Date.today
-    s.question = "Where do you shop for most of your groceries?"
-    s.answer = params[:answer4]
-    s.save! 
-    
-    s = Survey.new 
-    s.user_id = current_user
-    s.date_added = Date.today
-    s.question = "On average, how many times do you grocery shop per week?" 
-    s.answer = params[:answer5]
-    s.save! 
-    
-    flash[:notice] = "Survey Saved. Thank you!"
-    redirect_to "/home/welcome?id=13"  #go to Blue Shield welcome page
-  end
+
   # MD Apr-2012. If there is an id parameter and that group has a welcome_page, show that otherwise show the default one
+  # from the users first group, if any
   def welcome
     welcome_page = nil
-    if params['id'] 
-      group = Group.find(params['id'])
-      if group
-        welcome_page = group.welcome_page
-      end  
+    if params['id'] && (group = Group.find(params['id']))
+      welcome_page = group.welcome_page
+    elsif current_user && current_user.groups && (group = current_user.groups.first)
+      welcome_page = group.welcome_page
     end  
     unless welcome_page.blank?
       render welcome_page
@@ -99,7 +58,7 @@ class HomeController < ApplicationController
       if @user.invite_code.present?
         redirect_to '/home/select_team'
       else
-        redirect_to '/home/welcome'
+        redirect_to :action => :survey
       end
     else
       render :action => :sign_up
@@ -135,20 +94,82 @@ class HomeController < ApplicationController
     end
   end
   
-
   # MD Apr-2012. users can belong to more than one group. However, since they just signed up they will only belong
   # to one group at this point
   def select_team
     @group = current_user.groups.first
     @group_teams = Team.where(:group_id => @group.id)
     if @group_teams.blank?
-      redirect_to current_user.group_welcome_page
+      redirect_to :action => :survey
     end
   end
   
+  # MD Jun-2012. This is called after a user has been created and wants to add a team from the settings page
   def add_team
     current_user.join_team(params[:user][:team_id])
     redirect_to current_user.group_welcome_page
+  end
+  
+  #for Blue Shield pilot only
+  def survey_blueshield  
+    @answers = ''
+  end
+  
+  #for Blue Shield pilot only
+  def save_survey_blueshield 
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "Do you consider yourself a healthy eater?"
+    s.answer = params[:answer1]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "What do you think is your current VPG (vegetable, protein, grain) balance?"
+    s.answer = "veg: " + params[:answer21] + ", protein: " + params[:answer22] + ", grains: " + params[:answer23]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "On average, how many homemade lunches and dinners do you cook per week? Include homemade leftover meals. For example, I cook three dinners per week and bring leftovers for lunch the next day.  My answer is 6."
+    s.answer = params[:answer3]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "Where do you shop for most of your groceries?"
+    s.answer = params[:answer4]
+    s.save! 
+    
+    s = Survey.new 
+    s.user_id = current_user
+    s.date_added = Date.today
+    s.question = "On average, how many times do you grocery shop per week?" 
+    s.answer = params[:answer5]
+    s.save! 
+    
+    flash[:notice] = "Survey Saved. Thank you!"
+    redirect_to "/home/welcome"  
+  end
+  
+  # MD Jun-2012. This will only be called when a user is first created so they will only belong to one group at this
+  # time, if any.
+  def survey
+    survey_page = nil
+    if (group = current_user.groups.first)
+      survey_page = group.survey_page
+    end  
+    
+    if survey_page.blank?
+      redirect_to :action => :welcome
+    else
+      # MD Jun-2012. Right now we only support the blueshield survey so ignore what is in the field and go there
+      redirect_to :action => :survey_blueshield
+    end  
   end
   
   #########

@@ -37,7 +37,7 @@ class HomeControllerTest < ActionController::TestCase
     assert_equal nil, flash[:error]
     assert_equal nil, flash[:notice]
     assert_equal Hash.new, assigns(:user).errors.messages
-    assert_redirected_to '/home/welcome'
+    assert_redirected_to '/home/survey'
     
     user = User.find_by_email(params[:user][:email])
     assert user, "should create user"
@@ -93,7 +93,7 @@ class HomeControllerTest < ActionController::TestCase
     post :create_user, params
     assert_equal nil, flash[:error]
     assert_equal nil, flash[:notice]
-    assert_redirected_to '/home/welcome'
+    assert_redirected_to '/home/survey'
     
     user = User.find_by_email(params[:user][:email])
     users_team = UsersTeam.find_by_user_id(user.id)
