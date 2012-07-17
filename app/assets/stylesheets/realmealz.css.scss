@@ -464,7 +464,8 @@ body {
 .discover-detail-main h2 {
   font-size: 20px;
   font-weight: normal;
-  width: 400px;
+  width: 275px;
+  margin-top: 25px;
 }
 
 .discover-recipe-cook {
@@ -504,7 +505,7 @@ body {
   background: asset-data-url('shrink.png');
 }
 
-.discover-meal-update {
+.discover-meal-update-icon {
   width: 30px;
   height: 30px;
   float: left;
@@ -513,21 +514,21 @@ body {
   overflow: hidden;
 }
 
-.discover-meal-update.discover-plus,
-.discover-meal-update.discover-plus:hover,
-.discover-meal-update.discover-plus:active,
-.discover-meal-update.discover-minus, 
-.discover-meal-update.discover-minus:hover,
-.discover-meal-update.discover-minus:active { 
+.discover-meal-update-icon.discover-plus,
+.discover-meal-update-icon.discover-plus:hover,
+.discover-meal-update-icon.discover-plus:active,
+.discover-meal-update-icon.discover-minus, 
+.discover-meal-update-icon.discover-minus:hover,
+.discover-meal-update-icon.discover-minus:active { 
   background: asset-data-url('plus-minus.png') no-repeat 
 }
 
-.discover-meal-update.discover-plus { background-position: -3px -8px; }
-.discover-meal-update.discover-plus:hover { background-position: -39px -8px }  
-.discover-meal-update.discover-plus:active { background-position: -73px -6px; }  
-.discover-meal-update.discover-minus { background-position: -3px -40px; }
-.discover-meal-update.discover-minus:hover { background-position: -39px -40px; }  
-.discover-meal-update.discover-minus:active { background-position: -73px -38px; }  
+.discover-meal-update-icon.discover-plus { background-position: -3px -8px; }
+.discover-meal-update-icon.discover-plus:hover { background-position: -39px -8px }  
+.discover-meal-update-icon.discover-plus:active { background-position: -73px -6px; }  
+.discover-meal-update-icon.discover-minus { background-position: -3px -40px; }
+.discover-meal-update-icon.discover-minus:hover { background-position: -39px -40px; }  
+.discover-meal-update-icon.discover-minus:active { background-position: -73px -38px; }  
 
 .discover-add-text {
   padding-top: 3px;

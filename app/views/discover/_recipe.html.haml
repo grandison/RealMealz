@@ -17,13 +17,14 @@
     %div{:class => "discover-detail-scroll discover-detail-#{size_suffix}"}
       .discover-balance.food-balance{:protein => recipe.food_balance[:protein], 
       :starch => recipe.food_balance[:starch], :vegetable => recipe.food_balance[:vegetable]}
-      %h2
-        -if @my_meals_ids.include?(recipe.id)
-          .discover-meal-update.discover-minus{"recipe-id" => recipe.id}
+      -if @my_meals_ids.include?(recipe.id)
+        %h2.orange-button.discover-meal-update.discover-minus{"recipe-id" => recipe.id}
+          .discover-meal-update-icon.discover-minus
           .discover-add-text.discover-minus
             %b My Meals
-        -else
-          .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
+      -else
+        %h2.orange-button.discover-meal-update.discover-plus{"recipe-id" => recipe.id}
+          .discover-meal-update-icon.discover-plus
           .discover-add-text.discover-plus
             %b My Meals
 

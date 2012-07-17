@@ -1,0 +1,3 @@
+ENV['URL'] = 'http://localhost:3000'
+ENV['FB_APP_ID'] = '105102039636312'
+ENV['FB_APP_SECRET'] = 'b8ca9647b4528f95f7be538dd0828405'

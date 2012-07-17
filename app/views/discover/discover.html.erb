@@ -28,14 +28,14 @@
 
 /** Update My Meals **/
 $("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
-  var add = $(this).hasClass('discover-plus');
+  var add = $(this).find('.discover-meal-update-icon').hasClass('discover-plus');
   $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
   if (add) {
-    $(this).removeClass('discover-plus').addClass('discover-minus');
-    $(this).next().removeClass('discover-plus').addClass('discover-minus');
+    $(this).find('.discover-meal-update-icon').removeClass('discover-plus').addClass('discover-minus');
+    $(this).find('.discover-meal-update-icon').next().removeClass('discover-plus').addClass('discover-minus');
   } else {
-    $(this).removeClass('discover-minus').addClass('discover-plus');
-    $(this).next().removeClass('discover-minus').addClass('discover-plus');
+    $(this).find('.discover-meal-update-icon').removeClass('discover-minus').addClass('discover-plus');
+    $(this).find('.discover-meal-update-icon').next().removeClass('discover-minus').addClass('discover-plus');
   };
   return false; 
 });

@@ -6,6 +6,9 @@
     
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application" %>
+    <% if @facebook %>
+      <%= render :partial => "layouts/facebook_share" %>
+    <% end %>
     <%= csrf_meta_tag %>
     
     <% if @background_recipe %>
