@@ -13,7 +13,7 @@ gem "ruby-units", "= 1.3.2"
 # Other units for RealMealz
 gem "authlogic"
 gem 'dynamic_form'
-gem "paperclip"
+gem "paperclip", '= 2.7.0'
 gem 'fog', '~> 1.1.2'
 gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete"
