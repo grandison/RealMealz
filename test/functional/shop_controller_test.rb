@@ -21,7 +21,7 @@ class ShopControllerTest < ActionController::TestCase
     assert_equal @chicken.id, ik['ingredient_id'], 'Ingredient id'
     assert !ik['bought'], 'Bought'
     assert ik['needed'], 'Needed'
-    assert !ik['have'], 'Should Have item'
+    assert ik['have'], 'Should have item'
   end
       
   test "api add new unusual item" do
