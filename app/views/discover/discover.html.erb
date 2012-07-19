@@ -33,9 +33,11 @@ $("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
   if (add) {
     $(this).find('.discover-meal-update-icon').removeClass('discover-plus').addClass('discover-minus');
     $(this).find('.discover-meal-update-icon').next().removeClass('discover-plus').addClass('discover-minus');
+    $('h2.discover-plus .discover-add-text b').text('Cook This Now');
   } else {
     $(this).find('.discover-meal-update-icon').removeClass('discover-minus').addClass('discover-plus');
     $(this).find('.discover-meal-update-icon').next().removeClass('discover-minus').addClass('discover-plus');
+    $('h2.discover-plus .discover-add-text b').text('Recipe Box');
   };
   return false; 
 });

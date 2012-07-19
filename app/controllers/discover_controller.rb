@@ -20,7 +20,7 @@ class DiscoverController < ApplicationController
     end
     @avoid_items = current_user.get_like_avoid_list(:avoid)
     setup_discover
-    add_fb_tags(Recipe.find(:first, :conditions => {:id => id}))
+    add_fb_tags(Recipe.find(:first, :conditions => {:id => id})) if id
     Rails.logger.info "=========================="
     Rails.logger.info @facebook
     Rails.logger.info "=========================="

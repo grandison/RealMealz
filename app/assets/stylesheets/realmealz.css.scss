@@ -465,7 +465,7 @@ body {
   font-size: 20px;
   font-weight: normal;
   width: 275px;
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .discover-recipe-cook {
@@ -535,7 +535,7 @@ body {
 }
 
 .discover-add-text.discover-plus:before { content: 'Add to'; }
-.discover-add-text.discover-minus:before {content: 'Remove from'; }
+//.discover-add-text.discover-minus:before {content: 'Remove from'; }
 
 .discover-starred-update {
   position: absolute;
