@@ -10,7 +10,9 @@
       body {background-image: url("<%= @background_recipe.picture.url(:large) %>"); }
       #maintenance { width: 300px; margin: 0px auto; }
     </style>
-    
+    <% if @facebook %>
+      <%= render :partial => "layouts/facebook_share" %>
+    <% end %>
     <meta name = "viewport" content = "width = 1040">
   </head>
   <body>

@@ -20,11 +20,19 @@ class DiscoverController < ApplicationController
     end
     @avoid_items = current_user.get_like_avoid_list(:avoid)
     setup_discover
+    add_fb_tags(Recipe.find(:first, :conditions => {:id => id})) if id
+    Rails.logger.info "=========================="
+    Rails.logger.info @facebook
+    Rails.logger.info "=========================="
   end
 
   #------------------------- 
   def recipe_shown
     current_user.kitchen.increment_seen_count(params[:recipe_id])
+    add_fb_tags(Recipe.find(:first, :conditions => {:id => params[:recipe_id]}))
+    Rails.logger.info "=========================="
+    Rails.logger.info @facebook
+    Rails.logger.info "=========================="
     render :nothing => true
   end
 
@@ -126,6 +134,19 @@ class DiscoverController < ApplicationController
     @have_ingredients = current_user.kitchen.have_ingredients
     @starred_ids = current_user.kitchen.starred_meal_ingredient_ids 
     @my_meals_ids = current_user.kitchen.my_meals_recipe_ids
+  end
+
+
+  #--------------------------
+  def add_fb_tags(recipe)
+    @facebook = true
+    @og_title = "I found this #{recipe.name} recipe on RealMealz.com It looks delicious and only takes around 30 minutes to make!"
+    @og_type = "Website"
+    @og_url = "#{ENV['URL']}/discover/recipe/#{recipe.id}/#{CGI.unescape(recipe.name)})}"
+    @og_image = recipe.picture(:thumbnail) if recipe.picture
+    @og_site_name = "RealMealz"
+    @og_app_id = ENV['FB_APP_ID']
+    @og_description = recipe.intro
   end
   
 end
