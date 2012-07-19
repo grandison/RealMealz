@@ -279,13 +279,13 @@ class User < ActiveRecord::Base
     @rh[:ingredients].each do |ih|
 
       # Ingredient in the have list?
-      if have_ingredients.index {|i| i.id == ih[:id]}
+      if have_ingredients && have_ingredients.index {|i| i.id == ih[:id]}
         @has_have_ingredient = true
         @rh[:scores][:ingr_have] = 100
       end
 
       # Contains an avoid ingredient?
-      if avoid_ingredient_ids.include?(ih[:id])
+      if avoid_ingredient_ids && avoid_ingredient_ids.include?(ih[:id])
         @has_avoid_ingredient = true
         break
       end
