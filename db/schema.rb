@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
     t.text      "prepsteps"
     t.string    "skills"
     t.timestamp "updated_at"
+    t.timestamp "created_at"
     t.timestamp "balance_updated_at"
     t.integer   "balance_protein"
     t.integer   "balance_vegetable"
