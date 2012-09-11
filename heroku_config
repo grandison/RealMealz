@@ -1,15 +1,17 @@
-BUNDLE_WITHOUT        => sqlite:bluebox:test:development
-DATABASE_URL          => postgres://jvipbobdoo:Erp7vXair1HBkSaPir7c@ec2-107-22-249-100.compute-1.amazonaws.com/jvipbobdoo
-GEM_PATH              => vendor/bundle/ruby/1.9.1
-LANG                  => en_US.UTF-8
-LOGGLY_URL            => http://herokuapp2291025.loggly.com/heroku/resources/herokuapp2291025
-MYSQL2_DATABASE_URL   => mysql2://realmealz:food4health@maxdunn.com:3300/realmealz_dev
-NEW_RELIC_APP_NAME    => pure-earth-8335
-NEW_RELIC_ID          => 74020
-NEW_RELIC_LICENSE_KEY => 952ca1aaadb5651a38640d6f6a711996276b307e
-NEW_RELIC_LOG         => stdout
-PATH                  => bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin
-PGBACKUPS_URL         => https://14176:7wzyfjrk1togzet7ud49qxm0w@pgbackups.heroku.com/client
-RACK_ENV              => production
-RAILS_ENV             => production
-SHARED_DATABASE_URL   => postgres://jvipbobdoo:Erp7vXair1HBkSaPir7c@ec2-107-22-249-100.compute-1.amazonaws.com/jvipbobdoo
+AIRBRAKE_API_KEY:           5f0b27a1c3b8ad7e05f3d9572c590d35
+BUNDLE_WITHOUT:             sqlite:bluebox:test:development
+DATABASE_URL:               postgres://rvlxhzwrpvmcnn:YWzQteUmXuBpE0IOBfkJGIELZr@ec2-107-22-182-174.compute-1.amazonaws.com:5432/d8j9vskgg9n3bj
+GEM_PATH:                   vendor/bundle/ruby/1.9.1
+HEROKU_POSTGRESQL_BLUE_URL: postgres://rvlxhzwrpvmcnn:YWzQteUmXuBpE0IOBfkJGIELZr@ec2-107-22-182-174.compute-1.amazonaws.com:5432/d8j9vskgg9n3bj
+LANG:                       en_US.UTF-8
+LOGGLY_URL:                 http://herokuapp2291025.loggly.com/heroku/resources/herokuapp2291025
+MYSQL2_DATABASE_URL:        mysql2://realmealz:food4health@maxdunn.com:3300/realmealz_dev
+NEW_RELIC_APP_NAME:         pure-earth-8335
+NEW_RELIC_ID:               74020
+NEW_RELIC_LICENSE_KEY:      952ca1aaadb5651a38640d6f6a711996276b307e
+NEW_RELIC_LOG:              stdout
+PATH:                       bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin
+PGBACKUPS_URL:              https://14176:7wzyfjrk1togzet7ud49qxm0w@pgbackups.heroku.com/client
+RACK_ENV:                   production
+RAILS_ENV:                  production
+SHARED_DATABASE_URL:        postgres://jvipbobdoo:Erp7vXair1HBkSaPir7c@ec2-107-22-249-100.compute-1.amazonaws.com/jvipbobdoo
