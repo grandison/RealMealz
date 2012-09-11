@@ -11,17 +11,22 @@
         = link_to(recipe.source, recipe.source_link, :target => '_blank')
       - else
         = recipe.source
+      
+      /.fb-like{ 'data-send' => false, 'data-layout' => 'button_count', 'data-width' => '100', 'data-show-faces' => false}
+      - myurl = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
+      - mydescription = "I found this #{recipe.name} recipe on RealMealz.com. It looks delicious and only takes around 30 minutes to make!"
+      = link_to "", "http://www.facebook.com/dialog/feed?app_id=#{FB_APP_ID}&link=#{myurl}&picture=#{recipe.picture.url}&name=#{recipe.name}&caption=#{recipe.name}%20on%20RealMealz.com&description=#{mydescription}&redirect_uri=#{myurl}", :class => 'fb-share'
 - unless recipe.blank?
   - if current_user.role == 'super_admin'
     #cook-recipe-edit
       = button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, |
         :method => :get, :class => "green-button")                                         |
-  - if controller.controller_name == 'discover'
+  -# if controller.controller_name == 'discover'
     - display = discover_big ? 'display:table-cell' : 'display:none'
     .discover-recipe-cook{'style' => display}
       = button_to("Cook this now >>", {:controller => "discover", :action => "cook_now", :recipe_id => recipe.id},
       :method => :post, :class => "gray-button")
-  - else
+  -# else
     #cook-done-cooking
       = button_to("I Cooked This.", {:controller => "cook", :action => "done_cooking", :recipe_id => recipe.id},                                                |
         :confirm => "Great job for cooking!  You earned 10 points for cooking a meal. We also added this meal to your VPG (Vegetable-Protein-Grain ratio) under the Track page.", |
