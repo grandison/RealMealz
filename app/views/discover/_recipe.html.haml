@@ -25,12 +25,12 @@
       :starch => recipe.food_balance[:starch], :vegetable => recipe.food_balance[:vegetable]}
       .discover-button-holder.right
         -if @my_meals_ids.include?(recipe.id)
-          .discover-add-text.btn.btn-warning.discover-cooknow.discover-minus{"recipe-id" => recipe.id}
+          .discover-add-text.orange-button.discover-cooknow.discover-minus{"recipe-id" => recipe.id}
             %i.icon-fire.icon-white
             = link_to "Cook This Now", "/cook?recipe_id=#{recipe.id}"
           .remove-meal= "or #{link_to 'remove from My Meals', '#', :class => 'discover-meal-update', 'recipe-id' => recipe.id}".html_safe
         -else
-          .discover-add-text.discover-plus.btn.btn-warning.discover-meal-update.discover-plus{"recipe-id" => recipe.id}
+          .discover-add-text.discover-plus.orange-button.discover-meal-update.discover-plus{"recipe-id" => recipe.id}
             %i.icon-plus-sign.icon-white
             Add to My Meals
             
