@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -87,7 +88,7 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
     t.integer "kitchen_id"
     t.boolean "stock_item",   :default => false
     t.text    "other_names"
-    t.string  "whole_unit"
+    t.string  "whole_unit",   :default => ""
   end
 
   create_table "ingredients_kitchens", :force => true do |t|
@@ -110,7 +111,7 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
     t.integer "ingredient_id"
     t.integer "recipe_id"
     t.boolean "group",         :default => false
-    t.string  "description"
+    t.string  "description",   :default => ""
     t.integer "line_num"
   end
 
@@ -165,32 +166,33 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
   end
 
   create_table "recipes", :force => true do |t|
-    t.string    "name"
-    t.text      "cooksteps"
-    t.string    "picture_file_name"
-    t.string    "picture_content_type"
-    t.integer   "picture_file_size"
-    t.timestamp "picture_updated_at"
-    t.text      "original"
-    t.text      "source"
-    t.string    "tags"
-    t.integer   "servings"
-    t.integer   "preptime"
-    t.integer   "cooktime"
-    t.boolean   "approved"
-    t.text      "intro"
-    t.text      "prepsteps"
-    t.string    "skills"
-    t.timestamp "updated_at"
-    t.timestamp "balance_updated_at"
-    t.integer   "balance_protein"
-    t.integer   "balance_vegetable"
-    t.integer   "balance_starch"
-    t.integer   "kitchen_id"
-    t.string    "picture_remote_url"
-    t.string    "source_link"
-    t.text      "original_ingredient_list"
-    t.boolean   "public",                   :default => true
+    t.string   "name"
+    t.text     "cooksteps"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
+    t.text     "original"
+    t.text     "source"
+    t.string   "tags"
+    t.integer  "servings"
+    t.integer  "preptime"
+    t.integer  "cooktime"
+    t.boolean  "approved"
+    t.text     "intro"
+    t.text     "prepsteps"
+    t.string   "skills"
+    t.datetime "updated_at"
+    t.datetime "balance_updated_at"
+    t.integer  "balance_protein"
+    t.integer  "balance_vegetable"
+    t.integer  "balance_starch"
+    t.integer  "kitchen_id"
+    t.string   "picture_remote_url"
+    t.string   "source_link"
+    t.text     "original_ingredient_list"
+    t.boolean  "public",                   :default => true
+    t.datetime "created_at"
   end
 
   create_table "recipes_personalities", :force => true do |t|
@@ -204,10 +206,10 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
   end
 
   create_table "sessions", :force => true do |t|
-    t.string    "session_id", :null => false
-    t.text      "data"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "session_id", :default => "", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
@@ -251,35 +253,35 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
   end
 
   create_table "teams", :force => true do |t|
-    t.string    "name"
-    t.integer   "group_id"
-    t.timestamp "created_on"
+    t.string   "name"
+    t.integer  "group_id"
+    t.datetime "created_on"
   end
 
   create_table "users", :force => true do |t|
-    t.string    "first"
-    t.string    "last"
-    t.string    "email"
-    t.string    "street"
-    t.string    "city"
-    t.string    "state"
-    t.string    "zip"
-    t.integer   "kitchen_id"
-    t.string    "crypted_password",   :limit => 128,                :null => false
-    t.integer   "login_count",                       :default => 0
-    t.timestamp "current_login_at"
-    t.timestamp "last_login_at"
-    t.string    "current_login_ip"
-    t.string    "last_login_ip"
-    t.string    "password_salt"
-    t.integer   "failed_login_count",                :default => 0
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.string    "role"
-    t.string    "persistence_token"
-    t.timestamp "last_request_at"
-    t.integer   "balance_id"
-    t.string    "perishable_token"
+    t.string   "first"
+    t.string   "last"
+    t.string   "email"
+    t.string   "street"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.integer  "kitchen_id"
+    t.string   "crypted_password",   :limit => 128, :default => "", :null => false
+    t.integer  "login_count",                       :default => 0
+    t.datetime "current_login_at"
+    t.datetime "last_login_at"
+    t.string   "current_login_ip"
+    t.string   "last_login_ip"
+    t.string   "password_salt"
+    t.integer  "failed_login_count",                :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "role"
+    t.string   "persistence_token"
+    t.datetime "last_request_at"
+    t.integer  "balance_id"
+    t.string   "perishable_token",                  :default => ""
   end
 
   add_index "users", ["email"], :name => "index_members_on_email", :unique => true
@@ -320,19 +322,19 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
   end
 
   create_table "users_points", :force => true do |t|
-    t.integer   "user_id"
-    t.integer   "point_id"
-    t.timestamp "date_added"
+    t.integer  "user_id"
+    t.integer  "point_id"
+    t.datetime "date_added"
   end
 
   create_table "users_recipes", :force => true do |t|
-    t.integer   "user_id"
-    t.integer   "recipe_id"
-    t.string    "source"
-    t.integer   "rating"
-    t.timestamp "date_added"
-    t.boolean   "active",        :default => false
-    t.boolean   "in_recipe_box"
+    t.integer  "user_id"
+    t.integer  "recipe_id"
+    t.string   "source"
+    t.integer  "rating"
+    t.datetime "date_added"
+    t.boolean  "active",        :default => false
+    t.boolean  "in_recipe_box"
   end
 
   create_table "users_sliding_scales", :force => true do |t|
@@ -342,10 +344,10 @@ ActiveRecord::Schema.define(:version => 20120606033330) do
   end
 
   create_table "users_teams", :force => true do |t|
-    t.integer   "user_id"
-    t.integer   "team_id"
-    t.timestamp "created_on"
-    t.integer   "group_id"
+    t.integer  "user_id"
+    t.integer  "team_id"
+    t.datetime "created_on"
+    t.integer  "group_id"
   end
 
 end
