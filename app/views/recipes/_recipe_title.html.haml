@@ -5,12 +5,14 @@
     - else
       = recipe.name
   - unless recipe.source.blank?
-    #recipe-source
+    #recipe-source{:style => "display:inline-block;"}
       By:
       - unless recipe.source_link.blank?
         = link_to(recipe.source, recipe.source_link, :target => '_blank')
       - else
         = recipe.source
+      | 
+  = link_to "Share on Facebook", facebook_share_url(polymorphic_url([:discover, recipe], :only_path => false)), :class => "recipe-share", :target => "_blank", :style => "font-size:14px;font-weight:normal;"
 - unless recipe.blank?
   - if current_user.role == 'super_admin'
     #cook-recipe-edit

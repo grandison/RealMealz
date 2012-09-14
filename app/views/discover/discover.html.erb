@@ -27,16 +27,17 @@
 <script type="text/javascript">
 
 /** Update My Meals **/
-$("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
-  var add = $(this).hasClass('discover-plus');
+$("#discover-carousel").delegate('.add-to-my-meals', 'click', function() {
+  var add = true;
   $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
-  if (add) {
-    $(this).removeClass('discover-plus').addClass('discover-minus');
-    $(this).next().removeClass('discover-plus').addClass('discover-minus');
-  } else {
-    $(this).removeClass('discover-minus').addClass('discover-plus');
-    $(this).next().removeClass('discover-minus').addClass('discover-plus');
-  };
+  $(this).removeClass('add-to-my-meals').addClass('cook-this-now');
+  $(this).attr('value', 'Cook This Now');
+  return false; 
+});
+
+/** Cook the meal **/
+$("#discover-carousel").delegate('.cook-this-now', 'click', function() {
+  window.location = "/cook?recipe_id=" + encodeURIComponent($(this).attr('recipe-id'));
   return false; 
 });
 

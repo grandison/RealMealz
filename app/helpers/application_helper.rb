@@ -13,7 +13,11 @@ module ApplicationHelper
   def check_and_add_group_html(line)
     sanitize(line).gsub(/^\*(.*)\*$/,"<br/><span class='recipe-ingredient-group'>\\1</span>").html_safe
   end
-  
+
+  def facebook_share_url(url)
+    "http://www.facebook.com/sharer.php?u=#{encode_uri_component(url)}"
+  end
+
   #################
   private
   
@@ -21,5 +25,9 @@ module ApplicationHelper
     dot_pos = name.rindex('.')
     dot_pos = -1 if dot_pos.nil?
     name.insert(dot_pos, insert_text)
+  end
+  
+  def encode_uri_component(param)
+    URI.escape(param, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
   end
 end

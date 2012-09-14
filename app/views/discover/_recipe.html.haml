@@ -19,13 +19,9 @@
       :starch => recipe.food_balance[:starch], :vegetable => recipe.food_balance[:vegetable]}
       %h2
         -if @my_meals_ids.include?(recipe.id)
-          .discover-meal-update.discover-minus{"recipe-id" => recipe.id}
-          .discover-add-text.discover-minus
-            %b My Meals
+          %input.orange-button.cook-this-now.hidden{ :type => "submit",  :value => "Cook This Now", "recipe-id" => recipe.id }
         -else
-          .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
-          .discover-add-text.discover-plus
-            %b My Meals
+          %input.orange-button.add-to-my-meals.hidden{ :type => "submit", :value => "Add to My Meals", "recipe-id" => recipe.id }
 
       %p.discover-recipe-intro
         = recipe.intro
