@@ -14,3 +14,4 @@ parsers/*
 db/realmealz_dev
 db/schema.rb
 config/database.yml
+.idea/*

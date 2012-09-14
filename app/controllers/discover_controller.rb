@@ -106,6 +106,20 @@ class DiscoverController < ApplicationController
   #------------------------- 
   def new_cooking_skills
   end
+
+  def set_recipe_session
+    recipe = Recipe.find(params[:recipe_id])
+    session[:recipe] = recipe
+
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.redirect_to "#{request.base_url}/auth/facebook"
+        end
+      end
+    end
+
+  end
   
   ##############
   private

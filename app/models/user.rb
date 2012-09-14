@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :users_groups
   has_many :users_teams
   has_many :teams, :through => :users_teams
+  has_many :authentications
 
   # MD This causes Ruby to use too much memory
   #default_scope :include => [:allergies, :users_recipes, {:recipes => :ingredients}]
@@ -243,6 +244,15 @@ class User < ActiveRecord::Base
     end  
     
     return recipe_list_ids
+  end
+
+  def apply_omniauth(omniauth)
+    self.email = omniauth['user_info']['email'] if email.blank?
+    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+  end
+
+  def password_required?
+    (authentications.empty? || !password.blank?) && super
   end
 
   # Helper methods for get_favorite_recipes to reduce complexity

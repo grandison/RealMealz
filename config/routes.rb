@@ -1,5 +1,7 @@
 RealMealz::Application.routes.draw do
   
+  resources :authentications, :only => [:create]
+
   # Set the root for GET only
   root :to => "home#index", :via => :get
   
@@ -12,6 +14,7 @@ RealMealz::Application.routes.draw do
   match "/fb" => redirect("http://www.facebook.com/RealMealz")
   match "/facebook" => redirect("http://www.facebook.com/RealMealz")  
   match "/blog" => redirect("http://blog.realmealz.com")
+  match '/auth/:provider/callback' => 'authentications#create'
   
   ## RealMealz pages
   get '/home/survey'
@@ -65,6 +68,7 @@ RealMealz::Application.routes.draw do
   post "/shop/update_default_servings"
 
   get '/cook' => "cook#cook"
+  get '/cook/recipe(/:id)(/:name)' => "cook#cook", :as => 'cook_recipe'
   post '/cook/done_cooking'
 
   get '/discover' => "discover#discover"
@@ -75,7 +79,8 @@ RealMealz::Application.routes.draw do
   post "/discover/meal_update"
   post "/discover/recipe_shown"
   post "/discover/cook_now"
-  
+  post "/discover/set_recipe_session"
+
 
   get '/settings' => "settings#settings"
 	post '/settings' => "settings#settings"

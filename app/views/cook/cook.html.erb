@@ -1,13 +1,50 @@
-<% if @meals_empty %>
-  <% @background_recipe = Recipe.random_background_image %>
-  <div id='cook-no-meals-padding'>
-    <div id='cook-no-meals' class='gray-background'>
-      <h2>Your "My Meals" collection is empty</h2>
-      <p>Click on "Add to My Meals" <br> on the <%= link_to('Discover page', '/discover') %> <br> to add to "My Meals"</p>
-    </div>
-  </div>
-<% else %>
-  <%= render_cell :meals, :meals_list, current_user, show_plus = false, show_servings = false %>
-  <%= render :partial => 'recipes/recipe_setup' %>
-  <%= render :partial => 'layouts/video_popup' %>
-<% end %>
+<div id="cook-carousel">
+  <% if @meals_empty %>
+      <% @background_recipe = Recipe.random_background_image %>
+      <div id='cook-no-meals-padding'>
+        <div id='cook-no-meals' class='gray-background'>
+          <h2>Your "My Meals" collection is empty</h2>
+          <p>Click on
+          <h2 recipe-id="<%= @background_recipe.id -%>" class="orange-button discover-meal-update discover-plus">
+            <div class="discover-meal-update-icon discover-plus"></div>
+            <div class="discover-add-text discover-plus">
+              <b>My Meals</b>
+            </div>
+          </h2>
+          <br> on the <%= link_to('Discover page', '/discover') %> <br> to add to "My Meals"</p>
+        </div>
+      </div>
+  <% else %>
+      <%= render_cell :meals, :meals_list, current_user, show_plus = false, show_servings = false %>
+      <%= render :partial => 'recipes/recipe_setup' %>
+      <%= render :partial => 'layouts/video_popup' %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+    if ($("#cook-carousel .discover-meal-update").html() != null) {
+        /** Update My Meals **/
+        $("#cook-carousel").delegate(".discover-meal-update", "click", function() {
+            var add = $(this).find('.discover-meal-update-icon').hasClass('discover-plus');
+            $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
+            if (add) {
+                $(this).find('.discover-meal-update-icon').removeClass('discover-plus').addClass('discover-minus');
+                $(this).find('.discover-meal-update-icon').next().removeClass('discover-plus').addClass('discover-minus');
+                $('h2.discover-plus .discover-add-text b').text('Cook This Now');
+            } else {
+                $(this).find('.discover-meal-update-icon').removeClass('discover-minus').addClass('discover-plus');
+                $(this).find('.discover-meal-update-icon').next().removeClass('discover-minus').addClass('discover-plus');
+                $('h2.discover-plus .discover-add-text b').text('My Meals');
+            };
+            return false;
+        });
+
+    <% unless @background_recipe.blank? %>
+        var recipeId = "<%= @background_recipe.id -%>"
+        var recipeName = "<%= @background_recipe.name -%>"
+
+        replaceHistory('/cook/recipe/' + recipeId + '/' + recipeName);
+    <% end %>
+    }
+
+</script>

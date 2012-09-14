@@ -27,6 +27,10 @@ gem 'jquery-rails'
 gem "yaml_db"
 gem "dalli"
 gem "airbrake"
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'koala'
+gem 'prototype-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -45,6 +49,10 @@ end
 # For local development
 group :development do
   gem "thin", :platforms => :ruby
+end
+
+group :development, :test do
+  gem 'ruby-debug'
 end
 
 # For Heroku

@@ -1,20 +1,20 @@
 <div id="discover-like-bar">
-	<img src="<%= asset_path 'likebar-left.png'%>">
+  <img src="<%= asset_path 'likebar-left.png'%>">
   <span id="discover-have-button" class="discover-button"><img class="tri" src="<%= asset_path 'tri.png'%>"> I have </span>
   <span id="discover-avoid-button" class="discover-button"><img class="tri" src="<%= asset_path 'tri.png'%>"> I avoid </span>
   <span id="discover-want-button" class="discover-button"> Filter: &nbsp;
     <input id="discover-search-input" type="text" placeholder="i.e. salad"></span>
-	<img src="<%= asset_path 'likebar-right.png'%>">
+  <img src="<%= asset_path 'likebar-right.png'%>">
   <%= render :partial => 'have_dialog' %>
   <%= render :partial => 'avoid_dialog' %>
-  </div>
+</div>
 <div id="discover-next-bar">
   <div id="discover-next-flavors"></div>
   <div id="discover-next-arrow" class="discover-next-arrow">
     <div id="discover-next-div">next</div>
   </div>
   <div id="discover-next-ingredients"></div>
-</div>  
+</div>
 <div id="discover-back" class="discover-back">
 </div>
 
@@ -26,379 +26,385 @@
 
 <script type="text/javascript">
 
-/** Update My Meals **/
-$("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
-  var add = $(this).find('.discover-meal-update-icon').hasClass('discover-plus');
-  $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
-  if (add) {
-    $(this).find('.discover-meal-update-icon').removeClass('discover-plus').addClass('discover-minus');
-    $(this).find('.discover-meal-update-icon').next().removeClass('discover-plus').addClass('discover-minus');
-    $('h2.discover-plus .discover-add-text b').text('Cook This Now');
-  } else {
-    $(this).find('.discover-meal-update-icon').removeClass('discover-minus').addClass('discover-plus');
-    $(this).find('.discover-meal-update-icon').next().removeClass('discover-minus').addClass('discover-plus');
-    $('h2.discover-plus .discover-add-text b').text('Recipe Box');
-  };
-  return false; 
-});
+    /** Update My Meals **/
+    $("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
+        var add = $(this).find('.discover-meal-update-icon').hasClass('discover-plus');
+        $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
+        if (add) {
+            $(this).find('.discover-meal-update-icon').removeClass('discover-plus').addClass('discover-minus');
+            $(this).find('.discover-meal-update-icon').next().removeClass('discover-plus').addClass('discover-minus');
+            $('h2.discover-plus .discover-add-text b').text('Cook This Now');
+        } else {
+            $(this).find('.discover-meal-update-icon').removeClass('discover-minus').addClass('discover-plus');
+            $(this).find('.discover-meal-update-icon').next().removeClass('discover-minus').addClass('discover-plus');
+            $('h2.discover-plus .discover-add-text b').text('Recipe Box');
+        };
+        return false;
+    });
 
-/* Setup the detail scroll height dynamically since the recipe header size can change */
-function setupDetailScroll($discoverDetailScroll) {
-  var newHeight = $(window).height() - $discoverDetailScroll.offset().top;
-  $discoverDetailScroll.height(newHeight);
-  $discoverDetailScroll.find('.viewport').height(newHeight);
-  setup_scroll($discoverDetailScroll);
-};
-
-/** Change detail size **/
-var showBig = false;
-function change_detail_size(discoverDetail, makeBig) {
-  if (makeBig) {
-    var newPercent = 150;
-    var detailToScale = '.discover-detail-small';
-    var ingredientTurnOn = '.ingredient-list-with-quantities';
-    var ingredientTurnOff = '.ingredient-list-without-quantities';
-  } else {
-    var newPercent = 100/1.5;
-    var detailToScale = '.discover-detail-big';
-    var ingredientTurnOn = '.ingredient-list-without-quantities';
-    var ingredientTurnOff = '.ingredient-list-with-quantities';
-  }
-  $(discoverDetail).effect("scale", { percent: newPercent, direction: 'both', origin: ['bottom', 'left'], scale: 'box' }, 500, function() {
-    /* Take out the element sizing, otherwise messes up if size changes and going back */
-    $(discoverDetail).css('height','').css('width','').css('font-size','').css('padding','');
-    var $discoverDetailScroll = $(discoverDetail).find('.discover-detail-scroll')
-    setupDetailScroll($discoverDetailScroll);
-  });
-  if (makeBig) {
-    $('.discover-detail-small').addClass('discover-detail-big');
-    $('.discover-detail-small').removeClass('discover-detail-small');
-    $('.discover-recipe-cook').show();
-  } else {
-    $('.discover-detail-big').addClass('discover-detail-small');
-    $('.discover-detail-big').removeClass('discover-detail-big');
-    $('.discover-recipe-cook').hide();
-  }
-  $(ingredientTurnOff).attr('style', 'display:none');
-  $(ingredientTurnOn).attr('style', 'display:block');
-};
-
-$("#discover-carousel").delegate(".discover-detail-button", "click", function () {
-  showBig = $(this).hasClass('discover-detail-small');
-  change_detail_size($(this).parent(), showBig);
-});
-
-/*** Ingredients checkbox ***/
-$("#discover-carousel").delegate(".ingredient-checkbox", "click", function() {
-  adding = $(this).is(':checked');
-	$.ajax({		  
-	  type: "post",
-		url: "/discover/update_pantry",
-		data: "ingredient_id=" + $(this).attr('ingredient-id') + "&checked=" + adding
-	});   
-	updateIngredientCheckboxes($(this).attr('ingredient-id'), adding);
-	/* update the Have list box */
-	if (adding) {
-	  newItem = $("<li></li>");
-	  newItem.html($(this).attr("name"));
-    newItem.attr("ingredient-id", $(this).attr('ingredient-id'));
-    if (typeof($(this).attr('item-id')) != 'undefined') { 
-      newItem.attr("id", $(this).attr('item-id'));
+    /* Setup the detail scroll height dynamically since the recipe header size can change */
+    function setupDetailScroll($discoverDetailScroll) {
+        var newHeight = $(window).height() - $discoverDetailScroll.offset().top;
+        $discoverDetailScroll.height(newHeight);
+        $discoverDetailScroll.find('.viewport').height(newHeight);
+        setup_scroll($discoverDetailScroll);
     };
-    newItem.addClass("discover-have-list-item");
-  	$('#discover-have-list').append(newItem);
-  } else {
-    $('li[ingredient-id="' + $(this).attr('ingredient-id') + '"]').remove();
-  };
-  update_scroll('#discover-have-scroll');
-  return true;
-});
 
-/** Discover carousel **/
-function turnOffNextButtons(){
-  $('#discover-next-arrow').addClass('discover-next-arrow');
-  $('#discover-next-arrow').removeClass('discover-next-loading');
-};
-var haveIngredientsChanged = false;
-var avoidIngredientsChanged = false;
-var lastSearch = "";
-function mycarousel_initCallback(carousel) {
-  $('#discover-next-arrow').bind('click', function() {
-    // Get the data we need to send 
-    var search = $('#"discover-like-bar:input').val();
-    var ingredients = $("#discover-next-ingredients").hasClass("discover-button-active");
-    var showBig = $(".discover-detail-main").hasClass("discover-detail-big");
-    
-    // Check if anything has changed
-    var filtersChanged = haveIngredientsChanged || avoidIngredientsChanged || (lastSearch != search)
-    haveIngredientsChanged = false
-    avoidIngredientsChanged = false
-    lastSearch = search;
-
-    // If we are at the end of the recipes or the user has changed the search parameters,
-    // don't scroll until we get the next recipes
-    var wait = (carousel.size() <= carousel.last || filtersChanged);
-    if (wait) { 
-      $('#discover-next-arrow').addClass('discover-next-loading');
-      $('#discover-next-arrow').removeClass('discover-next-arrow');
-      
-      // Get rid of queued items
-      if (filtersChanged) {
-        for (var i = carousel.last + 1; i <= carousel.size(); i++) {
-          $('.jcarousel-item-' + i).remove(); 
+    /** Change detail size **/
+    var showBig = false;
+    function change_detail_size(discoverDetail, makeBig) {
+        if (makeBig) {
+            var newPercent = 150;
+            var detailToScale = '.discover-detail-small';
+            var ingredientTurnOn = '.ingredient-list-with-quantities';
+            var ingredientTurnOff = '.ingredient-list-without-quantities';
+        } else {
+            var newPercent = 100/1.5;
+            var detailToScale = '.discover-detail-big';
+            var ingredientTurnOn = '.ingredient-list-without-quantities';
+            var ingredientTurnOff = '.ingredient-list-with-quantities';
         }
-        carousel.size(carousel.last); 
-      }
-    } else {
-      carousel.next();
-      turnOffNextButtons();
-      if (carousel.size()-3 != carousel.last) { // Wait until we have 3 left to fill up the queue
-        return 
-      }; 
-    }    
-    
-    // Construct the post data, get new recipes if the filters have changed or we only have 3 recipes left
-    if (filtersChanged) {
-      var ids = $('.discover-recipe').map(function() {
-        return $(this).attr('recipe-id');
-      }).get().join(',');
-      var postData = "recipe_ids=" + ids + 
-        '&show_big=' + showBig + 
-        '&filters[search]=' + search 
-    } else {
-      postData = "no_changes=true&show_big=" + showBig;
-    };
-    $.post("/discover/next_recipes", postData, function(data) {
-      if (data.length > 5) { // 5 is arbitrary to account for possible blank characters
-        // Break up data into li sections and add to the carousel then setup scroll
-        // Bug in JQuery, can't find top level elements so wrap data in a div
-        var addIndex = carousel.size() + 1;
-        $(".discover-li", $("<div>" + data + "</div>")).each(function() { 
-          carousel.add(addIndex,$(this));
-          setup_scroll($(this).find('.discover-detail-scroll')); 
-          carousel.size(addIndex);
-          addIndex++; 
+        $(discoverDetail).effect("scale", { percent: newPercent, direction: 'both', origin: ['bottom', 'left'], scale: 'box' }, 500, function() {
+            /* Take out the element sizing, otherwise messes up if size changes and going back */
+            $(discoverDetail).css('height','').css('width','').css('font-size','').css('padding','');
+            var $discoverDetailScroll = $(discoverDetail).find('.discover-detail-scroll')
+            setupDetailScroll($discoverDetailScroll);
         });
-        resize_windows(); 
-        makePieCharts(); // Recreates all pie charts, check if this slows down with lots of recipes in carousel
-      };
-      
-      if (wait) { 
-        carousel.next();
-      };
-      turnOffNextButtons();
-    });		
-  });
-  
-  $('#discover-back').bind('click', function() {
-    carousel.prev();
-  });
-};
-
-/* After scrolled into view, Send the recipe-id of the shown recipe, change the browser URL and setup the scroller */
-function mycarousel_itemVisibleInCallbackAfterAnimation(carousel, item, idx, state) {
-  var $discoverRecipe = $('.jcarousel-item-' + carousel.last + ' .discover-recipe');
-  var $discoverDetailScroll = $discoverRecipe.find('.discover-detail-scroll');
-  var recipeId = $discoverRecipe.attr('recipe-id')
-  var recipeName = $discoverRecipe.attr('recipe-name')
-  setupDetailScroll($discoverDetailScroll);
-  replaceHistory('/discover/recipe/' + recipeId + '/' + recipeName);
-  $.post('/discover/recipe_shown', 'recipe_id=' + recipeId);
-};
-
-/*** Resize windows ***/
-function resize_windows() {
-  // Add back in the 10px bottom padding but take out 1 for Win7 which otherwise shows scroll bars on Chrome, FF and IE
-  var mainHeight = full_scroll_height('#main') + 9; 
-  var contentWidth = $(window).width(); 
-  $('.main-height').css('height', mainHeight); 
-  $('.content-width').css('width', contentWidth); 
-  $('.jcarousel-clip').css('width', contentWidth); 
-  $('.jcarousel-clip').css('height', mainHeight); 
-  $('.jcarousel-container').css('width', contentWidth); 
-  $('.jcarousel-container').css('height', mainHeight); 
-  var likeBarLeft = (contentWidth - $('#discover-like-bar').width()) / 2;
-  if( likeBarLeft < 100) {likeBarLeft = 100};
-  $('#discover-like-bar').css('left', likeBarLeft);
-};
-
-/* initial page load (needs to be before initializing jcarousel) */
-resize_windows(); 
-
-/* on window resize */
-$(window).resize(function() {  
-  resize_windows();
-});
-
-/**** JCarousel ****/
-$("#discover-carousel").jcarousel({
-  scroll: 1,
-  visible: 1, 
-  initCallback: mycarousel_initCallback,
-  itemVisibleInCallback: {onAfterAnimation:  mycarousel_itemVisibleInCallbackAfterAnimation},
-  buttonNextHTML: null,
-  buttonPrevHTML: null,
-  animation: 300
-});
-
-/** Search **/
-$('#discover-search-input').keyup(function() {
-  var search = $(this).val();
-  var fontSize = 20;
-  if (!search.length) { 
-    search = 'next';  
-  }
-  if (search.length > 20) {
-    fontSize = 12;
-  } else if (search.length > 10) {
-    fontSize = 15;
-  } else if (search.length > 5) {
-    fontSize = 18;
-  } else {
-    fontSize = 20;
-  }
-  $('#discover-next-div').css('font-size', fontSize + 'px'); 
-  $('#discover-next-div').text(search);
-});
-
-$('#discover-search-input').keypress(function(e) {
-  if (e.keyCode == 13) {
-    $('#discover-next-arrow').click();
-  }
-});
-
-/*** Have and Avoid ***/
-function setup_have_avoid_dialog(name) {
- 
-  /* Scroll */
-  setup_scroll("#discover-"+name+"-scroll", true);
-  
-  /* Toggle visible */
-  $("#discover-"+name+"-button").click(function() {
-    if ($("#discover-"+name+"-form").css("display") == "none") {
-      $(this).addClass("discover-button-active");
-    	$("#discover-"+name+"-form").slideDown('fast', function () {
-      	update_scroll("#discover-"+name+"-scroll");
-      	// MD Take out for now $("#discover-"+name+"-input").focus();
-    	});
-  	} else {
-    	$("#discover-"+name+"-form").slideUp('fast');
-      $(this).removeClass("discover-button-active");
-  	}
-  });
-  
-  /* delete */
-  $("#discover-" + name + "-form").delegate(".discover-" + name + "-list-item", "click", function(e) {
-    if (e.offsetX > $(this).outerWidth() - 25) {
-      var itemId = $(this).attr('id');
-      var ingredientId = $(this).attr('ingredient-id');
-      var postData = "item[have]=false&render=none&"
-      if (typeof(itemId) != 'undefined') { postData += "item[id]=" + itemId + '&'}
-      if (typeof(ingredientId) != 'undefined') { postData += "item[ingredient_id]=" + ingredientId}
-      
-      if (name == 'have') { 
-        postUrl = '/shop/update_item';
-        haveIngredientsChanged = true
-      } else {
-        postUrl = '/settings/remove_avoid_item';
-        avoidIngredientsChanged = true
-      }        
-      
-      $.ajax({		  
-  		  type: "post",
-  			url: postUrl,
-  			data: postData
-  		});
-      if (typeof(itemId) == 'undefined') {
-        selector = '[ingredient-id="' + ingredientId + '"]'
-      } else {
-        selector = '#' + itemId
-      }
-  		li_item_remove(selector, "fast", "#discover-"+name+"-scroll");		
-  		updateIngredientCheckboxes($(this).attr('ingredient-id'), false);
-    };
-  });
-  
-  /* add new */
-  $("#discover-"+name+"-input").keypress(function(e) {
-    if (e.keyCode == 13) {
-      var $input = $(this);
-      var $form = $("#discover-"+name+"-form");
-      var $scroll = $("#discover-"+name+"-scroll");
-      var $list = $("#discover-"+name+"-list");
-      var text = $(this).val();
-    	$input.val('');
-
-      $moveText = $('<span id="discover-move-text">' + text + '</span>');
-      $moveText.appendTo($('body'));
-      $moveText.css('position', 'absolute')
-        .css('left', $input.offset().left + 3)
-        .css('top', $input.offset().top)
-        .css('zIndex', 1000);
-      if (name == 'have') { 
-        postUrl = '/shop/add_item';
-        haveIngredientsChanged = true
-      } else {
-        postUrl = '/settings/add_avoid_item';
-        avoidIngredientsChanged = true
-      }        
-      postData = 'item[name]=' + encodeURIComponent(text) + '&render=added';
-      $.ajax({		  
-  		  type: "post",
-  			url: postUrl,
-  			data: postData,
-  			dataType: 'json',
-        success: function(data) { 
-          /* check to see if duplicate */
-          if ($list.find('[ingredient-id="' + data.ingredient_id + '"]').length) {
-            /* Remove duplicate */
-            $("#list-holder").html('<b>(Duplicate!)</b>');
-            li_item_remove("#list-holder", 1500, "#discover-"+name+"-scroll");
-          } else {
-            /* update the real name and id of new ingredient and update other ingredients */
-            $("#list-holder").html(data.ingredient_name);
-            $("#list-holder").attr("ingredient-id", data.ingredient_id);
-            $("#list-holder").attr("id", data.item_id);
-            if (name == 'have') {
-             	updateIngredientCheckboxes(data.ingredient_id, true);
-          	}
-        	}
-          /* Close the autocomplete if open. Put here because there may be a delay before opening */
-        	$('.ui-autocomplete').css('display','none');
+        if (makeBig) {
+            $('.discover-detail-small').addClass('discover-detail-big');
+            $('.discover-detail-small').removeClass('discover-detail-small');
+            $('.discover-recipe-cook').show();
+        } else {
+            $('.discover-detail-big').addClass('discover-detail-small');
+            $('.discover-detail-big').removeClass('discover-detail-big');
+            $('.discover-recipe-cook').hide();
         }
-       }); 
-    	/* scroll to top of list and insert item */
-  	  scroll_top($scroll);
-      $list.prepend("<li class='discover-" + name + "-list-item' id='list-holder'>&nbsp;</li>");
-      $moveText.animate( {'top': $list.offset().top + 10, 'left': $list.offset().left + 16}, 400, function(){ 
-        $moveText.remove();
-      	$('#list-holder').html(text);
-      });
-  	};
-  });
-};
-setup_have_avoid_dialog('have');
-setup_have_avoid_dialog('avoid');
+        $(ingredientTurnOff).attr('style', 'display:none');
+        $(ingredientTurnOn).attr('style', 'display:block');
+    };
 
-/** Pie Charts **/
-makePieCharts();
-function makePieCharts() {
-  var charts = new Array();
-  var arr = $(".food-balance");
-  for (i = 0; i < arr.length; i++) {
-    var protein = $(arr[i]).attr("protein"); 
-    var vegetable = $(arr[i]).attr("vegetable");
-    var starch = $(arr[i]).attr("starch");
-    charts[i] = createGraph(protein, vegetable, starch, arr[i], false);
-  };  
-};  
+    $("#discover-carousel").delegate(".discover-detail-button", "click", function () {
+        showBig = $(this).hasClass('discover-detail-small');
+        change_detail_size($(this).parent(), showBig);
+    });
 
-/** Misc **/
+    /*** Ingredients checkbox ***/
+    $("#discover-carousel").delegate(".ingredient-checkbox", "click", function() {
+        adding = $(this).is(':checked');
+        $.ajax({
+            type: "post",
+            url: "/discover/update_pantry",
+            data: "ingredient_id=" + $(this).attr('ingredient-id') + "&checked=" + adding
+        });
+        updateIngredientCheckboxes($(this).attr('ingredient-id'), adding);
+        /* update the Have list box */
+        if (adding) {
+            newItem = $("<li></li>");
+            newItem.html($(this).attr("name"));
+            newItem.attr("ingredient-id", $(this).attr('ingredient-id'));
+            if (typeof($(this).attr('item-id')) != 'undefined') {
+                newItem.attr("id", $(this).attr('item-id'));
+            };
+            newItem.addClass("discover-have-list-item");
+            $('#discover-have-list').append(newItem);
+        } else {
+            $('li[ingredient-id="' + $(this).attr('ingredient-id') + '"]').remove();
+        };
+        update_scroll('#discover-have-scroll');
+        return true;
+    });
 
-/* set the ingredient checkboxes in the other lists. Select by input[ingredient-id="354"] */ 
-function updateIngredientCheckboxes(ingredientId, checkedState) {
-	$('input[ingredient-id="' + ingredientId + '"]').attr('checked', checkedState);
-	haveIngredientsChanged = true
-};
+    /** Discover carousel **/
+    function turnOffNextButtons(){
+        $('#discover-next-arrow').addClass('discover-next-arrow');
+        $('#discover-next-arrow').removeClass('discover-next-loading');
+    };
+    var haveIngredientsChanged = false;
+    var avoidIngredientsChanged = false;
+    var lastSearch = "";
+    function mycarousel_initCallback(carousel) {
+        $('#discover-next-arrow').bind('click', function() {
+            // Get the data we need to send
+            var search = $('#"discover-like-bar:input').val();
+            var ingredients = $("#discover-next-ingredients").hasClass("discover-button-active");
+            var showBig = $(".discover-detail-main").hasClass("discover-detail-big");
 
+            // Check if anything has changed
+            var filtersChanged = haveIngredientsChanged || avoidIngredientsChanged || (lastSearch != search)
+            haveIngredientsChanged = false
+            avoidIngredientsChanged = false
+            lastSearch = search;
+
+            // If we are at the end of the recipes or the user has changed the search parameters,
+            // don't scroll until we get the next recipes
+            var wait = (carousel.size() <= carousel.last || filtersChanged);
+            if (wait) {
+                $('#discover-next-arrow').addClass('discover-next-loading');
+                $('#discover-next-arrow').removeClass('discover-next-arrow');
+
+                // Get rid of queued items
+                if (filtersChanged) {
+                    for (var i = carousel.last + 1; i <= carousel.size(); i++) {
+                        $('.jcarousel-item-' + i).remove();
+                    }
+                    carousel.size(carousel.last);
+                }
+            } else {
+                carousel.next();
+                turnOffNextButtons();
+                if (carousel.size()-3 != carousel.last) { // Wait until we have 3 left to fill up the queue
+                    return
+                };
+            }
+
+            // Construct the post data, get new recipes if the filters have changed or we only have 3 recipes left
+            if (filtersChanged) {
+                var ids = $('.discover-recipe').map(function() {
+                    return $(this).attr('recipe-id');
+                }).get().join(',');
+                var postData = "recipe_ids=" + ids +
+                        '&show_big=' + showBig +
+                        '&filters[search]=' + search
+            } else {
+                postData = "no_changes=true&show_big=" + showBig;
+            };
+            $.post("/discover/next_recipes", postData, function(data) {
+                if (data.length > 5) { // 5 is arbitrary to account for possible blank characters
+                    // Break up data into li sections and add to the carousel then setup scroll
+                    // Bug in JQuery, can't find top level elements so wrap data in a div
+                    var addIndex = carousel.size() + 1;
+                    $(".discover-li", $("<div>" + data + "</div>")).each(function() {
+                        carousel.add(addIndex,$(this));
+                        setup_scroll($(this).find('.discover-detail-scroll'));
+                        carousel.size(addIndex);
+                        addIndex++;
+                    });
+                    resize_windows();
+                    makePieCharts(); // Recreates all pie charts, check if this slows down with lots of recipes in carousel
+                };
+
+                if (wait) {
+                    carousel.next();
+                };
+                turnOffNextButtons();
+            });
+        });
+
+        $('#discover-back').bind('click', function() {
+            carousel.prev();
+        });
+    };
+
+    /* After scrolled into view, Send the recipe-id of the shown recipe, change the browser URL and setup the scroller */
+    function mycarousel_itemVisibleInCallbackAfterAnimation(carousel, item, idx, state) {
+        var $discoverRecipe = $('.jcarousel-item-' + carousel.last + ' .discover-recipe');
+        var $discoverDetailScroll = $discoverRecipe.find('.discover-detail-scroll');
+        var recipeId = $discoverRecipe.attr('recipe-id')
+        var recipeName = $discoverRecipe.attr('recipe-name')
+        setupDetailScroll($discoverDetailScroll);
+        replaceHistory('/discover/recipe/' + recipeId + '/' + recipeName);
+        $.post('/discover/recipe_shown', 'recipe_id=' + recipeId);
+    };
+
+    /*** Resize windows ***/
+    function resize_windows() {
+        // Add back in the 10px bottom padding but take out 1 for Win7 which otherwise shows scroll bars on Chrome, FF and IE
+        var mainHeight = full_scroll_height('#main') + 9;
+        var contentWidth = $(window).width();
+        $('.main-height').css('height', mainHeight);
+        $('.content-width').css('width', contentWidth);
+        $('.jcarousel-clip').css('width', contentWidth);
+        $('.jcarousel-clip').css('height', mainHeight);
+        $('.jcarousel-container').css('width', contentWidth);
+        $('.jcarousel-container').css('height', mainHeight);
+        var likeBarLeft = (contentWidth - $('#discover-like-bar').width()) / 2;
+        if( likeBarLeft < 100) {likeBarLeft = 100};
+        $('#discover-like-bar').css('left', likeBarLeft);
+    };
+
+    /* initial page load (needs to be before initializing jcarousel) */
+    resize_windows();
+
+    /* on window resize */
+    $(window).resize(function() {
+        resize_windows();
+    });
+
+    /**** JCarousel ****/
+    $("#discover-carousel").jcarousel({
+        scroll: 1,
+        visible: 1,
+        initCallback: mycarousel_initCallback,
+        itemVisibleInCallback: {onAfterAnimation:  mycarousel_itemVisibleInCallbackAfterAnimation},
+        buttonNextHTML: null,
+        buttonPrevHTML: null,
+        animation: 300
+    });
+
+    /** Search **/
+    $('#discover-search-input').keyup(function() {
+        var search = $(this).val();
+        var fontSize = 20;
+        if (!search.length) {
+            search = 'next';
+        }
+        if (search.length > 20) {
+            fontSize = 12;
+        } else if (search.length > 10) {
+            fontSize = 15;
+        } else if (search.length > 5) {
+            fontSize = 18;
+        } else {
+            fontSize = 20;
+        }
+        $('#discover-next-div').css('font-size', fontSize + 'px');
+        $('#discover-next-div').text(search);
+    });
+
+    $('#discover-search-input').keypress(function(e) {
+        if (e.keyCode == 13) {
+            $('#discover-next-arrow').click();
+        }
+    });
+
+    /*** Have and Avoid ***/
+    function setup_have_avoid_dialog(name) {
+
+        /* Scroll */
+        setup_scroll("#discover-"+name+"-scroll", true);
+
+        /* Toggle visible */
+        $("#discover-"+name+"-button").click(function() {
+            if ($("#discover-"+name+"-form").css("display") == "none") {
+                $(this).addClass("discover-button-active");
+                $("#discover-"+name+"-form").slideDown('fast', function () {
+                    update_scroll("#discover-"+name+"-scroll");
+                    // MD Take out for now $("#discover-"+name+"-input").focus();
+                });
+            } else {
+                $("#discover-"+name+"-form").slideUp('fast');
+                $(this).removeClass("discover-button-active");
+            }
+        });
+
+        /* delete */
+        $("#discover-" + name + "-form").delegate(".discover-" + name + "-list-item", "click", function(e) {
+            if (e.offsetX > $(this).outerWidth() - 25) {
+                var itemId = $(this).attr('id');
+                var ingredientId = $(this).attr('ingredient-id');
+                var postData = "item[have]=false&render=none&"
+                if (typeof(itemId) != 'undefined') { postData += "item[id]=" + itemId + '&'}
+                if (typeof(ingredientId) != 'undefined') { postData += "item[ingredient_id]=" + ingredientId}
+
+                if (name == 'have') {
+                    postUrl = '/shop/update_item';
+                    haveIngredientsChanged = true
+                } else {
+                    postUrl = '/settings/remove_avoid_item';
+                    avoidIngredientsChanged = true
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: postUrl,
+                    data: postData
+                });
+                if (typeof(itemId) == 'undefined') {
+                    selector = '[ingredient-id="' + ingredientId + '"]'
+                } else {
+                    selector = '#' + itemId
+                }
+                li_item_remove(selector, "fast", "#discover-"+name+"-scroll");
+                updateIngredientCheckboxes($(this).attr('ingredient-id'), false);
+            };
+        });
+
+        /* add new */
+        $("#discover-"+name+"-input").keypress(function(e) {
+            if (e.keyCode == 13) {
+                var $input = $(this);
+                var $form = $("#discover-"+name+"-form");
+                var $scroll = $("#discover-"+name+"-scroll");
+                var $list = $("#discover-"+name+"-list");
+                var text = $(this).val();
+                $input.val('');
+
+                $moveText = $('<span id="discover-move-text">' + text + '</span>');
+                $moveText.appendTo($('body'));
+                $moveText.css('position', 'absolute')
+                        .css('left', $input.offset().left + 3)
+                        .css('top', $input.offset().top)
+                        .css('zIndex', 1000);
+                if (name == 'have') {
+                    postUrl = '/shop/add_item';
+                    haveIngredientsChanged = true
+                } else {
+                    postUrl = '/settings/add_avoid_item';
+                    avoidIngredientsChanged = true
+                }
+                postData = 'item[name]=' + encodeURIComponent(text) + '&render=added';
+                $.ajax({
+                    type: "post",
+                    url: postUrl,
+                    data: postData,
+                    dataType: 'json',
+                    success: function(data) {
+                        /* check to see if duplicate */
+                        if ($list.find('[ingredient-id="' + data.ingredient_id + '"]').length) {
+                            /* Remove duplicate */
+                            $("#list-holder").html('<b>(Duplicate!)</b>');
+                            li_item_remove("#list-holder", 1500, "#discover-"+name+"-scroll");
+                        } else {
+                            /* update the real name and id of new ingredient and update other ingredients */
+                            $("#list-holder").html(data.ingredient_name);
+                            $("#list-holder").attr("ingredient-id", data.ingredient_id);
+                            $("#list-holder").attr("id", data.item_id);
+                            if (name == 'have') {
+                                updateIngredientCheckboxes(data.ingredient_id, true);
+                            }
+                        }
+                        /* Close the autocomplete if open. Put here because there may be a delay before opening */
+                        $('.ui-autocomplete').css('display','none');
+                    }
+                });
+                /* scroll to top of list and insert item */
+                scroll_top($scroll);
+                $list.prepend("<li class='discover-" + name + "-list-item' id='list-holder'>&nbsp;</li>");
+                $moveText.animate( {'top': $list.offset().top + 10, 'left': $list.offset().left + 16}, 400, function(){
+                    $moveText.remove();
+                    $('#list-holder').html(text);
+                });
+            };
+        });
+    };
+    setup_have_avoid_dialog('have');
+    setup_have_avoid_dialog('avoid');
+
+    /** Pie Charts **/
+    makePieCharts();
+    function makePieCharts() {
+        var charts = new Array();
+        var arr = $(".food-balance");
+        for (i = 0; i < arr.length; i++) {
+            var protein = $(arr[i]).attr("protein");
+            var vegetable = $(arr[i]).attr("vegetable");
+            var starch = $(arr[i]).attr("starch");
+            charts[i] = createGraph(protein, vegetable, starch, arr[i], false);
+        };
+    };
+
+    /** Misc **/
+
+    /* set the ingredient checkboxes in the other lists. Select by input[ingredient-id="354"] */
+    function updateIngredientCheckboxes(ingredientId, checkedState) {
+        $('input[ingredient-id="' + ingredientId + '"]').attr('checked', checkedState);
+        haveIngredientsChanged = true
+    };
+
+    $(".auth_provider").bind("click", function() {
+        var recipe_id = $(this).attr("current_recipe_id")
+        $.post("/discover/set_recipe_session", "recipe_id=" + recipe_id);
+
+        return true;
+    });
 </script>
