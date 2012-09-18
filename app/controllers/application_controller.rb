@@ -32,6 +32,8 @@ class ApplicationController < ActionController::Base
     return hash
   end
   
+  
+  
   #-------------------------
   def check_user_role(role)
     current_user.nil? || (!role.nil? && current_user.role != role.to_s)

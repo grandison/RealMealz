@@ -15,29 +15,25 @@
       = render :partial => 'recipes/recipe_title', :locals => {:recipe => recipe, :discover_big => show_big}
     %div{:class => "discover-detail-button discover-detail-#{size_suffix}"}
     %div{:class => "discover-detail-scroll discover-detail-#{size_suffix}"}
-      .discover-balance.food-balance{:protein => recipe.food_balance[:protein], 
+      .discover-balance.food-balance{:protein => recipe.food_balance[:protein],
       :starch => recipe.food_balance[:starch], :vegetable => recipe.food_balance[:vegetable]}
       %h2
         -if @my_meals_ids.include?(recipe.id)
-          .discover-meal-update.discover-minus{"recipe-id" => recipe.id}
-          .discover-add-text.discover-minus
-            %b My Meals
+          %input.orange-button.cook-this-now.hidden{:type => "submit", :value => "Cook This Now", "recipe-id" => recipe.id }
         -else
-          .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
-          .discover-add-text.discover-plus
-            %b My Meals
+          %input.orange-button.add-to-my-meals.hidden{:type => "submit", :value => "Add to My Meals", "recipe-id" => recipe.id }
 
       %p.discover-recipe-intro
         = recipe.intro
-      .discover-serves 
-        Servings: 
-        = recipe.servings  
+      .discover-serves
+        Servings:
+        = recipe.servings
       .discover-ingredient-columns
         = render(:partial => "ingredient_list",
-          :locals => {:recipe => recipe, :show_quantities => false, 
+          :locals => {:recipe => recipe, :show_quantities => false,
           :visible => !ingredient_quantities_visible})
-        = render(:partial => "ingredient_list", 
-          :locals => {:recipe => recipe, :show_quantities => true, 
+        = render(:partial => "ingredient_list",
+          :locals => {:recipe => recipe, :show_quantities => true,
           :visible => ingredient_quantities_visible})
       
       .discover-recipe-prepsteps
@@ -52,4 +48,3 @@
         - recipe.cooksteps_list.each do |c|
           = sanitize(c)
           %br/
-    

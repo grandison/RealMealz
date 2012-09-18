@@ -57,6 +57,9 @@ class DiscoverController < ApplicationController
     end  
   end
   
+ 
+  
+  
   #------------------------- 
   # API call for Android version. Just return 1 recipe at a time
   def next_recipe

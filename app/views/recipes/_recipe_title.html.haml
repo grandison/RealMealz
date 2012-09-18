@@ -5,25 +5,26 @@
     - else
       = recipe.name
   - unless recipe.source.blank?
-    #recipe-source
+    #recipe-source{:style => "display:inline-block;"}
       By:
       - unless recipe.source_link.blank?
         = link_to(recipe.source, recipe.source_link, :target => '_blank')
       - else
         = recipe.source
+  |
+  = link_to image_tag('/assets/icons/facebook-1.png', :style => "position:absolute"), facebook_share(polymorphic_url([:discover, recipe], :only_path => false)), :target => "_blank"
+  
 - unless recipe.blank?
   - if current_user.role == 'super_admin'
     #cook-recipe-edit
       = button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, |
-        :method => :get, :class => "green-button")                                         |
+        :method => :get, :class => "green-button") |
   - if controller.controller_name == 'discover'
     - display = discover_big ? 'display:table-cell' : 'display:none'
     .discover-recipe-cook{'style' => display}
-      = button_to("Cook this now >>", {:controller => "discover", :action => "cook_now", :recipe_id => recipe.id},
-      :method => :post, :class => "gray-button")
+      
   - else
     #cook-done-cooking
-      = button_to("I Cooked This.", {:controller => "cook", :action => "done_cooking", :recipe_id => recipe.id},                                                |
-        :confirm => "Great job for cooking!  You earned 10 points for cooking a meal. We also added this meal to your VPG (Vegetable-Protein-Grain ratio) under the Track page.", |
-        :class => "gray-button")                                                                                                                                     |
-.clear_both
+      = button_to("I Cooked This.", {:controller => "cook", :action => "done_cooking", :recipe_id => recipe.id}, |
+        :confirm => "Great job for cooking! You earned 10 points for cooking a meal. We also added this meal to your VPG (Vegetable-Protein-Grain ratio) under the Track page.", |
+        :class => "gray-button")
