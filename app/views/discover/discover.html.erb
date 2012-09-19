@@ -31,11 +31,11 @@ $("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
   var add = $(this).hasClass('discover-plus');
   $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
   if (add) {
-    $(this).removeClass('discover-plus').addClass('discover-minus');
-    $(this).next().removeClass('discover-plus').addClass('discover-minus');
+    $(this).removeClass('discover-plus').removeClass('discover-meal-update').addClass('discover-cooknow').html('<i class = "icon-white icon-fire" /><a href = "/cook?recipe_id=' + $(this).attr('recipe-id') + '">Cook This Now</a>').after('<div class="remove-meal">or <a href="#" class="discover-meal-update" recipe-id="39">remove from My Meals</a></div>');
   } else {
-    $(this).removeClass('discover-minus').addClass('discover-plus');
-    $(this).next().removeClass('discover-minus').addClass('discover-plus');
+  	var $btnholder = $(this).parent().parent();
+  	$btnholder.find('.discover-add-text').addClass('discover-plus').addClass('discover-meal-update').html('<i class = "icon-white icon-plus-sign" />Add to My Meals');
+  	$btnholder.find('.remove-meal').remove();
   };
   return false; 
 });

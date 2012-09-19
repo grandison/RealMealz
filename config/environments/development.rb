@@ -36,6 +36,6 @@ RealMealz::Application.configure do
   
   # MD Jan 2012
   #config.cache_store = :dalli_store 
-  
+  FB_APP_ID = 454479777930228
 end
 

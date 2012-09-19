@@ -47,6 +47,24 @@ ul,ol { margin-top: 0; margin-bottom: 0.5em; }
 .table-no-border{ border: none; }
 .no-wrap { white-space: nowrap; }
 .page-padding { padding: 25px; }
+.left {float:left;}
+.right {float:right;}
+
+[class^="icon-"], [class*=" icon-"] {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-image: url("/assets/glyphicons-halflings.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+}
+.icon-white {background-image:url(/assets/glyphicons-halflings-white.png);}
+.icon-plus-sign {background-position: 0 -96px;}
+.icon-minus-sign {background-position: -24px -96px;}
+.icon-fire {background-position: -72px -120px;}
 
 .brown-line {
   border-width:2px;
@@ -493,17 +511,18 @@ body {
 }
 
 .discover-detail-button.discover-detail-small {
-  top: 30px;
-  right: 30px;
+  top: 15px;
+  right: 50px;
   background: asset-data-url('enlarge.png');
 }
 
 .discover-detail-button.discover-detail-big {
-  top: 45px;
-  right: 45px;
+  top: 25px;
+  right: 65px;
   background: asset-data-url('shrink.png');
 }
 
+/*
 .discover-meal-update {
   width: 30px;
   height: 30px;
@@ -528,13 +547,14 @@ body {
 .discover-meal-update.discover-minus { background-position: -3px -40px; }
 .discover-meal-update.discover-minus:hover { background-position: -39px -40px; }  
 .discover-meal-update.discover-minus:active { background-position: -73px -38px; }  
+*/
 
-.discover-add-text {
-  padding-top: 3px;
-}
+.discover-add-text {padding-top: 3px; }
+  .discover-add-text i {margin-top: 2px; margin-right: 5px;}
 
-.discover-add-text.discover-plus:before { content: 'Add to'; }
-.discover-add-text.discover-minus:before {content: 'Remove from'; }
+.discover-cooknow a {text-decoration: none; color: white;}
+.discover-button-holder {margin: 0 10px; text-align: right;}
+.remove-meal {font-size: 13px; text-align: right; margin-top: 5px;}
 
 .discover-starred-update {
   position: absolute;
@@ -1053,7 +1073,9 @@ body {
   font-size: 14px;
 	color: rgb(122, 83, 12);
 	font-weight: normal;
+	margin-top: 10px;
 }
+  .fb-share {background: url(/assets/fb-share.png) no-repeat; width: 57px; height: 18px; margin-left: 10px; display: inline-block;}
 
 #recipe-source a {
   font-size: 14px;
@@ -1378,6 +1400,7 @@ body {
 #cook-title {
   display: table-cell;
   width: 100%;
+  max-width: 660px;
 }
 
 #cook-recipe-edit {

@@ -11,19 +11,17 @@
         = link_to(recipe.source, recipe.source_link, :target => '_blank')
       - else
         = recipe.source
+
+      = facebook_share(recipe)
 - unless recipe.blank?
   - if current_user.role == 'super_admin'
     #cook-recipe-edit
       = button_to("Edit", {:controller => "recipes", :action => "edit", :id => recipe.id}, |
         :method => :get, :class => "green-button")                                         |
-  - if controller.controller_name == 'discover'
-    - display = discover_big ? 'display:table-cell' : 'display:none'
-    .discover-recipe-cook{'style' => display}
-      = button_to("Cook this now >>", {:controller => "discover", :action => "cook_now", :recipe_id => recipe.id},
-      :method => :post, :class => "gray-button")
-  - else
+
+  - if controller.controller_name != 'discover'
     #cook-done-cooking
       = button_to("I Cooked This.", {:controller => "cook", :action => "done_cooking", :recipe_id => recipe.id},                                                |
         :confirm => "Great job for cooking!  You earned 10 points for cooking a meal. We also added this meal to your VPG (Vegetable-Protein-Grain ratio) under the Track page.", |
-        :class => "gray-button")                                                                                                                                     |
+        :class => "gray-button")
 .clear_both
