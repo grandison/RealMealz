@@ -40,6 +40,20 @@ $("#discover-carousel").delegate('.discover-meal-update', 'click', function() {
   return false; 
 });
 
+$("#discover-carousel").delegate('.discover-add-text', 'click', function() {
+  var add = $(this).hasClass('discover-plus');
+  $.post("/discover/meal_update", "recipe_id=" + $(this).attr('recipe-id') + "&my_meals=" + add);
+  if (add) {
+    $(this).removeClass('discover-plus').addClass('discover-minus');
+    $(this).next().removeClass('discover-plus').addClass('discover-minus');
+  } else {
+    $(this).removeClass('discover-minus').addClass('discover-plus');
+    $(this).next().removeClass('discover-minus').addClass('discover-plus');
+  };
+  return false; 
+});
+
+
 /* Setup the detail scroll height dynamically since the recipe header size can change */
 function setupDetailScroll($discoverDetailScroll) {
   var newHeight = $(window).height() - $discoverDetailScroll.offset().top;

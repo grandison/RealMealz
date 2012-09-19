@@ -1,9 +1,12 @@
+:javascript
+= facebook_share_once :name=>"RealMealz.com",:picture => "#{recipe.picture.url(:large)}",:description => "I found this #{recipe.name} recipe on RealMealz.com. It looks delicious and only takes around 30 minutes to make!"
 #cook-title
   .recipe-title
     - if !recipe.source_link.blank? && recipe.source_link.downcase.include?('macheesmo')
       = link_to(recipe.name, recipe.source_link, :target => '_blank')
     - else
       = recipe.name
+  = link_to 'Share on Facebook', '#', :class => "fb_share orange-button"
   - unless recipe.source.blank?
     #recipe-source
       By:

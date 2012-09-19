@@ -19,13 +19,11 @@
       :starch => recipe.food_balance[:starch], :vegetable => recipe.food_balance[:vegetable]}
       %h2
         -if @my_meals_ids.include?(recipe.id)
-          .discover-meal-update.discover-minus{"recipe-id" => recipe.id}
-          .discover-add-text.discover-minus
-            %b My Meals
+          /.discover-meal-update.discover-minus{"recipe-id" => recipe.id}
+          .discover-add-text.discover-minus.orange-button{"recipe-id" => recipe.id}
         -else
-          .discover-meal-update.discover-plus{"recipe-id" => recipe.id}
-          .discover-add-text.discover-plus
-            %b My Meals
+          /.discover-meal-update.discover-plus{"recipe-id" => recipe.id}
+          .discover-add-text.discover-plus.orange-button{"recipe-id" => recipe.id}
 
       %p.discover-recipe-intro
         = recipe.intro

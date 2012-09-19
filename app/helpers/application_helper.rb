@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include FacebookShare  
   
   def image_mobile_tag(source, options = {})
      if mobile_request? 
