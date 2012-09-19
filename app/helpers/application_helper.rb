@@ -14,16 +14,20 @@ module ApplicationHelper
     sanitize(line).gsub(/^\*(.*)\*$/,"<br/><span class='recipe-ingredient-group'>\\1</span>").html_safe
   end
 
-  def my_url
-    "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
-  end
-
   def facebook_share(recipe)
-    mydescription = "I found this #{recipe.name} recipe on RealMealz.com. It looks delicious and only takes around 30 minutes to make!"
+    fb_url = "http://www.facebook.com/dialog/feed"
+    recipe_name = url_encode(recipe.name)
+    mydescription = "I found this #{recipe_name} recipe on RealMealz.com. It looks delicious and only takes around 30 minutes to make!"
     recipe_url = polymorphic_url([:discover, recipe], :only_path => false)
 
-    return link_to("", "http://www.facebook.com/dialog/feed?app_id=#{FB_APP_ID}&link=#{recipe_url}&picture=#{recipe.picture.url}&name=#{recipe.name}&caption=#{recipe.name}%20on%20RealMealz.com&description=#{mydescription}&redirect_uri=#{my_url}",
-    :class => 'fb-share', :target => "_blank")
+    return link_to("", "#{fb_url}?app_id=#{FB_APP_ID}&" +
+      "link=#{recipe_url}&" +
+      "picture=#{recipe.picture.url}&" +
+      "name=#{recipe_name}&" +
+      "caption=#{recipe_name}%20on%20RealMealz.com&" +
+      "description=#{mydescription}&" +
+      "redirect_uri=#{recipe_url}",
+      :class => 'fb-share')
   end
   
   #################
