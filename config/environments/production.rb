@@ -59,6 +59,7 @@ RealMealz::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-  
-  FB_APP_ID = 360859213991563
+
+  # MD Sep-2012. For www.realmealz.com
+  FB_APP_ID = 523899284290386
 end

@@ -35,7 +35,9 @@ RealMealz::Application.configure do
   config.action_mailer.default_url_options = { :host => 'local.realmealz.com:3000' }
   
   # MD Jan 2012
-  #config.cache_store = :dalli_store 
+  #config.cache_store = :dalli_store
+
+  # MC Sep-2012. For localhost:3000
   FB_APP_ID = 454479777930228
 end
 
