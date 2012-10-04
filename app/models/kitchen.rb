@@ -234,7 +234,7 @@ class Kitchen < ActiveRecord::Base
      end
      kitchen = Kitchen.create!(:name => kitchen_name, :default_servings => 4)
      kitchen.update_ingredients_kitchens('salt', :exclude => true)
-     kitchen.update_ingredients_kitchens('pepper', :exclude => true)
+     kitchen.update_ingredients_kitchens('black pepper', :exclude => true)
      return kitchen
   end
  
