@@ -19,7 +19,7 @@ def weight_and_unit_name(units_only = false)
     unit_str = unit.dup.downcase
     # if unit is whole, see if there is a more precise unit in the ingredients whole_unit field
     if unit_str == 'whole' 
-      if ingredient.whole_unit.blank?
+      if ingredient.nil? || ingredient.whole_unit.blank?
         unit_str = ''
       else
         unit_str = ingredient.whole_unit.downcase
