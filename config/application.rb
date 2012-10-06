@@ -65,3 +65,6 @@ module RealMealz
 
   end
 end
+
+# MD Oct-2012. Heroku needs this or produces errors when converting uploaded images
+ENV['TMPDIR'] = Rails.root.join('tmp')
