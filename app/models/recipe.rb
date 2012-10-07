@@ -22,13 +22,14 @@ class Recipe < ActiveRecord::Base
 
   STORAGE = 'fog'
   if STORAGE == 's3'
-    # s3_aws doesn't recognize the new Amazon S3 path with the bucket at front, like: realmealz.recipes.s3.amazonaws.com    
     has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
     :storage => :s3, 
-    :s3_credentials => "#{Rails.root}/config/s3.yml", 
-    :s3_options => {:server => 'realmealz-recipes.s3-website-us-west-2.amazonaws.com'},
-    :url => ":s3_domain_url",
+    :s3_credentials => "#{Rails.root}/config/fog_s3.yml",
+    :s3_protocol => "http",
+    :bucket => 'realmealz-recipes',
+    :s3_host_name => 's3-website-us-west-2.amazonaws.com',
     :path => ":basename:size_id.:extension",
+    :url => ":s3_domain_url",
     :default_url => DEFAULT_URL
   elsif STORAGE == 'fog'
     options = YAML::load(ERB.new(File.read("#{Rails.root}/config/fog_s3.yml")).result)

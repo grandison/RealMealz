@@ -13,12 +13,12 @@ gem "ruby-units", "= 1.3.2"
 # Other units for RealMealz
 gem "authlogic"
 gem 'dynamic_form'
-gem "paperclip", '= 2.7.0'
+gem "cocaine", "= 0.3.2" # MD Oct-2012 This is needed for paperclip 3.2.0 to avoid the "identify" bug
+gem "paperclip"
 gem 'fog'
 gem "simple_autocomplete"
 gem "rails3-jquery-autocomplete"
 gem 'will_paginate'
-gem 'rest-open-uri'
 gem 'haml'
 gem 'cells'
 gem 'nokogiri'
