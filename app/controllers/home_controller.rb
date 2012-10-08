@@ -171,6 +171,37 @@ class HomeController < ApplicationController
       redirect_to :action => :survey_blueshield
     end  
   end
+
+  # MD Oct-2012. This is used to replace the accidently deleted ingredients_recipes
+  def import_process
+    @msgs = []
+    first_line = true
+    field_names = "id,weight,unit,important,strength,ingredient_id,recipe_id,group,description,line_num"
+    params[:import_data].each_line do |line|
+      if first_line
+        unless line.strip == field_names
+          @msgs << "First line not correct, '#{line}'"
+          return
+        end
+        first_line = false
+      else
+        fields = line.split(',')
+        if IngredientsRecipe.find_by_id(fields[0])
+          @msgs << "IR with id=#{fields[0]} already exists"
+        else
+          ir = IngredientsRecipe.new
+          field_names.split(',').each_with_index do |name, index|
+            unless ['important', 'strength'].include?(name)
+              ir[name] = fields[index]
+            end
+          end
+          ir.save(:validate => false)
+          @msgs << "Imported: #{line}"
+        end
+      end
+    end
+
+  end
   
   #########
   # private

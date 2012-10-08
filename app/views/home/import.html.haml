@@ -1,0 +1,9 @@
+- @show_footer = true
+.gray-background
+  .gray-background
+    %h1 Import IngredientsRecipe records
+    = form_tag('/home/import_process') do
+      %p
+        = text_area_tag(:import_data,'',:size => '100x25')
+      %p
+        %input.gray-button{:type => "submit", :value => "Import"}
