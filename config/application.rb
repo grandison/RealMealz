@@ -45,6 +45,9 @@ module RealMealz
     # MD Jan-2012. This is needed for admin_data 1.1.16 to work with the Rails 3.1 asset pipeline
     config.assets.precompile += ['admin_data.css', 'admin_data.js']
 
+    # MD Oct-2012. Add this to let Heroku precompile assets
+    config.assets.initialize_on_precompile = false
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
