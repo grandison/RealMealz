@@ -19,10 +19,14 @@ class Recipe < ActiveRecord::Base
   # Paperclip resize note:
   #   The > in 1024x1024 is an ImageMagick command that won't resize unless an image dimension is larger
   #   This makes sure that we don't increase the file size of the original file
+  #   However, for the large picture it is better to let ImageMagick upsize it so it will look better
 
+  STYLES = { :large => "1024x1024", :medium => "300x300>", :thumbnail => "100x100>" }
+  CONVERT_OPTIONS = {:large => '-filter lanczos'}
   STORAGE = 'fog'
   if STORAGE == 's3'
-    has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+    has_attached_file :picture,
+    :styles => STYLES,
     :storage => :s3, 
     :s3_credentials => "#{Rails.root}/config/fog_s3.yml",
     :s3_protocol => "http",
@@ -33,7 +37,8 @@ class Recipe < ActiveRecord::Base
     :default_url => DEFAULT_URL
   elsif STORAGE == 'fog'
     options = YAML::load(ERB.new(File.read("#{Rails.root}/config/fog_s3.yml")).result)
-    has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+    has_attached_file :picture,
+    :styles => STYLES,
     :storage => :fog, 
     :fog_credentials => options['fog_credentials'], 
     :fog_directory => options['bucket'],
@@ -43,7 +48,8 @@ class Recipe < ActiveRecord::Base
     :path => ":basename:size_id.:extension",
     :default_url => DEFAULT_URL
   else
-    has_attached_file :picture, :styles => { :large => "1024x1024>", :medium => "300x300>", :thumbnail => "100x100>" },
+    has_attached_file :picture,
+    :styles => STYLES,
     :url => "/assets/recipes/:basename:size_id.:extension",  
     :path => ":rails_root/public/assets/recipes/:basename:size_id.:extension",  
     :default_url => DEFAULT_URL
