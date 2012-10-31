@@ -166,25 +166,33 @@ function mycarousel_initCallback(carousel) {
     } else {
       postData = "no_changes=true&show_big=" + showBig;
     };
-    $.post("/discover/next_recipes", postData, function(data) {
-      if (data.length > 5) { // 5 is arbitrary to account for possible blank characters
-        // Break up data into li sections and add to the carousel then setup scroll
-        // Bug in JQuery, can't find top level elements so wrap data in a div
-        var addIndex = carousel.size() + 1;
-        $(".discover-li", $("<div>" + data + "</div>")).each(function() { 
-          carousel.add(addIndex,$(this));
-          setup_scroll($(this).find('.discover-detail-scroll')); 
-          carousel.size(addIndex);
-          addIndex++; 
-        });
-        resize_windows(); 
-        makePieCharts(); // Recreates all pie charts, check if this slows down with lots of recipes in carousel
-      };
-      
-      if (wait) { 
-        carousel.next();
-      };
-      turnOffNextButtons();
+
+    $.ajax({url: "/discover/next_recipes", type: 'POST', data: postData,
+      success: function(data) {
+        if (data.length > 5) { // 5 is arbitrary to account for possible blank characters
+          // Break up data into li sections and add to the carousel then setup scroll
+          // Bug in JQuery, can't find top level elements so wrap data in a div
+          var addIndex = carousel.size() + 1;
+          $(".discover-li", $("<div>" + data + "</div>")).each(function() {
+            carousel.add(addIndex,$(this));
+            setup_scroll($(this).find('.discover-detail-scroll'));
+            carousel.size(addIndex);
+            addIndex++;
+          });
+          resize_windows();
+          makePieCharts(); // Recreates all pie charts, check if this slows down with lots of recipes in carousel
+        };
+
+        if (wait) {
+          carousel.next();
+        };
+        turnOffNextButtons();
+      },
+      error: function() {
+        // MD Oct-2012
+        // Ignore errors. Usually they will be Errno::ECONNRESET because the user will click on another
+        // page before this comes back. (I wasn't able to figure out how to trap this particular error.)
+      }
     });		
   });
   
