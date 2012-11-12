@@ -170,6 +170,7 @@ class User < ActiveRecord::Base
     have_ingredients = self.kitchen.have_ingredients
     category_have_ingredients = [] 
     have_ingredients.each do |have|
+      next if have.nil?
       category = Category.find_by_name(have.name) || Category.find_by_name(have.name.downcase)
       unless category.nil?
          category_have_ingredients << category.categories_ingredients.map {|ci| ci.ingredient}
