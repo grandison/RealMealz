@@ -278,6 +278,7 @@ class User < ActiveRecord::Base
   
   def check_ingredients(avoid_ingredient_ids, have_ingredients, search_for, filters)
     @rh[:ingredients].each do |ih|
+      next if ih.nil?
 
       # Ingredient in the have list?
       if have_ingredients && have_ingredients.index {|i| i.id == ih[:id]}
