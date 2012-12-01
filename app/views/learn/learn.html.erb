@@ -19,46 +19,19 @@
 					<td class="points-table-title-font">Level 4</td>
 				</tr>
 				<tr>
-					<td>
-						<% @techniques1.each do |technique|%>
-							<% if technique.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
-							<% else %>
-								<%= technique.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>
-					<td>
-						<% @techniques2.each do |technique|%>
-							<% if technique.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
-							<% else %>
-								<%= technique.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>
-					<td>
-						<% @techniques3.each do |technique|%>
-							<% if technique.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
-							<% else %>
-								<%= technique.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>
-					<td>
-						<% @techniques4.each do |technique|%>
-							<% if technique.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= technique.youtube_link %> title= <%= technique.name %> /><%= technique.name %></a>
-							<% else %>
-								<%= technique.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>		
+          <% [@techniques1, @techniques2, @techniques3, @techniques4].each do |techniques| %>
+            <td>
+              <% techniques.each do |technique|%>
+                <% if technique.youtube_link != nil %>
+                  <a class="learnpage-videos" href="<%= technique.youtube_link %>" title="<%= technique.name %>" /><%= technique.name %></a>
+                <% else %>
+                  <%= technique.name %>
+                <% end %>
+                <br>
+              <% end %>
+            </td>
+         <% end %>
+
 				</tr>
 			</table>
 		</td>
@@ -74,49 +47,21 @@
 					<td class="points-table-title-font">Level 4</td>
 
 				</tr>
-				<tr>
-					<td>
-						<% @ingredients1.each do |ingredient|%>
-							<% if ingredient.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
-							<% else %>
-								<%= ingredient.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>
-					<td>
-						<% @ingredients2.each do |ingredient|%>
-							<% if ingredient.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
-							<% else %>
-								<%= ingredient.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>
-					<td>
-						<% @ingredients3.each do |ingredient|%>
-							<% if ingredient.youtube_link != nil %>
-								<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
-								<% else %>
-									<%= ingredient.name %>
-								<% end %>
-								<br>
-						<% end %>
-					</td>
-					<td>
-						<% @ingredients4.each do |ingredient|%>
-							<% if ingredient.youtube_link != nil %>
-							<a class="learnpage-videos" href=<%= ingredient.youtube_link %> title= <%= ingredient.name %> /><%= ingredient.name %></a>
-							<% else %>
-								<%= ingredient.name %>
-							<% end %>
-							<br>
-						<% end %>
-					</td>				
-				</tr>
-			</table>			
+        <tr>
+          <% [@ingredients1, @ingredients2, @ingredients3, @ingredients4].each do |ingredients| %>
+            <td>
+              <% ingredients.each do |ingredient| %>
+                <% if ingredient.youtube_link != nil %>
+                  <a class="learnpage-videos" href="<%= ingredient.youtube_link %>" title="<%= ingredient.name %>"/><%= ingredient.name %></a>
+                <% else %>
+                  <%= ingredient.name %>
+                <% end %>
+                <br>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      </table>
 		</td>
 	</tr>
 </table>							
