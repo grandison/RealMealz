@@ -10,7 +10,7 @@ class KitchenTest < ActiveSupport::TestCase
 
   test "default exclude" do
     ik_exclude_list = @kitchen.get_exclude_list
-    assert_equal 'Pepper', ik_exclude_list[0].ingredient.name
+    assert_equal 'Black pepper', ik_exclude_list[0].ingredient.name
     assert_equal 'Salt', ik_exclude_list[1].ingredient.name
     assert_equal 2, ik_exclude_list.length
   end
