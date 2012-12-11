@@ -47,7 +47,12 @@ class Kitchen < ActiveRecord::Base
   
   #-------------------------------------------
   def have_ingredients
-    have_ingredient_items.map {|ik| ik.ingredient} || []
+    have_ingredient_items.map do |ik|
+      if ik.ingredient.nil?
+        ik.delete
+      end
+      ik.ingredient
+    end.compact || []
   end
 
   #-------------------------------------------
