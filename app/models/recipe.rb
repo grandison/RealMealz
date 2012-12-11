@@ -170,7 +170,11 @@ class Recipe < ActiveRecord::Base
   def food_balance
     self.updated_at = Time.now if self.updated_at.nil?
 
-    unless self.balance_updated_at == self.updated_at
+    # MD Dec-2012. If we want to manually update the balance, set balance_updated_at to nil
+    manually_set = self.balance_updated_at.blank? && self.balance_protein.present? &&
+        self.balance_vegetable.present? && self.balance_starch.present?
+
+    unless manually_set || self.balance_updated_at == self.updated_at
       protein = Unit.new("0 cup")
       vegetable = Unit.new("0 cup")
       starch = Unit.new("0 cup")
