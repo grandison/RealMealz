@@ -209,6 +209,9 @@ class User < ActiveRecord::Base
       # Set @has_have_ingredient to true if no have_ingredients
       @has_have_ingredient = have_ingredients.blank?
       @has_avoid_ingredient =  false
+
+      # Check the chef
+      check_chef(search_for)
       
       # Check the meal
       check_meal(kitchen_meals, search_for)
@@ -319,6 +322,12 @@ class User < ActiveRecord::Base
     @rh[:scores].each {|k, v| @rh[:sort_score] += v}
   end   
     
+  def check_chef(search_for)
+    if @rh[:source] && @rh[:source].split.any?{|part_of_name| part_of_name.downcase == search_for }
+      @rh[:scores][:chef_search] = 5000
+    end
+  end
+
   #######
   public
   #######  
@@ -598,16 +607,16 @@ class User < ActiveRecord::Base
 
   #---------------------------------
   def create_recipe_info_hash(r)
-   {:id => r.id, :name => r.name, :picture_file_name => r.picture_file_name, :sort_score => 0,
+   {:id => r.id, :name => r.name, :picture_file_name => r.picture_file_name, :sort_score => 0, :source => r.source,
     :scores => {:ingr_like => 0, :ingr_have => 0, :avoid => 0, :allergy => 0, :ingr_search => 0, :seen => 0,
-      :my_meals => 0, :star => 0, :title_search => 0, :random => 0},
+      :my_meals => 0, :star => 0, :title_search => 0, :chef_search => 0, :random => 0},
     :ingredients => r.ingredients.map {|i| {:id => i[:id], :other_names => i.other_names.downcase,
         :allergen1_id => i.allergen1_id, :allergen2_id => i.allergen2_id, :allergen3_id => i.allergen3_id} } }
   end
 
   #---------------------------------
   def create_recipe_list(conditions)
-      Recipe.where(conditions).includes('ingredients').select('id, name, picture_file_name').
+      Recipe.where(conditions).includes('ingredients').select('id, name, picture_file_name, source').
         map { |r| create_recipe_info_hash(r) }
   end
   

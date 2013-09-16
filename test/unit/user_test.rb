@@ -19,11 +19,11 @@ class UserTest < ActiveSupport::TestCase
   test "get favorite recipes" do
     Recipe.delete_all
     Meal.delete_all
-    r1 = Recipe.create!(:name => 'Public Recipe 1', :picture_file_name => 'recipe1.jpg')
+    r1 = Recipe.create!(:name => 'Public Recipe 1', :picture_file_name => 'recipe1.jpg', :source => "Good Chef")
     r2 = Recipe.create!(:name => 'Public Recipe 2', :picture_file_name => 'recipe2.jpg', :public => true)
-    r3 = Recipe.create!(:name => 'Private Recipe 3', :picture_file_name => 'recipe3.jpg', :public => false, :kitchen_id => @kitchen.id)
+    r3 = Recipe.create!(:name => 'Private Recipe 3', :picture_file_name => 'recipe3.jpg', :public => false, :kitchen_id => @kitchen.id, :source => "Bad Chef")
     r4 = Recipe.create!(:name => 'Private other Recipe 4', :picture_file_name => 'recipe4.jpg', :public => false, :kitchen_id => 123456)
-    r5 = Recipe.create!(:name => 'Private without picture Recipe 5', :public => false, :kitchen_id => @kitchen.id)
+    r5 = Recipe.create!(:name => 'Private without picture Recipe 5', :public => false, :kitchen_id => @kitchen.id, :source => "Cool Chef")
     r6 = Recipe.create!(:name => 'Private/Public Recipe 6', :picture_file_name => 'recipe5.jpg', :public => true, :kitchen_id => @kitchen.id)
     m1 = Meal.create!(:kitchen_id => @kitchen.id, :recipe_id => r2.id, :starred => true)
     
@@ -48,6 +48,11 @@ class UserTest < ActiveSupport::TestCase
     r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'search' => 'Recipe 2'})
     assert_equal 6, r_list_ids.count, 'Searched for Recipe 2'
     assert_equal r2.id, r_list_ids.first
+
+    # Search by chef
+    r_list_ids = @user.get_favorite_recipes(ids_shown = [], {'search' => 'Cool'})
+    assert_equal 6, r_list_ids.count, 'Searched for Cool Chef'
+    assert_equal r5.id, r_list_ids.first
     
     # Seen should be last
     m2 = Meal.create!(:kitchen_id => @kitchen.id, :recipe_id => r1.id, :seen_count => 1)
@@ -160,5 +165,4 @@ class UserTest < ActiveSupport::TestCase
     assert_equal @team20.name, @user.teams[1].name
     assert_equal 2, @user.teams.count
   end
-
 end
