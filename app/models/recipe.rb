@@ -1,13 +1,15 @@
 class Recipe < ActiveRecord::Base
-  has_many :meals
-  has_many :meal_histories
-  has_many :ingredients_recipes
+  has_many :meals, :dependent => :destroy
+  has_many :meal_histories, :dependent => :destroy
+  has_many :ingredients_recipes, :dependent => :destroy
   has_many :ingredients, :through => :ingredients_recipes
-  has_many :recipes_personalities
+  has_many :recipes_personalities, :dependent => :destroy
   has_many :personalities, :through => :recipes_personalities
-  has_many :users_recipes
+  has_many :users_recipes, :dependent => :destroy
   has_many :users, :through => :users_recipes
   belongs_to :kitchen
+
+  after_destroy :clear_cache
 
   # The lists are to pass information back into the form for easier display, 
   # sort_score is used internally for sorting the recipes by their score
@@ -248,7 +250,16 @@ class Recipe < ActiveRecord::Base
     return meal
   end
 
-  
+  def clear_cache
+    if ActionController::Base.perform_caching
+      Rails.cache.delete('public_recipe_list')
+      users.each do |user|
+        Rails.cache.delete("private_recipe_list_id_#{user.id}")
+      end
+    end
+  end
+
+
   ###################
   # Class methods
   ###################  
