@@ -11,7 +11,6 @@ ShopPageManagement = window.ShopPageManagement =
 		$matchItems.addClass "s-highlighted"
 
 	addHighlightHandlers: ->
-		# Delegate is 
 		$(document).delegate ".recipe-display", "click", ->
 		  $this = $(this)
 		  recipeId = $this.attr("recipe-id")
