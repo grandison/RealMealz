@@ -1,12 +1,12 @@
 <ul id="sortable-list">
 	<!-- for loop to show items -->
-  <% categories_list.each do |cat, item_arr| %>
+  <% categories_list.keys.sort.each do |cat| %>
     <li class="shop-category">
       <span>
         <%= cat.capitalize %>
       </span>
     </li>
-      <% item_arr.each do |item| %>
+      <% categories_list[cat].each do |item| %>
 		    <%= render partial: 'shop_item', locals: {item: item, action_shop: action_shop, mobile_request: mobile_request} %>
     	<% end %>
   <% end %>

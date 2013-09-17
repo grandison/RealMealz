@@ -2,6 +2,7 @@ class IngredientsKitchen < ActiveRecord::Base
   belongs_to :kitchen
   belongs_to :ingredient
   validates_presence_of :kitchen, :ingredient
+  scope :needed, where("needed = true")
   require 'weight_and_unit'
   
   #-------------------

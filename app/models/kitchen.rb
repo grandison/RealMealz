@@ -6,7 +6,7 @@ class Kitchen < ActiveRecord::Base
   has_many :users
   has_many :sort_orders
   has_many :ingredients_kitchens
-  has_many :ingredient, :through => :ingredients_kitchens
+  has_many :ingredients, :through => :ingredients_kitchens
   has_many :recipes
   validates_presence_of :name
   
@@ -24,22 +24,16 @@ class Kitchen < ActiveRecord::Base
     #  delete_if {|ik| ik.ingredient.nil?}
   end
 
-  # Returns a hash with category names as keys, and arrays of IngrediesntsKitchen
-  # objects of this category, both sorted alphabetically
   def get_categories_hash
-    categories_arr = {}
-
-    IngredientsKitchen.scoped.joins(ingredient: :categories).
-      where('ingredients_kitchens.kitchen_id = ? AND ingredients_kitchens.needed=?', id, true).
-      select("categories.name as cat_name, ingredients_kitchens.id as ing_id, ingredients.name as ing_name").
-      order('cat_name ASC, ing_name ASC').
-      each do |i|
-
-        categories_arr[i.cat_name] = [] unless categories_arr.has_key?(i.cat_name)
-        categories_arr[i.cat_name] << IngredientsKitchen.find(i.ing_id)
+    ingredients_kitchens.joins(ingredient: :categories).includes(ingredient: :categories).needed.
+    order('ingredients.name ASC').inject({}) do |categories_hash, ingredient_kitchen|
+      categories = ingredient_kitchen.ingredient.categories
+      categories.each do |category|
+        categories_hash[category.name] ||= []
+        categories_hash[category.name] << ingredient_kitchen
       end
-
-    categories_arr
+      categories_hash
+    end
   end
 
 
