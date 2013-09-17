@@ -1,59 +1,14 @@
-<%
- if action_shop
-   pick_image_on = asset_path("icons/cart_on.png") 
-   pick_image_off = asset_path("icons/cart_off.png")
- else
-   pick_image_on = asset_path("icons/grocery_list_on.png") 
-   pick_image_off = asset_path("icons/grocery_list_off.png") 
- end
-%>
-
 <ul id="sortable-list">
 	<!-- for loop to show items -->
-	<% if item_list.empty? %>
-  	<li>(Shopping list is empty)</li>
-	<% end %>
-	<% item_list.each do |item| %>	
-		<% if action_shop && item.bought or !action_shop && item.needed
-		     class_name = "cart cart-selected"  
-		     img = pick_image_on
-		   else
-		     class_name = "cart" 
-		     img = pick_image_off
-		   end %> 
-		<li id="<%= item.id %>" class="shop-items">
-		  <table class="item-table"><tr>
-	    
-		  <!-- Shopping cart -->  
-		  <td width="30px"><img class="<%= class_name %>" item_id="<%= item.id %>" src="<%= img %>" alt=""/></td>
-		
-		  <!-- Item name and note -->  
-  		<% if mobile_request %>
-    		<td><span <%= "title='#{item.note}'" unless item.note.blank? %> 
-    		    class="shop-name">
-    		    <%= item.ingredient.name %>
-    		    <%= '...' unless item.note.blank? %>
-    		</span></td>
-  		<% else %>
-    		<td><span class="shop-name">
-    	    <%= item.ingredient.name %>
-    	    <% unless item.weight.blank? || item.weight.zero? || item.unit.nil? %>
-       	    <%= "(#{item.weight_and_units})" %>
-       	   <% else %>
-       	    <%= ": " unless item.note.blank? %>
-     	    <% end %>
-    	    <%= item.note unless item.note.blank? %>
-    	  </span></td>
-  		<% end %>
-		
-		  <!-- Edit icon -->  
-  		<td width="30px"><img class="edit-icon" item_id="<%= item.id %>" item-name="<%= item.ingredient.name %>" item-note="<%= item.note %>" item-weight="<%= item.weight %>" item-unit="<%= item.unit %>" src="<%= asset_path 'icons/edit_24x24.png' %>" alt="edit"/></td>
-	  
-		  <!-- Drag icon (take out for now) -->  
-		  <!-- td width="30px"><img class="drag-icon touchable" src="<%= asset_path 'icons/draggable-icon-36px.png' %>" alt="drag" /></td -->
-		
-  		</tr></table>
-  	</li>
-	<% end %>
-</ul>
+  <% categories_list.each do |cat, item_arr| %>
+    <li class="shop-category">
+      <span>
+        <%= cat.capitalize %>
+      </span>
+    </li>
+      <% item_arr.each do |item| %>
+		    <%= render partial: 'shop_item', locals: {item: item, action_shop: action_shop, mobile_request: mobile_request} %>
+    	<% end %>
+  <% end %>
 
+</ul>

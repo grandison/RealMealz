@@ -1016,6 +1016,19 @@ body {
   text-decoration: none; 
 }
 
+.shop-category {
+  border: 1px solid #cccccc;
+  background-color: rgb(126,241,126); /* For IE8 */
+  background-color: rgba(126,241,126,0.7);
+  overflow: hidden;
+
+  span {
+    padding: 0 15px;
+    line-height: 36px;
+    font-weight: bold;
+  }
+}
+
 .shop-name { 
   padding-left: 10px;
   vertical-align: 0px;

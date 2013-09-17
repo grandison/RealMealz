@@ -143,20 +143,27 @@ $(".shop-name:[title]").tooltip({
 }).css('cursor','help');
 	
 /* Shop List: Toggle needed */
+//Since we now have multiple items on screen, which are essentialy the same item
+//we need to update them all as one (there's no way of grouping items by category
+//without duplicates since each item can have multiple categories)
 $("#shop-list").delegate("#shop-list .cart", "click", function() {
-  if ($(this).hasClass("cart-selected")) { 
-    $(this).removeClass("cart-selected");
-    $(this).attr("src", "<%= asset_path 'icons/cart_off.png' %>");
-  } 
-  else { 
-    $(this).addClass("cart-selected"); 
-    $(this).attr("src", "<%= asset_path 'icons/cart_on.png' %>");
+  var $targetEl = $(this).closest('.shop-items'),
+      elID = $targetEl.data('id'),
+      $elCollection = $('.shop-items').filter('[data-id=' + elID + ']').find('.cart');
+
+  if ($(this).hasClass("cart-selected")) {
+    $elCollection.removeClass("cart-selected");
+    $elCollection.attr("src", "<%= asset_path 'icons/cart_off.png' %>");
+  }
+  else {
+    $elCollection.addClass("cart-selected");
+    $elCollection.attr("src", "<%= asset_path 'icons/cart_on.png' %>");
   };
-	$.ajax({		  
-	  type: "post",
-		url: "/shop/update",
-		data: "id=" + $(this).attr('item_id') + "&value=" + $(this).hasClass("cart-selected") + "&shop=true"
-	});    
+  $.ajax({
+    type: "post",
+    url: "/shop/update",
+    data: "id=" + $(this).attr('item_id') + "&value=" + $(this).hasClass("cart-selected") + "&shop=true"
+  });
 });
 
 /* Shop List: fill and open edit dialog */
