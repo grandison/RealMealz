@@ -100,19 +100,11 @@ class ShopController < ApplicationController
   end
 
   def highlight_ingredients
-    cached_ingredients = Rails.cache.read("recipe_#{params[:recipe_id]}")
-
-    if cached_ingredients.present?
-      @ingredients_kitchen_ids = cached_ingredients
-    else
-      ingredient_ids = Recipe.find(params[:recipe_id]).ingredient_ids
-
-      @ingredients_kitchen_ids = current_user.kitchen.ingredients_kitchens.
-        where("ingredient_id IN (?)", ingredient_ids).map(&:id)
-
-      Rails.cache.write("recipe_#{params[:recipe_id]}", @ingredients_kitchen_ids, :expires_in => 1.days)
-    end
+  @ingredients_kitchen_ids = Rails.cache.fetch("recipe_#{params[:recipe_id]}", :expires_in => 1.days) do
+    ingredient_ids = Recipe.find(params[:recipe_id]).ingredient_ids
+    current_user.kitchen.ingredients_kitchens.where("ingredient_id IN (?)", ingredient_ids).map(&:id)
   end
+end
   
   ##############
   private
