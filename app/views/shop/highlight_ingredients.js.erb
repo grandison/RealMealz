@@ -1,0 +1,5 @@
+// Anonymous call to avoid creating vars in global scope
+(function() {
+  var targetIDs = <%= @ingredients_kitchen_ids %>;
+  window.ShopPageManagement.highlight(targetIDs);
+})();

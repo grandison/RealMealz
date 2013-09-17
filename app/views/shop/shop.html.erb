@@ -159,6 +159,9 @@ $("#shop-list").delegate("#shop-list .cart", "click", function() {
 	});    
 });
 
+/* Meals List: highlight ingredients */
+window.ShopPageManagement.addHighlightHandlers();
+
 /* Shop List: fill and open edit dialog */
 $("#shop-list").delegate(".edit-icon", "click", function() {
 		var itemId = $(this).attr("item_id");

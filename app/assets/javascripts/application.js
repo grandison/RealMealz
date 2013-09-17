@@ -16,3 +16,4 @@
 //= require 'jquery.mousewheel.js' 
 //= require 'jquery.jscrollpane.js'
 //= require 'realmealz.js' 
+//= require 'highlight_items.js.coffee'

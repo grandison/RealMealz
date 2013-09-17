@@ -8,7 +8,7 @@
  end
 %>
 
-<ul id="sortable-list">
+<ul id="sortable-list" class="js-shop-container">
 	<!-- for loop to show items -->
 	<% if item_list.empty? %>
   	<li>(Shopping list is empty)</li>
@@ -21,7 +21,7 @@
 		     class_name = "cart" 
 		     img = pick_image_off
 		   end %> 
-		<li id="<%= item.id %>" class="shop-items">
+		<li id="<%= item.id %>" class="shop-items js-shop-item">
 		  <table class="item-table"><tr>
 	    
 		  <!-- Shopping cart -->  

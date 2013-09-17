@@ -98,6 +98,21 @@ class ShopController < ApplicationController
     current_user.kitchen.update_attributes!(:default_servings => params[:kitchen][:default_servings])
     render :nothing => true
   end
+
+  def highlight_ingredients
+    cached_ingredients = Rails.cache.read("recipe_#{params[:recipe_id]}")
+
+    if cached_ingredients.present?
+      @ingredients_kitchen_ids = cached_ingredients
+    else
+      ingredient_ids = Recipe.find(params[:recipe_id]).ingredient_ids
+
+      @ingredients_kitchen_ids = current_user.kitchen.ingredients_kitchens.
+        where("ingredient_id IN (?)", ingredient_ids).map(&:id)
+
+      Rails.cache.write("recipe_#{params[:recipe_id]}", @ingredients_kitchen_ids, :expires_in => 1.days)
+    end
+  end
   
   ##############
   private

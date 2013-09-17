@@ -64,6 +64,7 @@ RealMealz::Application.routes.draw do
   post "/shop/clear_shopping_list"
   get "/shop/clear_shopping_list" => "shop#shop_list"
   get "/shop/autocomplete_ingredient_name"
+  post "/shop/highlight_ingredients"
   post "/shop/update_default_servings"
 
   get '/cook' => "cook#cook"
